@@ -1,5 +1,6 @@
 import api from "./api"
 //IMPORTA A INSTANCIA axios
+
 export async function verificarSenhaPainel(senha) {
     const resposta = await api.post("/painel/verificar", {
         senha,
