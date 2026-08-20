@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { verificarSenhaPainel} from "../src/services/painelService";
+import { verificarSenhaPainel} from "../services/painelService";
+import {ModalBody} from "react-bootstrap";
 
 //esses sao os imports - react e a funcao (q faz requisicao pro back)
 //useState faz lembrar valores entre renderizacoes.
@@ -82,7 +83,66 @@ export default function PainelPaisModal({ isOpen, onClose, onSuccess }) {
         // "onHide" é chamado tanto ao clicar fora quanto no X — por isso
         // ligamos direto no handleCancelar.
 
+        <Modal show={isOpen} onHide={handleCancelar} centered>
+            <Modal.Header closeButton>
+                <Modal.Title>Painel dos Pais</Modal.Title>
+            </Modal.Header>
 
+            <Modal.Body>
+                <div className="d-flex justify-content-center mb-3">
+                    <div
+                        className="d-flex align-items-center justify-content-center rounded-circle"
+                        style={{ width: 56, height: 56, backgroundColor: "#ede9fe", fontSize: 24 }}
+                    >
+                        🔒
+                    </div>
+                </div>
 
-    )
+                <p className="text-center text-muted">
+                    Digite a senha dos responsáveis para acessar o painel.
+                </p>
+
+                <Form.Group>
+                    <Form.Label>
+                        Senha do Painel dos Pais <span className="text-danger">*</span>
+                    </Form.Label>
+                    <InputGroup>
+                        <Form.Control
+                            type={mostrarSenha ? "text" : "password"}
+                            value={senha}
+                            onChange={(e) => setSenha(e.target.value)}
+                            placeholder="••••••"
+                            disabled={carregando}
+                            // isInvalid liga automaticamente o estilo de erro (borda
+                            // vermelha) do Bootstrap quando existe uma mensagem de erro
+                            isInvalid={!!erro}
+                        />
+                        <Button
+                            variant="outline-secondary"
+                            onClick={() => setMostrarSenha(!mostrarSenha)}
+                            aria-label="Mostrar ou ocultar senha"
+                        >
+                            {mostrarSenha ? "🙈" : "👁"}
+                        </Button>
+                    </InputGroup>
+                </Form.Group>
+
+                {erro && (
+                    <Alert variant="danger" className="mt-3 mb-0 py-2">
+                        {erro}
+                    </Alert>
+                )}
+            </Modal.Body>
+
+            <Modal.Footer>
+                <Button variant="outline-secondary" onClick={handleCancelar} disabled={carregando}>
+                    Cancelar
+                </Button>
+                <Button variant="primary" onClick={handleAcessar} disabled={carregando}>
+                    {carregando ? "Verificando..." : "Acessar"}
+                </Button>
+            </Modal.Footer>
+        </Modal>
+    );
+
 }
