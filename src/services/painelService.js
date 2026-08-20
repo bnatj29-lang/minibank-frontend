@@ -5,6 +5,8 @@ export async function verificarSenhaPainel(senha) {
     const resposta = await api.post("/painel/verificar", {
         senha,
     });
+
+
     //EXPORT ASYNC: ISSO É UMA FUNCAO ASSINCRONA (CONSEGUE REALIZAR UMA TAREFA AO MESMO TEMPO QUE OUTRAS SEM TRAVAR)
     //recebe um unico parametro: a senha que a pessoa digitou do modal
     //isso vem do painelmodal.jsx
@@ -22,3 +24,7 @@ export async function verificarSenhaPainel(senha) {
 // --> Backend valida com passwordEncoder.matches(...) = acerto 200 (volta ao normal) erro 401 (vira excecao)
 
 //NESSA PAGINA AQUI É NECESSARIO CONFIGURAR UM TOKEN QUE SERA DEFINIDO NA =PAGINA DE LOGIN= (BACKEND)
+//(esse token identifica quem é o responsavel usando a conta) - Authentication authentication
+
+//==MAIS SOBRE A PAGINA==
+//unica parte do front que pega o endpoint --
