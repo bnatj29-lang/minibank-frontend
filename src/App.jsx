@@ -30,3 +30,7 @@ export default function App() {
       </div>
   );
 }
+
+//essa página é como se fosse dona do estado painelAberto
+//--decide qnd o modal aparece
+//status - fase de teste, botao temporario
