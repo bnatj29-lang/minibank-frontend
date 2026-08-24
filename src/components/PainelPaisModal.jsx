@@ -4,7 +4,7 @@ import {Alert, Button, InputGroup, Modal, Form} from "react-bootstrap";
 
 //esses sao os imports - react e a funcao (q faz requisicao pro back)
 //useState faz lembrar valores entre renderizacoes.
-//ele cria variaveis pode mudar e fazer a tela ser atualizada automaticamente.
+//ele cria variaveis q pode mudar e fazer a tela ser atualizada automaticamente.
 
 //quem usa esse componente decide
 //ex:
