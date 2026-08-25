@@ -1,32 +1,30 @@
 import React, { useState } from "react";
 import PainelPaisModal from "./components/PainelPaisModal";
+import CadastroPage from "./pages/CadastroPage";
 
-//botao abrir painel TEMPORÁRIO
-//import CadastroPage from "./pages/CadastroPage";
+function App() {
+    const [painelAberto, setPainelAberto] = useState(false);
 
+    const handleSucessoPainel = () => {
+        console.log("Senha do painel verificada com sucesso!");
+        setPainelAberto(false);
+    };
 
-// Quando o login e outras telas forem criados, aqui entra o
-// react-router-dom para decidir qual página mostrar em cada URL.
+    return (
+        <div>
+            <CadastroPage />
 
-export default function App() {
-  const [painelAberto, setPainelAberto] = useState(false);
+            <button onClick={() => setPainelAberto(true)}>
+                Abrir Painel dos Pais
+            </button>
 
-  function handleSucessoPainel() {
-    setPainelAberto(false);
-    alert("Acesso liberado! (aqui depois entra a navegação pro Painel de verdade)");
-  }
-
-  return (
-      <div style={{ textAlign: "center", marginTop: 40 }}>
-        <button onClick={() => setPainelAberto(true)} style={{ padding: "8px 16px" }}>
-          Abrir Painel dos Pais
-        </button>
-
-        <PainelPaisModal
-            isOpen={painelAberto}
-            onClose={() => setPainelAberto(false)}
-            onSuccess={handleSucessoPainel}
-        />
-      </div>
-  );
+            <PainelPaisModal
+                isOpen={painelAberto}
+                onClose={() => setPainelAberto(false)}
+                onSuccess={handleSucessoPainel}
+            />
+        </div>
+    );
 }
+
+export default App;
