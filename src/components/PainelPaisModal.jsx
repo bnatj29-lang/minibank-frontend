@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { verificarSenhaPainel} from "../services/painelService";
-import {ModalBody} from "react-bootstrap";
+import {Alert, Button, InputGroup, Modal, Form} from "react-bootstrap";
 
 //esses sao os imports - react e a funcao (q faz requisicao pro back)
 //useState faz lembrar valores entre renderizacoes.
-//ele cria variaveis pode mudar e fazer a tela ser atualizada automaticamente.
+//ele cria variaveis q pode mudar e fazer a tela ser atualizada automaticamente.
 
 //quem usa esse componente decide
 //ex:
@@ -43,7 +43,7 @@ export default function PainelPaisModal({ isOpen, onClose, onSuccess }) {
         //Se o campo está vazio, mostra erro local e para ali (return) - validacao simples
         setCarregando(true); //trava o botao - mostra verificando
         try {
-            await verificarSenhaPainel(senha); //chama funcao
+            await verificarSenhaPainel(senha, "teste@crianca.com"); //chama funcao
             //se der certo chama onSuccess()
 
             // Senha correta: limpa o campo, avisa quem está usando o modal.
