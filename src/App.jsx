@@ -1,5 +1,8 @@
 import React, { useState } from "react";
+import { Routes, Route } from "react-router-dom";
+
 import PainelPaisModal from "./components/PainelPaisModal";
+import LoginForm from "./components/LoginForm";
 import CadastroPage from "./pages/CadastroPage";
 
 function App() {
@@ -12,14 +15,18 @@ function App() {
 
     return (
         <div>
-            <CadastroPage />
-            {/* Botão do painel dos pais será usado posteriormente */}
+
+            <Routes>
+                <Route path="/cadastro" element={<CadastroPage />} />
+                <Route path="/login" element={<LoginForm />} />
+            </Routes>
 
             <PainelPaisModal
                 isOpen={painelAberto}
                 onClose={() => setPainelAberto(false)}
                 onSuccess={handleSucessoPainel}
             />
+
         </div>
     );
 }

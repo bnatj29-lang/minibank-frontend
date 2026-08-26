@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function CadastroPage() {
+    const navigate = useNavigate();
     const [nomeResponsavel, setNomeResponsavel] = useState("");
     const [email, setEmail] = useState("");
     const [senhaLogin, setSenhaLogin] = useState("");
@@ -86,9 +88,9 @@ function CadastroPage() {
                 },
                 body: JSON.stringify(dadosCadastro)
             });
-
             if (resposta.ok) {
                 setSucesso("Conta criada com sucesso!");
+                navigate("/login");
             } else if (resposta.status === 409) {
                 setErro("Este e-mail já está cadastrado.");
             } else {
@@ -194,7 +196,7 @@ function CadastroPage() {
                 {sucesso && <p>{sucesso}</p>}
 
                 <p>
-                    Já tem conta? <button>Entrar</button>
+                    Já tem conta? <button onClick={() => navigate("/login")}>Entrar</button>
                 </p>
             </div>
         </div>
