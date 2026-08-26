@@ -122,9 +122,7 @@ function CadastroPage() {
                     value={nomeResponsavel}
                     onChange={(e) => setNomeResponsavel(e.target.value)}
                 />
-
                 {erro && <p>{erro}</p>}
-                {sucesso && <p>{sucesso}</p>}
 
                 <label>E-mail*</label>
                 <input
@@ -165,29 +163,35 @@ function CadastroPage() {
             <section>
                 <h2>Criança</h2>
 
-                <div>
-                    <label>Nome*</label>
-                    <input
-                        type="text"
-                        placeholder="Ex: Lucas"
-                        value={nomeCrianca}
-                        onChange={(e) => setNomeCrianca(e.target.value)}
-                    />
-                </div>
+                <div className="row">
 
-                <div>
-                    <label>Idade*</label>
-                    <input
-                        type="number"
-                        placeholder="Ex: 10"
-                        value={idadeCrianca}
-                        onChange={(e) => setIdadeCrianca(e.target.value)}
-                    />
+                    <div className="col-md-8">
+                        <label>Nome*</label>
+                        <input
+                            type="text"
+                            placeholder="Ex: Lucas"
+                            value={nomeCrianca}
+                            onChange={(e) => setNomeCrianca(e.target.value)}
+                        />
+                    </div>
+
+                    <div className="col-md-4">
+                        <label>Idade*</label>
+                        <input
+                            type="number"
+                            placeholder="Ex: 10"
+                            value={idadeCrianca}
+                            onChange={(e) => setIdadeCrianca(e.target.value)}
+                        />
+                    </div>
+
                 </div>
             </section>
 
             <div>
                 <button onClick={validarFormulario}>Criar Conta</button>
+
+                {sucesso && <p>{sucesso}</p>}
 
                 <p>
                     Já tem conta? <button>Entrar</button>

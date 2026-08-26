@@ -13,10 +13,7 @@ function App() {
     return (
         <div>
             <CadastroPage />
-
-            <button onClick={() => setPainelAberto(true)}>
-                Abrir Painel dos Pais
-            </button>
+            {/* Botão do painel dos pais será usado posteriormente */}
 
             <PainelPaisModal
                 isOpen={painelAberto}
