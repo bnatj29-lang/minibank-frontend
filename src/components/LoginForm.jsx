@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import api from "../services/api";
-
+import { useNavigate } from "react-router-dom";
 
 function LoginForm() {
     const [email, setEmail] = useState("");
     const [senha, setSenha] = useState("");
+    const navigate = useNavigate();
     const enviarFormulario = async (event) => {
         event.preventDefault();
         const dadosLogin = {
@@ -15,6 +16,7 @@ function LoginForm() {
         try {
             await api.post("/autenticar/login", dadosLogin);
             alert("Login realizado com sucesso!");
+            navigate("/home");
         } catch (error) {
             console.error("Erro ao fazer login:", error);
             alert("E-mail ou senha incorretos.");
