@@ -1,33 +1,34 @@
-import React, { useState } from "react";
-import { Routes, Route } from "react-router-dom";
+import React from "react";
+import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
 
-import PainelPaisModal from "./components/PainelPaisModal";
 import LoginForm from "./components/LoginForm";
 import CadastroPage from "./pages/CadastroPage";
 import Home from "./pages/Home";
+import PainelPaisModal from "./components/PainelPaisModal";
 
 function App() {
-    const [painelAberto, setPainelAberto] = useState(false);
-
-    const handleSucessoPainel = () => {
-        console.log("Senha do painel verificada com sucesso!");
-        setPainelAberto(false);
-    };
+    const navigate = useNavigate();
 
     return (
-        <div>
-            <Routes>
-                <Route path="/cadastro" element={<CadastroPage />} />
-                <Route path="/login" element={<LoginForm />} />
-                <Route path="/home" element={<Home />} />
-            </Routes>
-
-            <PainelPaisModal
-                isOpen={painelAberto}
-                onClose={() => setPainelAberto(false)}
-                onSuccess={handleSucessoPainel}
+        <Routes>
+            <Route path="/" element={<Navigate to="/login" replace />} />
+            <Route
+                path="/login"
+                element={
+                    <>
+                        <LoginForm />
+                        <button onClick={() => navigate("/cadastro")}>
+                            Criar um cadastro
+                        </button>
+                    </>
+                }
             />
-        </div>
+
+            <Route path="/cadastro" element={<CadastroPage />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/painel-pais" element={ <PainelPaisModal />} />
+
+        </Routes>
     );
 }
 

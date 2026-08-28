@@ -105,7 +105,7 @@ function CadastroPage() {
         <div>
             <header>
                 <div>
-                    <button>←</button>
+                    <button type="button" onClick={() => navigate("/login")}>←</button>
 
                     <div>
                         <h1>Criar conta</h1>

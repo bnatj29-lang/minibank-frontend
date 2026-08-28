@@ -15,7 +15,7 @@ function LoginForm() {
 
         try {
             await api.post("/autenticar/login", dadosLogin);
-            alert("Login realizado com sucesso!");
+            sessionStorage.setItem("usuarioEmail", email.trim());
             navigate("/home");
         } catch (error) {
             console.error("Erro ao fazer login:", error);

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { verificarSenhaPainel} from "../services/painelService";
 import {Alert, Button, InputGroup, Modal, Form} from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
 //esses sao os imports - react e a funcao (q faz requisicao pro back)
 //useState faz lembrar valores entre renderizacoes.
@@ -14,11 +15,13 @@ import {Alert, Button, InputGroup, Modal, Form} from "react-bootstrap";
 //     quem estiver usando o modal decide o que fazer depois, ex:
 //     navegar pra tela do Painel dos Pais)
 
-export default function PainelPaisModal({ isOpen, onClose, onSuccess }) {
+function PainelPaisModal() {
+    const navigate = useNavigate();
     const [senha, setSenha] = useState("");
     const [mostrarSenha, setMostrarSenha] = useState(false);
     const [carregando, setCarregando] = useState(false);
     const [erro, setErro] = useState("");
+    const [sucesso, setSucesso] = useState("");
 
 //essas sao memorias que o componente guarda
 //senha - o que a pessoa ta digitando no campo
@@ -28,27 +31,30 @@ export default function PainelPaisModal({ isOpen, onClose, onSuccess }) {
 //erro - mensagem de erro exibida
 //state - react transforma de acordo com os dados. (dado manda na tela)
 
-    if (!isOpen) return null;  // Se isOpen for false, o componente não renderiza NADA.
-// É assim que controlamos se o modal aparece ou não.
+
 
     async function handleAcessar() {
         setErro("");
+        setSucesso("");
 //handleAcessar é o que roda quando clica para acessar
 
         if (!senha) {
             setErro("Digite a senha do painel.");
             return;
         }
+
+        const emailUsuario = sessionStorage.getItem("usuarioEmail");
+
+        if (!emailUsuario) {
+            setErro("E-mail do usuário não encontrado. Faça o login novamente.");
+            return;
+        }
 //esse erro vai ser limpo depois
         //Se o campo está vazio, mostra erro local e para ali (return) - validacao simples
         setCarregando(true); //trava o botao - mostra verificando
         try {
-            await verificarSenhaPainel(senha, "teste@crianca.com"); //chama funcao
-            //se der certo chama onSuccess()
-
-            // Senha correta: limpa o campo, avisa quem está usando o modal.
-            setSenha("");
-            onSuccess();
+            await verificarSenhaPainel(senha, emailUsuario); //chama funcao
+            setSucesso("Login realizado com sucesso!");
         } catch (erroRequisicao) {
             //se der erro cai no CATCH que diferencia o TIPO do erro
             // Critério de aceite: "senha incorreta retorna erro claro, sem
@@ -71,11 +77,10 @@ export default function PainelPaisModal({ isOpen, onClose, onSuccess }) {
     function handleCancelar() {
         setSenha("");
         setErro("");
-        onClose();
+        setSucesso("");
+        navigate("/login");
 //essa function fecha o modal limpando os campos.
     }
-    if (!isOpen) return null; //se o isopen for false - nao renderiza nada
-
     return (
         // O <Modal> do react-bootstrap já cuida sozinho de: overlay escurecido,
         // fechar com ESC, travar o scroll de fundo, e centralizar na tela.
@@ -83,7 +88,7 @@ export default function PainelPaisModal({ isOpen, onClose, onSuccess }) {
         // "onHide" é chamado tanto ao clicar fora quanto no X — por isso
         // ligamos direto no handleCancelar.
 
-        <Modal show={isOpen} onHide={handleCancelar} centered>
+        <Modal show={true} onHide={handleCancelar} centered>
             <Modal.Header closeButton>
                 <Modal.Title>Painel dos Pais</Modal.Title>
             </Modal.Header>
@@ -110,7 +115,11 @@ export default function PainelPaisModal({ isOpen, onClose, onSuccess }) {
                         <Form.Control
                             type={mostrarSenha ? "text" : "password"}
                             value={senha}
-                            onChange={(e) => setSenha(e.target.value)}
+                            onChange={(e) => {
+                                setSenha(e.target.value);
+                                setErro("");
+                                setSucesso("");
+                            }}
                             placeholder="••••••"
                             disabled={carregando}
                             // isInvalid liga automaticamente o estilo de erro (borda
@@ -132,6 +141,12 @@ export default function PainelPaisModal({ isOpen, onClose, onSuccess }) {
                         {erro}
                     </Alert>
                 )}
+
+                {sucesso && (
+                    <Alert variant="success" className="mt-3 mb-0 py-2">
+                        {sucesso}
+                    </Alert>
+                )}
             </Modal.Body>
 
             <Modal.Footer>
@@ -146,3 +161,4 @@ export default function PainelPaisModal({ isOpen, onClose, onSuccess }) {
     );
 
 }
+export default PainelPaisModal;
