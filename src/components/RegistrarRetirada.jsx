@@ -1,21 +1,24 @@
-import React, { useState } from "react";
+import React, { useState } from "react"; //guarda o que o usuario digita
 import { registrarExtrato } from "../services/extratoService";
 
 function RegistrarRetirada({ onRegistro }) {
 
     const [valor, setValor] = useState("");
+    //valor = valor atual digitado
     const [descricao, setDescricao] = useState("");
-
+    //setValor = funcao que muda o valor
+    //onRegistro vem do Financeiro.jsx - chama carregarExtrato
     const criancaId = 1; // TEMPORÁRIO
 
     async function registrar() {
-
+    //funcao executada qnd o usuario clica no botao
         const dados = {
             criancaId: criancaId,
             tipo: "RETIRADA",
             valor: Number(valor),
             descricao: descricao
         };
+        //objeto json enviado para o back
 
         try {
             await registrarExtrato(dados);
