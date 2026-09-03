@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { registrarExtrato } from "../services/extratoService";
 
-function RegistrarRetirada() {
+function RegistrarRetirada({ onRegistro }) {
 
     const [valor, setValor] = useState("");
     const [descricao, setDescricao] = useState("");
@@ -22,8 +22,12 @@ function RegistrarRetirada() {
 
             console.log("Retirada registrada!");
 
+            await onRegistro();
+
         } catch (erro) {
             console.error("Erro ao registrar retirada:", erro);
+
+            alert("Não foi possível realizar a retirada.");
         }
     }
 
