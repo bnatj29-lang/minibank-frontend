@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { registrarExtrato } from "../services/extratoService";
 
-function RegistrarEconomia(){
+function RegistrarEconomia({onRegistro}){
 
    const [valor, setValor] = useState("");
    const [descricao, setDescricao] = useState("");
@@ -21,6 +21,8 @@ function RegistrarEconomia(){
            await registrarExtrato(dados);
 
            console.log("Economia registrada!");
+
+           await onRegistro();
        } catch (erro){
            console.error("Erro ao registrar economia:", erro);
        }

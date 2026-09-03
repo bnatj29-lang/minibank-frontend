@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { buscarExtrato } from "../services/extratoService";
+import RegistrarEconomia from "../components/RegistrarEconomia";
+import RegistrarRetirada from "../components/RegistrarRetirada";
 
 function Financeiro(){
     const [extrato, setExtrato] = useState([]); //guarda lista de movimentacoes
@@ -44,6 +46,9 @@ function Financeiro(){
             <h2>
                 Saldo: R$ {saldo.toFixed(2)}
             </h2>
+
+            <RegistrarEconomia onRegistro={carregarExtrato}/>
+            <RegistrarRetirada onRegistro={carregarExtrato}/>
 
             <h2>Extrato</h2>
 
