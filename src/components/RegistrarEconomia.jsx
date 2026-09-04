@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { registrarExtrato } from "../services/extratoService";
+import { Alert, Button, InputGroup, Modal, Form } from "react-bootstrap";
 
-function RegistrarEconomia({onRegistro}){
+function RegistrarEconomia({onRegistro, isOpen, onClose}){
 
    const [valor, setValor] = useState("");
    const [descricao, setDescricao] = useState("");
