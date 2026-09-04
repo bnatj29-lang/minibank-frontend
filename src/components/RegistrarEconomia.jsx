@@ -29,30 +29,54 @@ function RegistrarEconomia({onRegistro, isOpen, onClose}){
        }
     }
 
+    if (!isOpen) return null;
+
     return (
-        <div>
+        <Modal show={isOpen} onHide={onClose} centered>
 
-            <h2>Registrar Economia</h2>
+            <Modal.Header closeButton>
+                <Modal.Title>Registrar Economia</Modal.Title>
+            </Modal.Header>
 
-            <input
-                type="number"
-                placeholder="Valor"
-                value={valor}
-                onChange={(e) => setValor(e.target.value)}
-            />
+            <Modal.Body>
 
-            <input
-                type="text"
-                placeholder="Descrição"
-                value={descricao}
-                onChange={(e) => setDescricao(e.target.value)}
-            />
+                <Form.Group className="mb-3">
+                    <Form.Label>Valor</Form.Label>
 
-            <button onClick={registrar}>
-                Registrar
-            </button>
+                    <Form.Control
+                        type="number"
+                        placeholder="Digite o valor"
+                        value={valor}
+                        onChange={(e) => setValor(e.target.value)}
+                    />
+                </Form.Group>
 
-        </div>
+                <Form.Group>
+                    <Form.Label>Descrição</Form.Label>
+
+                    <Form.Control
+                        type="text"
+                        placeholder="Digite uma descrição"
+                        value={descricao}
+                        onChange={(e) => setDescricao(e.target.value)}
+                    />
+                </Form.Group>
+
+            </Modal.Body>
+
+            <Modal.Footer>
+
+                <Button variant="secondary" onClick={onClose}>
+                    Cancelar
+                </Button>
+
+                <Button variant="primary" onClick={registrar}>
+                    Registrar
+                </Button>
+
+            </Modal.Footer>
+
+        </Modal>
     );
 }
 
