@@ -24,6 +24,9 @@ function RegistrarEconomia({onRegistro, isOpen, onClose}){
            console.log("Economia registrada!");
 
            await onRegistro();
+
+           onclose();
+
        } catch (erro){
            console.error("Erro ao registrar economia:", erro);
        }

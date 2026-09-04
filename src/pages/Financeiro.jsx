@@ -8,6 +8,8 @@ function Financeiro(){
     const [saldo, setSaldo] = useState(0); //guarda o saldo calculado
     const criancaId = 1; //id da crianca consultada (isso é temporario)
 
+    const [economiaAberta, setEconomiaAberta] = useState(false);
+
     useEffect(() => {
         carregarExtrato();
     }, []);
@@ -47,7 +49,17 @@ function Financeiro(){
                 Saldo: R$ {saldo.toFixed(2)}
             </h2>
 
-            <RegistrarEconomia onRegistro={carregarExtrato}/>
+            <button onClick={() => setEconomiaAberta(true)}>
+                Registrar Economia
+            </button>
+
+            <RegistrarEconomia
+             isOpen={economiaAberta}
+             onClose={() => setEconomiaAberta(false)}
+             onRegistro={carregarExtrato}
+            />
+
+
             <RegistrarRetirada onRegistro={carregarExtrato}/>
 
             <h2>Extrato</h2>
