@@ -9,6 +9,7 @@ function Financeiro(){
     const criancaId = 1; //id da crianca consultada (isso é temporario)
 
     const [economiaAberta, setEconomiaAberta] = useState(false);
+    const [retiradaAberta, setRetiradaAberta] = useState(false);
 
     useEffect(() => {
         carregarExtrato();
@@ -59,8 +60,15 @@ function Financeiro(){
              onRegistro={carregarExtrato}
             />
 
+            <button onClick={() => setRetiradaAberta(true)}>
+                Registrar Retirada
+            </button>
 
-            <RegistrarRetirada onRegistro={carregarExtrato}/>
+            <RegistrarRetirada
+             isOpen={retiradaAberta}
+             onClose={() => setRetiradaAberta(false)}
+             onRegistro={carregarExtrato}
+            />
 
             <h2>Extrato</h2>
 

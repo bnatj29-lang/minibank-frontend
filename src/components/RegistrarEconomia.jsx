@@ -1,35 +1,58 @@
 import React, { useState } from "react";
 import { registrarExtrato } from "../services/extratoService";
-import { Alert, Button, InputGroup, Modal, Form } from "react-bootstrap";
+import {  Button, Modal, Form } from "react-bootstrap";
 
 function RegistrarEconomia({onRegistro, isOpen, onClose}){
 
    const [valor, setValor] = useState("");
    const [descricao, setDescricao] = useState("");
+    const [erro, setErro] = useState("");
 
    const criancaId = 1; //TEMPORARIO - para fins de teste
 
     //montagem do objeto
     async function registrar(){
 
-       const dados = {
-           criancaId: criancaId,
-           tipo: "ENTRADA", //aqui o front define o tipo = ENTRADA
-           valor: Number(valor),
-           descricao: descricao
-       };
-       try {
-           await registrarExtrato(dados);
+        setErro("");
 
-           console.log("Economia registrada!");
+        if (!valor) {
+            setErro("Digite um valor.");
+            return;
+        }
 
-           await onRegistro();
+        if (Number(valor) <= 0) {
+            setErro("O valor deve ser maior que zero.");
+            return;
+        }
 
-           onclose();
+        const dados = {
+            criancaId: criancaId,
+            tipo: "ENTRADA",
+            valor: Number(valor),
+            descricao: descricao
+        };
 
-       } catch (erro){
-           console.error("Erro ao registrar economia:", erro);
-       }
+        try {
+            await registrarExtrato(dados);
+
+            console.log("Economia registrada!");
+
+            await onRegistro();
+
+            onClose();
+
+        } catch (erro){
+            console.error("Erro ao registrar economia:", erro);
+
+            if (erro.response) {
+                setErro(
+                    erro.response.data?.mensagem ||
+                    "Não foi possível realizar a economia."
+                );
+            } else {
+                setErro("Erro ao conectar com o servidor. Tente novamente.");
+            }
+        }
     }
 
     if (!isOpen) return null;
@@ -42,6 +65,14 @@ function RegistrarEconomia({onRegistro, isOpen, onClose}){
             </Modal.Header>
 
             <Modal.Body>
+
+                {erro && (
+                    <div className="text-danger mb-3">
+                        {erro}
+                    </div>
+                )}
+
+
 
                 <Form.Group className="mb-3">
                     <Form.Label>Valor</Form.Label>
