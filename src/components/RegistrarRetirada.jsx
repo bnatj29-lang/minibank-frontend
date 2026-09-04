@@ -13,7 +13,7 @@ function RegistrarRetirada({ onRegistro, isOpen, onClose }) {
     const [erro, setErro] = useState("");
     // erro = mensagem de erro que sera exibida no modal
 
-    const criancaId = 1; // TEMPORÁRIO
+    const criancaId = 1;
 
     // Funcao para fechar o modal e limpar os campos
     function fecharModal() {
