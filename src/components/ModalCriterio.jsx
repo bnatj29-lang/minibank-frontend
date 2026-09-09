@@ -1,22 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-//nessa pagina existe bootstrap para fins de teste
+function ModalCriterio({ isOpen, onClose, onCriar, missaoParaEditar }) {
+    const [criterio, setCriterio] = useState("");
 
-function ModalCriterio({ isOpen, onClose, onCriar }) {
-    const [criterio, setCriterio] = useState(""); //guarda o valor do que vc digita
+    useEffect(() => {
+        if (missaoParaEditar) {
+            setCriterio(missaoParaEditar.criterio);
+        } else {
+            setCriterio("");
+        }
+    }, [missaoParaEditar, isOpen]);
 
     if (!isOpen) {
         return null;
     }
 
-    const handleCriar = () => {
+    const handleSalvar = () => {
         if (!criterio.trim()) {
             return;
         }
 
-        onCriar(criterio); //cria
-        setCriterio(""); //atribui valor ao criterio (??)
-        onClose(); //fecha o modal
+        onCriar(criterio);
+        setCriterio("");
+        onClose();
     };
 
     return (
@@ -26,7 +32,7 @@ function ModalCriterio({ isOpen, onClose, onCriar }) {
 
                     <div className="modal-header">
                         <h5 className="modal-title">
-                            Nova Missão
+                            {missaoParaEditar ? "Editar Missão" : "Nova Missão"}
                         </h5>
 
                         <button
@@ -62,9 +68,9 @@ function ModalCriterio({ isOpen, onClose, onCriar }) {
                         <button
                             type="button"
                             className="btn btn-success"
-                            onClick={handleCriar}
+                            onClick={handleSalvar}
                         >
-                            Criar
+                            {missaoParaEditar ? "Salvar" : "Criar"}
                         </button>
                     </div>
 

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import ModalCriterio from "../components/ModalCriterio";
+import ConfirmarExclusOMissoes from "../components/ConfirmarExclusãoMissoes";
 
 // esqueleto da pagina
 
@@ -8,6 +9,8 @@ function Missoes() {
     const [nota, setNota] = useState(0);
     const [missoes, setMissoes] = useState([]);
     const [modalAberto, setModalAberto] = useState(false);
+    const [missaoParaEditar, setMissaoParaEditar] = useState(null);
+    const [missaoParaExcluir, setMissaoParaExcluir] = useState(null);
 
     const criarMissao = (criterio) => {
         const novaMissao = {
@@ -31,6 +34,31 @@ function Missoes() {
      setMissoes(novasMissoes);
     };
 
+    const editarMissao = (criterioNovo) => {
+        const novasMissoes = missoes.map((missao) => {
+            if (missao === missaoParaEditar){
+                return{
+                    ...missao,
+                    criterio: criterioNovo
+                };
+            }
+            return missao;
+        });
+     setMissoes(novasMissoes);
+     setMissaoParaEditar(null);
+    };
+
+
+    //filter = filtra a lista e mantem todas menos as que queremos excluir
+    const ExcluirMissao = () => {
+        const novasMissoes = missoes.filter((missao) => missao !== missaoParaExcluir);
+
+        setMissoes(novasMissoes);
+        setMissaoParaExcluir(null);
+    }
+
+
+
     return (
         <div>
             <h1>Missões</h1>
@@ -52,7 +80,20 @@ function Missoes() {
             {missoes.map((missao) => (
                 <div key={missao.criterio}>
 
-                    <h3>{missao.criterio}</h3>
+                    <div className="d-flex align-items-center gap-2">
+                        <h3>{missao.criterio}</h3>
+
+                        <button
+                            type="button"
+                            className="btn btn-outline-secondary"
+                            onClick={() => {
+                                setMissaoParaEditar(missao);
+                                setModalAberto(true);
+                            }}
+                        >
+                            ✏️
+                        </button>
+                    </div>
 
                     <p>Nota: {missao.nota}</p>
 
@@ -80,7 +121,8 @@ function Missoes() {
             <ModalCriterio
                 isOpen={modalAberto}
                 onClose={() => setModalAberto(false)}
-                onCriar={criarMissao}
+                onCriar={missaoParaEditar ? editarMissao : criarMissao}
+                missaoParaEditar={missaoParaEditar}
             />
         </div>
     );
