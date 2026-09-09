@@ -5,6 +5,7 @@ import PainelPaisModal from "./components/PainelPaisModal";
 import LoginForm from "./components/LoginForm";
 import CadastroPage from "./pages/CadastroPage";
 import Home from "./pages/Home";
+import ConfiguracoesPage from "./pages/ConfiguracoesPage";
 
 function App() {
     const [painelAberto, setPainelAberto] = useState(false);
@@ -20,6 +21,7 @@ function App() {
                 <Route path="/cadastro" element={<CadastroPage />} />
                 <Route path="/login" element={<LoginForm />} />
                 <Route path="/home" element={<Home />} />
+                <Route path="/configuracoes" element={<ConfiguracoesPage />} />
             </Routes>
 
             <PainelPaisModal
