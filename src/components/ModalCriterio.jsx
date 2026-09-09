@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 
+//nessa pagina existe bootstrap para fins de teste
+
 function ModalCriterio({ isOpen, onClose, onCriar }) {
     const [criterio, setCriterio] = useState(""); //guarda o valor do que vc digita
 
