@@ -9,9 +9,13 @@ function  Missoes() {
                 Atribua notas de 0 a 10 para cada critério
             </p>
 
+            <button>+ Nova Missão</button>
 
+            <hr />
 
+            <h2>Critérios</h2>
 
+            <h2>Resumo</h2>
         </div>
     );
 }
