@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 
+
 import PainelPaisModal from "./components/PainelPaisModal";
 import LoginForm from "./components/LoginForm";
 import CadastroPage from "./pages/CadastroPage";
 import Home from "./pages/Home";
 import ConfiguracoesPage from "./pages/ConfiguracoesPage";
+import Financeiro from "./pages/Financeiro";
 
 function App() {
     const [painelAberto, setPainelAberto] = useState(false);
@@ -22,6 +24,7 @@ function App() {
                 <Route path="/login" element={<LoginForm />} />
                 <Route path="/home" element={<Home />} />
                 <Route path="/configuracoes" element={<ConfiguracoesPage />} />
+                <Route path="/financeiro" element={<Financeiro />} />
             </Routes>
 
             <PainelPaisModal
