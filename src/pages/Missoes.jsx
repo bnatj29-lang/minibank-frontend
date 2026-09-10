@@ -5,7 +5,8 @@ import {
     listarMissoes,
     criarMissao as criarMissaoAPI,
     atualizarMissao as atualizarMissaoAPI,
-    excluirMissao as excluirMissaoAPI
+    excluirMissao as excluirMissaoAPI,
+    calcularMedia
 } from "../services/missaoService";
 
 // esqueleto da pagina
