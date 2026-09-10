@@ -29,3 +29,10 @@ export const atualizarMissao = async (id, criterio, nota) => {
 export const excluirMissao = async (id) => {
     await api.delete(`/missoes/${id}`);
 };
+
+// Calcula a média das notas das missões
+export const calcularMedia = async (criancaId) => {
+    const resposta = await api.get(`/missoes/${criancaId}/media`);
+
+    return resposta.data;
+};
