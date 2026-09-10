@@ -1,9 +1,16 @@
 import api from "./api";
 
+// Busca todas as missões de uma criança
 export const listarMissoes = async (criancaId) => {
-    const resposta = await api.get(`/missoes/crianca/${criancaId}`)
-
+    const resposta = await api.get(`/missoes/crianca/${criancaId}`);
     return resposta.data;
+};
 
-    //funcao listar missoes - GET missoes de tal criancaId
-}
+//cria uma nova missao para uma crianca
+export const criarMissao = async (criancaId, criterio, nota) => {
+    const resposta = await api.post(`/missoes/${criancaId}`, {
+        criterio: criterio,
+        nota: nota
+    });
+    return resposta.data;
+};
