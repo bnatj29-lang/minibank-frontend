@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ModalCriterio from "../components/ModalCriterio";
 import ConfirmarExclusaoMissoes from "../components/ConfirmarExclusaoMissoes";
+import { listarMissoes } from "../services/missaoService";
 
 // esqueleto da pagina
 
@@ -11,6 +12,18 @@ function Missoes() {
     const [modalAberto, setModalAberto] = useState(false);
     const [missaoParaEditar, setMissaoParaEditar] = useState(null);
     const [missaoParaExcluir, setMissaoParaExcluir] = useState(null);
+
+    const criancaId = 1;
+
+    useEffect(() => {
+        const carregarMissoes = async () => {
+            const dados = await listarMissoes(criancaId);
+
+            setMissoes(dados);
+        };
+
+        carregarMissoes();
+    }, []);
 
     const criarMissao = (criterio) => {
         const novaMissao = {
