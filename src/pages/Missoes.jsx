@@ -206,6 +206,7 @@ function Missoes() {
             ))}
 
             <h2>Resumo</h2>
+            <p>Média das Missões: {media}</p>
 
             <ModalCriterio
                 isOpen={modalAberto}
