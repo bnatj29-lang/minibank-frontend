@@ -1,0 +1,429 @@
+/* Página e navegação das metas da criança. */
+.pagina-metas {
+    min-height: 100vh;
+    min-height: 100dvh;
+    background: linear-gradient(160deg, #f0fdf4 0%, #fff 40%, #f0f9ff 100%);
+    color: #1f2937;
+    font-family: ui-sans-serif, system-ui, sans-serif;
+}
+
+.cabecalho-metas {
+    background: #ffffffcc;
+    border-bottom: 1px solid #f3f4f6;
+    box-shadow: 0 1px 3px #0000000d;
+}
+
+.conteudo-cabecalho-metas {
+    max-width: 1024px;
+    margin: auto;
+    padding: 16px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.marca-metas {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.icone-metas {
+    width: 36px;
+    height: 36px;
+}
+
+.logotipo-metas {
+    width: 120px;
+    height: 24px;
+    object-fit: contain;
+}
+
+.navegacao-metas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.conteudo-metas {
+    max-width: 768px;
+    padding: 32px 24px;
+    margin: auto;
+}
+
+.titulo-pagina-metas {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.titulo-pagina-metas h1 {
+    font-size: 24px;
+    font-weight: 900;
+    margin: 0;
+}
+
+.titulo-pagina-metas p {
+    color: #6b7280;
+    font-size: 14px;
+    margin: 6px 0 0;
+    overflow-wrap: anywhere;
+}
+
+/* Cartões com valores e progresso. */
+.lista-metas {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.cartao-meta {
+    background: #fff;
+    padding: 20px;
+    border: 1px solid #f3f4f6;
+    border-radius: 16px;
+    box-shadow: 0 1px 3px #0000000d;
+}
+
+.cabecalho-cartao-meta {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.cabecalho-cartao-meta h2 {
+    font-size: 16px;
+    font-weight: 900;
+    margin: 0;
+    overflow-wrap: anywhere;
+}
+
+.cabecalho-cartao-meta p {
+    color: #6b7280;
+    font-size: 14px;
+    margin: 4px 0 0;
+}
+
+.acoes-cartao-meta {
+    display: flex;
+    flex-shrink: 0;
+    gap: 8px;
+}
+
+.resumo-progresso-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    color: #0284c7;
+    font-size: 12px;
+}
+
+.resumo-progresso-meta strong {
+    font-size: 18px;
+}
+
+/* O elemento progress recebe o percentual no JSX. Suas cores ficam aqui. */
+.progresso-meta {
+    display: block;
+    width: 100%;
+    height: 10px;
+    border: 0;
+    border-radius: 20px;
+    overflow: hidden;
+    background: #f3f4f6;
+    appearance: none;
+}
+
+.progresso-meta::-webkit-progress-bar {
+    background: #f3f4f6;
+}
+
+.progresso-meta::-webkit-progress-value {
+    background: linear-gradient(to right, #38bdf8, #3b82f6);
+    border-radius: 20px;
+}
+
+.progresso-meta::-moz-progress-bar {
+    background: linear-gradient(to right, #38bdf8, #3b82f6);
+    border-radius: 20px;
+}
+
+.restante-meta {
+    font-size: 12px;
+    color: #6b7280;
+    text-align: right;
+    margin: 6px 0 0;
+}
+
+.meta-alcancada {
+    color: #b45309;
+    background: #fffbeb;
+    border: 1px solid #fde68a;
+    border-radius: 12px;
+    padding: 12px 16px;
+    margin: 16px 0 0;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+/* Metas já conquistadas não têm botão de exclusão. */
+.lista-conquistas {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 24px;
+}
+
+.lista-conquistas h2 {
+    font-size: 14px;
+    font-weight: 900;
+    color: #6b7280;
+    margin: 0 0 4px;
+}
+
+.meta-conquistada {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    background: #fffbeb;
+    border: 1px solid #fef3c7;
+    border-radius: 16px;
+    padding: 12px 16px;
+    color: #92400e;
+}
+
+.meta-conquistada h3 {
+    font-size: 14px;
+    font-weight: 900;
+    margin: 0;
+    overflow-wrap: anywhere;
+}
+
+.meta-conquistada p {
+    font-size: 12px;
+    margin: 4px 0 0;
+}
+
+.meta-conquistada span {
+    flex-shrink: 0;
+    background: #fde68a;
+    border-radius: 20px;
+    padding: 4px 8px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+/* Botões: a classe btn mantém os estados básicos do Bootstrap. */
+.botao-nova-meta {
+    background: #10b981;
+    color: #fff;
+    border-radius: 12px;
+    padding: 10px 16px;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.botao-nova-meta:hover,
+.botao-nova-meta:disabled {
+    background: #059669;
+    color: #fff;
+}
+
+.botao-secundario-meta {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    color: #374151;
+    border-radius: 12px;
+    padding: 10px 16px;
+    font-size: 14px;
+}
+
+.botao-pais-metas {
+    background: #4f46e5;
+    color: #fff;
+    border-radius: 12px;
+    padding: 10px 16px;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.botao-pais-metas:hover {
+    background: #4338ca;
+    color: #fff;
+}
+
+.botao-editar-meta {
+    background: #f3f4f6;
+    color: #4b5563;
+    border-radius: 8px;
+    font-size: 12px;
+}
+
+.botao-editar-meta:hover {
+    background: #e5e7eb;
+    color: #1f2937;
+}
+
+.botao-excluir-meta {
+    background: #fef2f2;
+    color: #b91c1c;
+    border-radius: 8px;
+    font-size: 12px;
+    flex-shrink: 0;
+}
+
+.botao-excluir-meta:hover {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.botao-confirmar-exclusao {
+    background: #dc2626;
+    color: #fff;
+    border-radius: 12px;
+    padding: 10px 16px;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.botao-confirmar-exclusao:hover,
+.botao-confirmar-exclusao:disabled {
+    background: #b91c1c;
+    color: #fff;
+}
+
+/* Carregamento, lista vazia e mensagens. */
+.estado-metas {
+    padding: 40px 24px;
+    text-align: center;
+    color: #6b7280;
+}
+
+.metas-vazias {
+    background: #fff;
+    border: 2px dashed #bae6fd;
+    border-radius: 24px;
+    padding: 40px;
+    text-align: center;
+}
+
+.simbolo-metas {
+    display: block;
+    font-size: 48px;
+    margin-bottom: 16px;
+}
+
+.metas-vazias h2 {
+    font-size: 18px;
+    font-weight: 900;
+}
+
+.metas-vazias p {
+    color: #6b7280;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.sucesso-metas {
+    color: #047857;
+    background: #ecfdf5;
+    padding: 12px;
+    border-radius: 12px;
+    margin-bottom: 16px;
+}
+
+.erro-metas {
+    color: #b91c1c;
+    background: #fef2f2;
+    padding: 12px;
+    border-radius: 12px;
+    font-size: 14px;
+    margin: 16px 0 0;
+}
+
+/* Janelas de criação e confirmação de exclusão. */
+.modal-metas .modal-content {
+    border: 0;
+    border-radius: 24px;
+}
+
+.modal-metas .modal-title {
+    font-size: 20px;
+    font-weight: 900;
+}
+
+.modal-metas .modal-body {
+    padding: 24px;
+}
+
+.descricao-modal-meta {
+    font-size: 14px;
+    color: #6b7280;
+}
+
+.campos-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.campos-meta .form-label {
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.campos-meta .form-control {
+    font-size: 14px;
+    border-radius: 12px;
+    padding: 12px 16px;
+}
+
+.campos-meta .form-control:focus {
+    border-color: #34d399;
+    box-shadow: 0 0 0 3px #d1fae5;
+}
+
+.nome-meta-confirmacao {
+    overflow-wrap: anywhere;
+}
+
+.ajuda-editar-meta {
+    font-size: 12px;
+    color: #6b7280;
+    margin: 6px 0 0;
+}
+
+.pagina-metas button:focus-visible,
+.pagina-metas a:focus-visible,
+.modal-metas button:focus-visible {
+    outline: 3px solid #047857;
+    outline-offset: 3px;
+}
+
+/* Em telas pequenas, os cartões e botões se ajustam ao espaço disponível. */
+@media (max-width: 575px) {
+    .conteudo-metas {
+        padding: 24px 16px;
+    }
+
+    .metas-vazias {
+        padding: 24px;
+    }
+
+    .cabecalho-cartao-meta {
+        flex-wrap: wrap;
+    }
+
+    .meta-conquistada {
+        flex-wrap: wrap;
+    }
+}
