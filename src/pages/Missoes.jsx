@@ -44,17 +44,38 @@ function Missoes() {
         }
     };
 
-    const alterarNota = (criterio, novaNota) => {
-        const novasMissoes = missoes.map((missao) => {
-            if(missao.criterio === criterio) {
-                return {
-                    ...missao,
-                    nota: novaNota
-                };
-            }
-            return missao;
-        });
-     setMissoes(novasMissoes);
+    const alterarNota = async (missao, novaNota) => {
+
+        try {
+
+            // Envia a nova nota para o backend
+            await atualizarMissaoAPI(
+                missao.id,
+                missao.criterio,
+                novaNota
+            );
+
+            // Atualiza a nota na tela
+            const novasMissoes = missoes.map((item) => {
+
+                if (item.id === missao.id) {
+
+                    return {
+                        ...item,
+                        nota: novaNota
+                    };
+                }
+
+                return item;
+            });
+
+            setMissoes(novasMissoes);
+
+        } catch (erro) {
+
+            console.error("Erro ao atualizar nota:", erro);
+
+        }
     };
 
     const editarMissao = async (criterioNovo) => {
@@ -163,7 +184,7 @@ function Missoes() {
                         {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((numero) => (
                             <button
                                 key={numero}
-                                onClick={() => alterarNota(missao.criterio, numero)}
+                                onClick={() => alterarNota(missao, numero)}
                                 className={
                                     missao.nota === numero
                                         ? "btn btn-success"
