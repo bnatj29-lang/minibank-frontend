@@ -4,7 +4,8 @@ import ConfirmarExclusaoMissoes from "../components/ConfirmarExclusaoMissoes";
 import {
     listarMissoes,
     criarMissao as criarMissaoAPI,
-    atualizarMissao as atualizarMissaoAPI
+    atualizarMissao as atualizarMissaoAPI,
+    excluirMissao as excluirMissaoAPI
 } from "../services/missaoService";
 
 // esqueleto da pagina
@@ -85,12 +86,28 @@ function Missoes() {
 
 
     //filter = filtra a lista e mantem todas menos as que queremos excluir
-    const excluirMissao = () => {
-        const novasMissoes = missoes.filter((missao) => missao !== missaoParaExcluir);
+    const excluirMissao = async () => {
 
-        setMissoes(novasMissoes);
-        setMissaoParaExcluir(null);
-    }
+        try {
+
+            // Envia o DELETE para o backend
+            await excluirMissaoAPI(missaoParaExcluir.id);
+
+            // Remove a missão da tela
+            const novasMissoes = missoes.filter(
+                (missao) => missao.id !== missaoParaExcluir.id
+            );
+
+            setMissoes(novasMissoes);
+
+            setMissaoParaExcluir(null);
+
+        } catch (erro) {
+
+            console.error("Erro ao excluir missão:", erro);
+
+        }
+    };
 
 
 
