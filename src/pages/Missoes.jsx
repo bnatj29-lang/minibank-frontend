@@ -29,7 +29,7 @@ function Missoes() {
         const novaMissao = {
             criterio: criterio,
             nota: 0
-        };git
+        };
 
         setMissoes([...missoes, novaMissao]);
     };
