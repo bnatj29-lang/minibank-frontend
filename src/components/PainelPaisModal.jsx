@@ -1,148 +1,51 @@
 import React, { useState } from "react";
-import { verificarSenhaPainel} from "../services/painelService";
-import {Alert, Button, InputGroup, Modal, Form} from "react-bootstrap";
+import { Modal } from "react-bootstrap";
+import CampoSenha from "./CampoSenha";
+import { verificarSenhaPainel } from "../services/painelService";
+import "../styles/painelPais.css";
 
-//esses sao os imports - react e a funcao (q faz requisicao pro back)
-//useState faz lembrar valores entre renderizacoes.
-//ele cria variaveis q pode mudar e fazer a tela ser atualizada automaticamente.
+export default function PainelPaisModal({ email, aoFechar, aoAcessar }) {
+    const [senha, definirSenha] = useState("");
+    const [erro, definirErro] = useState("");
+    const [carregando, definirCarregando] = useState(false);
 
-//quem usa esse componente decide
-//ex:
-//   - isOpen: true/false -> mostra ou esconde o modal
-//   - onClose: função chamada quando a pessoa clica em "Cancelar" ou no X
-//   - onSuccess: função chamada quando a senha está CORRETA (é aqui que
-//     quem estiver usando o modal decide o que fazer depois, ex:
-//     navegar pra tela do Painel dos Pais)
-
-export default function PainelPaisModal({ isOpen, onClose, onSuccess }) {
-    const [senha, setSenha] = useState("");
-    const [mostrarSenha, setMostrarSenha] = useState(false);
-    const [carregando, setCarregando] = useState(false);
-    const [erro, setErro] = useState("");
-
-//essas sao memorias que o componente guarda
-//senha - o que a pessoa ta digitando no campo
-//mostrarSenha - se a senha esta visivel (olhinho)
-//carregando - se a requisicao esta em andamento (p nao deixar clicar
-//duas vezes, botao some
-//erro - mensagem de erro exibida
-//state - react transforma de acordo com os dados. (dado manda na tela)
-
-    if (!isOpen) return null;  // Se isOpen for false, o componente não renderiza NADA.
-// É assim que controlamos se o modal aparece ou não.
-
-    async function handleAcessar() {
-        setErro("");
-//handleAcessar é o que roda quando clica para acessar
-
-        if (!senha) {
-            setErro("Digite a senha do painel.");
-            return;
-        }
-//esse erro vai ser limpo depois
-        //Se o campo está vazio, mostra erro local e para ali (return) - validacao simples
-        setCarregando(true); //trava o botao - mostra verificando
+    async function acessar(evento) {
+        evento.preventDefault();
+        if (carregando) return;
+        definirErro("");
+        definirCarregando(true);
         try {
-            await verificarSenhaPainel(senha, "teste@crianca.com"); //chama funcao
-            //se der certo chama onSuccess()
-
-            // Senha correta: limpa o campo, avisa quem está usando o modal.
-            setSenha("");
-            onSuccess();
-        } catch (erroRequisicao) {
-            //se der erro cai no CATCH que diferencia o TIPO do erro
-            // Critério de aceite: "senha incorreta retorna erro claro, sem
-            // liberar acesso". Por isso, em QUALQUER erro, simplesmente não
-            // chamamos onSuccess() — o modal continua fechado pro painel.
-            if (erroRequisicao.response && erroRequisicao.response.status === 401) {
-                setErro("Senha do painel incorreta.");
-            } else if (erroRequisicao.response && erroRequisicao.response.data) {
-                const dadosErro = erroRequisicao.response.data;
-                setErro(dadosErro.mensagem || "Não foi possível verificar a senha.");
-            } else {
-                setErro("Erro ao conectar com o servidor. Tente novamente.");
-            }
+            await verificarSenhaPainel(senha, email);
+            aoAcessar();
+        } catch (falha) {
+            definirErro(falha.response?.status === 401
+                ? "Senha do painel incorreta. Tente novamente."
+                : "Não foi possível verificar a senha. Tente novamente.");
         } finally {
-            setCarregando(false);
-            //roda sempre, dando certo ou errado, pra destravar o botão no final.
+            definirCarregando(false);
         }
     }
-
-    function handleCancelar() {
-        setSenha("");
-        setErro("");
-        onClose();
-//essa function fecha o modal limpando os campos.
-    }
-    if (!isOpen) return null; //se o isopen for false - nao renderiza nada
 
     return (
-        // O <Modal> do react-bootstrap já cuida sozinho de: overlay escurecido,
-        // fechar com ESC, travar o scroll de fundo, e centralizar na tela.
-        // "show" substitui o nosso antigo "if (!isOpen) return null".
-        // "onHide" é chamado tanto ao clicar fora quanto no X — por isso
-        // ligamos direto no handleCancelar.
-
-        <Modal show={isOpen} onHide={handleCancelar} centered>
-            <Modal.Header closeButton>
-                <Modal.Title>Painel dos Pais</Modal.Title>
+        <Modal show centered onHide={aoFechar} backdrop={carregando ? "static" : true} keyboard={!carregando} className="modal-painel" aria-labelledby="titulo-senha-painel">
+            <Modal.Header closeButton={!carregando}>
+                <Modal.Title id="titulo-senha-painel">Painel dos Pais</Modal.Title>
             </Modal.Header>
-
-            <Modal.Body>
-                <div className="d-flex justify-content-center mb-3">
-                    <div
-                        className="d-flex align-items-center justify-content-center rounded-circle"
-                        style={{ width: 56, height: 56, backgroundColor: "#ede9fe", fontSize: 24 }}
-                    >
-                        🔒
-                    </div>
-                </div>
-
-                <p className="text-center text-muted">
-                    Digite a senha dos responsáveis para acessar o painel.
-                </p>
-
-                <Form.Group>
-                    <Form.Label>
-                        Senha do Painel dos Pais <span className="text-danger">*</span>
-                    </Form.Label>
-                    <InputGroup>
-                        <Form.Control
-                            type={mostrarSenha ? "text" : "password"}
-                            value={senha}
-                            onChange={(e) => setSenha(e.target.value)}
-                            placeholder="••••••"
-                            disabled={carregando}
-                            // isInvalid liga automaticamente o estilo de erro (borda
-                            // vermelha) do Bootstrap quando existe uma mensagem de erro
-                            isInvalid={!!erro}
-                        />
-                        <Button
-                            variant="outline-secondary"
-                            onClick={() => setMostrarSenha(!mostrarSenha)}
-                            aria-label="Mostrar ou ocultar senha"
-                        >
-                            {mostrarSenha ? "🙈" : "👁"}
-                        </Button>
-                    </InputGroup>
-                </Form.Group>
-
-                {erro && (
-                    <Alert variant="danger" className="mt-3 mb-0 py-2">
-                        {erro}
-                    </Alert>
-                )}
-            </Modal.Body>
-
-            <Modal.Footer>
-                <Button variant="outline-secondary" onClick={handleCancelar} disabled={carregando}>
-                    Cancelar
-                </Button>
-                <Button variant="primary" onClick={handleAcessar} disabled={carregando}>
-                    {carregando ? "Verificando..." : "Acessar"}
-                </Button>
-            </Modal.Footer>
+            <form onSubmit={acessar} aria-busy={carregando}>
+                <Modal.Body>
+                    <p className="descricao-painel">Digite a senha dos responsáveis para acessar o painel.</p>
+                    <fieldset disabled={carregando}>
+                        <CampoSenha id="senha-painel" rotulo="Senha do Painel dos Pais" valor={senha}
+                            aoAlterar={evento => { definirSenha(evento.target.value); definirErro(""); }}
+                            exemplo="••••••" preenchimentoAutomatico="off" />
+                    </fieldset>
+                    {erro && <p className="erro-painel" role="alert">{erro}</p>}
+                </Modal.Body>
+                <Modal.Footer>
+                    <button type="button" className="btn botao-secundario-painel" disabled={carregando} onClick={aoFechar}>Cancelar</button>
+                    <button type="submit" className="btn botao-acessar-painel" disabled={carregando}>{carregando ? "Verificando…" : "Acessar"}</button>
+                </Modal.Footer>
+            </form>
         </Modal>
     );
-
 }

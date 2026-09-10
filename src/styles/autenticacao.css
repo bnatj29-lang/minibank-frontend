@@ -1,0 +1,356 @@
+/* Estilos exclusivos das telas de login e cadastro.
+   As classes form-control, form-label, form-text, btn e alert vêm do Bootstrap.
+   Mantemos essas classes base; tamanhos, espaçamento e alinhamento ficam aqui.
+   Cada elemento reúne suas propriedades em um bloco para facilitar a consulta. */
+
+/* 1. Página e largura dos formulários */
+
+/* vh mantém a compatibilidade; dvh acompanha a altura visível em navegadores de celular. */
+.pagina-autenticacao {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding: 48px 24px;
+    background: linear-gradient(135deg, #f0fdf4 0%, #fff 50%, #f0f9ff 100%);
+    color: #1f2937;
+    font-family: ui-sans-serif, system-ui, sans-serif;
+}
+
+.formulario-entrada {
+    width: 100%;
+    max-width: 448px;
+}
+
+.formulario-cadastro {
+    width: 100%;
+    max-width: 512px;
+}
+
+
+/* 2. Marca e frase de apresentação do login */
+
+.marca-autenticacao {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.icone-marca-autenticacao {
+    display: block;
+    width: 96px;
+    height: 96px;
+    margin: 0 auto 20px;
+    filter: drop-shadow(0 12px 12px #0f172a20);
+}
+
+.logotipo-marca-autenticacao {
+    display: block;
+    width: 180px;
+    height: 36px;
+    object-fit: contain;
+    margin: 0 auto;
+}
+
+.marca-autenticacao p {
+    color: #6b7280;
+    font-size: 14px;
+    margin: 12px 0 0;
+}
+
+
+/* 3. Cartões e títulos */
+
+.cartao-autenticacao,
+.cartao-entrada {
+    background: #fff;
+    border: 1px solid #f3f4f6;
+    border-radius: 24px;
+    padding: 24px;
+    box-shadow: 0 1px 3px #0f172a0d;
+}
+
+/* Ajustes específicos do cartão do login. */
+.cartao-entrada {
+    padding: 32px;
+    box-shadow: 0 20px 25px -5px #cbd5e160;
+}
+
+.pagina-autenticacao h1 {
+    font-weight: 900;
+    font-size: 20px;
+    margin-bottom: 24px;
+}
+
+.pagina-autenticacao h2 {
+    font-weight: 900;
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+
+/* 4. Campos do formulário */
+
+/* Organiza os campos um abaixo do outro. */
+.campos-formulario {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.envoltorio-campo {
+    position: relative;
+}
+
+/* Mantém o mesmo espaçamento entre colunas usado pelo Bootstrap. */
+.linha-campos {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: -1rem;
+    margin-right: -0.5rem;
+    margin-left: -0.5rem;
+}
+
+.coluna-campo {
+    flex-shrink: 0;
+    width: 100%;
+    max-width: 100%;
+    padding-right: 0.5rem;
+    padding-left: 0.5rem;
+    margin-top: 1rem;
+}
+
+/* Em telas maiores, cada campo ocupa metade da linha. */
+@media (min-width: 576px) {
+    .coluna-campo {
+        flex: 0 0 auto;
+        width: 50%;
+    }
+}
+
+.ajuda-campo {
+    margin-bottom: 0;
+}
+
+.pagina-autenticacao .form-label {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    color: #374151;
+}
+
+.campo-obrigatorio {
+    color: #f87171;
+}
+
+.pagina-autenticacao .form-control {
+    font-size: 14px;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    padding: 12px 16px;
+}
+
+/* Texto de exemplo exibido enquanto o campo está vazio. */
+.pagina-autenticacao .form-control::placeholder {
+    color: #9ca3af;
+}
+
+/* Destaca o campo selecionado para digitação. */
+.pagina-autenticacao .form-control:focus {
+    border-color: #34d399;
+    box-shadow: 0 0 0 3px #d1fae5;
+}
+
+/* Reserva espaço para o botão Mostrar/Ocultar dentro do campo. */
+.pagina-autenticacao .form-control.campo-senha {
+    padding-right: 68px;
+}
+
+.botao-visibilidade-senha {
+    color: #6b7280;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: 0;
+    background: transparent;
+    font-size: 11px;
+    padding: 6px 0;
+}
+
+.pagina-autenticacao .form-text {
+    color: #6b7280;
+    font-size: 12px;
+}
+
+
+/* 5. Botão de envio e indicação de foco pelo teclado */
+
+.botao-enviar {
+    width: 100%;
+    font-size: 14px;
+    font-weight: 700;
+    border-radius: 12px;
+    background: #10b981;
+    color: white;
+    padding: 14px 24px;
+    box-shadow: 0 2px 3px #a7f3d0;
+}
+
+/* hover: mouse sobre o botão; active: durante o clique; disabled: botão desabilitado.
+   !important mantém estas cores quando as regras do Bootstrap também se aplicam. */
+.botao-enviar:hover,
+.botao-enviar:active,
+.botao-enviar:disabled {
+    background: #059669 !important;
+    color: white !important;
+}
+
+/* Contorno para identificar o link ou botão ao navegar pelo teclado. */
+.pagina-autenticacao a:focus-visible,
+.pagina-autenticacao button:focus-visible {
+    outline: 3px solid #047857;
+    outline-offset: 3px;
+}
+
+
+/* 6. Separador “ou” e link para criar conta */
+
+.divisor-autenticacao {
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 20px 0;
+    color: #9ca3af;
+}
+
+/* Desenha as duas linhas ao lado de “ou”, sem adicionar elementos no HTML. */
+.divisor-autenticacao::before,
+.divisor-autenticacao::after {
+    content: "";
+    height: 1px;
+    background: #f3f4f6;
+    flex: 1;
+}
+
+.link-cadastro {
+    width: 100%;
+    font-size: 14px;
+    font-weight: 700;
+    border-radius: 12px;
+    border: 2px dashed #a7f3d0;
+    padding: 12px;
+    color: #059669;
+}
+
+.link-cadastro:hover {
+    background: #ecfdf5;
+    border-color: #6ee7b7;
+    color: #047857;
+}
+
+
+/* 7. Cabeçalho, botão de voltar e rodapé do cadastro */
+
+.cabecalho-cadastro {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 32px;
+}
+
+.icone-cadastro {
+    width: 36px;
+    height: 36px;
+}
+
+.pagina-autenticacao .cabecalho-cadastro h1 {
+    margin-bottom: 0.25rem;
+}
+
+.cabecalho-cadastro p {
+    margin-bottom: 0;
+    color: #6b7280;
+    font-size: 12px;
+}
+
+.botao-voltar {
+    border-radius: 12px;
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    border: 1px solid #e5e7eb;
+    background: #fff;
+}
+
+.rodape-autenticacao {
+    text-align: center;
+    margin-top: 1rem;
+    color: #6b7280;
+    font-size: 14px;
+}
+
+.rodape-autenticacao a {
+    font-weight: 700;
+    color: #059669;
+    text-decoration: none;
+}
+
+.rodape-autenticacao a:hover {
+    text-decoration: underline;
+}
+
+
+/* 8. Mensagens de sucesso e erro */
+
+.mensagem-erro {
+    margin-bottom: 0;
+}
+
+.pagina-autenticacao .alert {
+    font-size: 14px;
+    border-radius: 12px;
+}
+
+/* 9. Celulares: reduz apenas o espaçamento em telas de até 575px. */
+@media (max-width: 575px) {
+    .pagina-autenticacao {
+        padding: 32px 16px;
+    }
+
+    .cartao-entrada {
+        padding: 24px;
+    }
+}
+
+/* Crianças adicionadas no cadastro da família. */
+.cadastro-crianca + .cadastro-crianca {
+    border-top: 1px solid #f3f4f6;
+    padding-top: 16px;
+}
+
+.cabecalho-crianca {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.cabecalho-crianca h3 {
+    font-size: 14px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.botao-remover-crianca {
+    font-size: 12px;
+    color: #b91c1c;
+    border-radius: 12px;
+}
+
+.botao-remover-crianca:hover {
+    color: #991b1b;
+    background: #fef2f2;
+}
