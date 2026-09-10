@@ -27,6 +27,10 @@ function Missoes() {
             const dados = await listarMissoes(criancaId);
 
             setMissoes(dados);
+
+            const resultadoMedia = await calcularMedia(criancaId);
+
+            setMedia(resultadoMedia);
         };
 
         carregarMissoes();
