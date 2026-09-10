@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import ModalCriterio from "../components/ModalCriterio";
-import ConfirmarExclusOMissoes from "../components/ConfirmarExclusãoMissoes";
+import ConfirmarExclusaoMissoes from "../components/ConfirmarExclusaoMissoes";
 
 // esqueleto da pagina
 
@@ -16,7 +16,7 @@ function Missoes() {
         const novaMissao = {
             criterio: criterio,
             nota: 0
-        };
+        };git
 
         setMissoes([...missoes, novaMissao]);
     };
@@ -50,7 +50,7 @@ function Missoes() {
 
 
     //filter = filtra a lista e mantem todas menos as que queremos excluir
-    const ExcluirMissao = () => {
+    const excluirMissao = () => {
         const novasMissoes = missoes.filter((missao) => missao !== missaoParaExcluir);
 
         setMissoes(novasMissoes);
@@ -93,6 +93,16 @@ function Missoes() {
                         >
                             ✏️
                         </button>
+                        <button
+                            type="button"
+                            className="btn btn-outline-danger"
+                            onClick={() => {
+                                setMissaoParaExcluir(missao);
+                            }}
+                        >
+                            🗑️
+                        </button>
+
                     </div>
 
                     <p>Nota: {missao.nota}</p>
@@ -123,6 +133,12 @@ function Missoes() {
                 onClose={() => setModalAberto(false)}
                 onCriar={missaoParaEditar ? editarMissao : criarMissao}
                 missaoParaEditar={missaoParaEditar}
+            />
+            <ConfirmarExclusaoMissoes
+            isOpen={missaoParaExcluir !== null}
+            onClose={() => setMissaoParaExcluir(null)}
+            onConfirmar={excluirMissao}
+            missao={missaoParaExcluir}
             />
         </div>
     );
