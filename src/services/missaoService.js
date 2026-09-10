@@ -3,15 +3,17 @@ import api from "./api";
 // Busca todas as missões de uma criança
 export const listarMissoes = async (criancaId) => {
     const resposta = await api.get(`/missoes/crianca/${criancaId}`);
+
     return resposta.data;
 };
 
-//cria uma nova missao para uma crianca
+// Cria uma nova missão para uma criança
 export const criarMissao = async (criancaId, criterio, nota) => {
     const resposta = await api.post(`/missoes/${criancaId}`, {
         criterio: criterio,
         nota: nota
     });
+
     return resposta.data;
 };
 
@@ -21,4 +23,9 @@ export const atualizarMissao = async (id, criterio, nota) => {
         criterio: criterio,
         nota: nota
     });
+};
+
+// Exclui uma missão existente
+export const excluirMissao = async (id) => {
+    await api.delete(`/missoes/${id}`);
 };
