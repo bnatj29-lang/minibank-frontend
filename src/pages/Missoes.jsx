@@ -15,6 +15,7 @@ import {
 function Missoes() {
     const [nota, setNota] = useState(0);
     const [missoes, setMissoes] = useState([]);
+    const [media, setMedia] = useState(0);
     const [modalAberto, setModalAberto] = useState(false);
     const [missaoParaEditar, setMissaoParaEditar] = useState(null);
     const [missaoParaExcluir, setMissaoParaExcluir] = useState(null);
