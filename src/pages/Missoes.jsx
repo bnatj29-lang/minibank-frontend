@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from "react";
 import ModalCriterio from "../components/ModalCriterio";
 import ConfirmarExclusaoMissoes from "../components/ConfirmarExclusaoMissoes";
-import { listarMissoes } from "../services/missaoService";
+import {
+    listarMissoes,
+    criarMissao as criarMissaoAPI,
+    atualizarMissao as atualizarMissaoAPI
+} from "../services/missaoService";
 
 // esqueleto da pagina
 
@@ -25,13 +29,18 @@ function Missoes() {
         carregarMissoes();
     }, []);
 
-    const criarMissao = (criterio) => {
-        const novaMissao = {
-            criterio: criterio,
-            nota: 0
-        };
+    const criarMissao = async (criterio) => {
+        try {
+            const novaMissao = await criarMissaoAPI(
+                criancaId,
+                criterio,
+                0
+            );
 
-        setMissoes([...missoes, novaMissao]);
+            setMissoes([...missoes, novaMissao]);
+        } catch (erro) {
+            console.error("Erro ao criar missão:", erro);
+        }
     };
 
     const alterarNota = (criterio, novaNota) => {
@@ -47,18 +56,31 @@ function Missoes() {
      setMissoes(novasMissoes);
     };
 
-    const editarMissao = (criterioNovo) => {
-        const novasMissoes = missoes.map((missao) => {
-            if (missao === missaoParaEditar){
-                return{
-                    ...missao,
-                    criterio: criterioNovo
-                };
-            }
-            return missao;
-        });
-     setMissoes(novasMissoes);
-     setMissaoParaEditar(null);
+    const editarMissao = async (criterioNovo) => {
+        try {
+            await atualizarMissaoAPI(
+                missaoParaEditar.id,
+                criterioNovo,
+                missaoParaEditar.nota
+            );
+
+            const novasMissoes = missoes.map((missao) => {
+                if (missao.id === missaoParaEditar.id) {
+                    return {
+                        ...missao,
+                        criterio: criterioNovo
+                    };
+                }
+
+                return missao;
+            });
+
+            setMissoes(novasMissoes);
+            setMissaoParaEditar(null);
+
+        } catch (erro) {
+            console.error("Erro ao atualizar missão:", erro);
+        }
     };
 
 

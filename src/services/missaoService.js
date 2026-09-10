@@ -14,3 +14,11 @@ export const criarMissao = async (criancaId, criterio, nota) => {
     });
     return resposta.data;
 };
+
+// Atualiza uma missão existente
+export const atualizarMissao = async (id, criterio, nota) => {
+    await api.put(`/missoes/${id}`, {
+        criterio: criterio,
+        nota: nota
+    });
+};
