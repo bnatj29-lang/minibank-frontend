@@ -1,0 +1,151 @@
+/* Formulário de mesada dentro do Painel dos Pais. */
+.configuracao-mesada {
+    max-width: 640px;
+    width: 100%;
+}
+
+.titulo-configuracao-mesada {
+    margin-bottom: 24px;
+}
+
+.titulo-configuracao-mesada p {
+    color: #6b7280;
+    font-size: 14px;
+    margin: 6px 0 0;
+    overflow-wrap: anywhere;
+}
+
+.campos-configuracao-mesada {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.cartao-configuracao-mesada {
+    background: #fff;
+    border: 1px solid #f3f4f6;
+    border-radius: 24px;
+    padding: 24px;
+    box-shadow: 0 1px 3px #0000000d;
+}
+
+.cartao-configuracao-mesada h2 {
+    font-size: 16px;
+    font-weight: 900;
+    margin: 0 0 16px;
+}
+
+.descricao-configuracao-mesada {
+    color: #6b7280;
+    font-size: 12px;
+    margin-bottom: 20px;
+}
+
+.configuracao-mesada .form-label {
+    font-size: 14px;
+    font-weight: 700;
+    color: #374151;
+}
+
+.configuracao-mesada .form-control {
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 12px;
+    font-size: 14px;
+}
+
+.configuracao-mesada .form-control:focus {
+    border-color: #34d399;
+    box-shadow: 0 0 0 3px #d1fae5;
+}
+
+.ajuda-configuracao-mesada {
+    color: #6b7280;
+    font-size: 12px;
+    margin: 6px 0 0;
+}
+
+/* Cada faixa usa a cor correspondente no protótipo. */
+.faixas-mesada {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.faixa-baixa-mesada {
+    background: #fef2f2;
+    color: #dc2626;
+    border: 1px solid #fee2e2;
+    border-radius: 16px;
+    padding: 16px;
+}
+
+.faixa-intermediaria-mesada {
+    background: #f0f9ff;
+    color: #0284c7;
+    border: 1px solid #e0f2fe;
+    border-radius: 16px;
+    padding: 16px;
+}
+
+.faixa-maxima-mesada {
+    background: #ecfdf5;
+    color: #059669;
+    border: 1px solid #d1fae5;
+    border-radius: 16px;
+    padding: 16px;
+}
+
+.faixas-mesada h3 {
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.5;
+    min-height: 36px;
+    margin: 0 0 12px;
+}
+
+.acoes-configuracao-mesada {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.botao-salvar-mesada {
+    background: #10b981;
+    color: #fff;
+    border-radius: 12px;
+    padding: 14px 24px;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.botao-salvar-mesada:hover,
+.botao-salvar-mesada:disabled {
+    background: #059669;
+    color: #fff;
+}
+
+.confirmacao-mesada {
+    font-size: 14px;
+    font-weight: 700;
+    color: #059669;
+    margin: 0;
+}
+
+.aviso-configuracao-mesada {
+    font-size: 14px;
+    color: #6b7280;
+    margin-bottom: 20px;
+}
+
+/* Empilha as faixas para facilitar a leitura no celular. */
+@media (max-width: 575px) {
+    .faixas-mesada {
+        grid-template-columns: 1fr;
+    }
+
+    .faixas-mesada h3 {
+        min-height: 0;
+    }
+}

@@ -64,7 +64,13 @@ function App() {
                 <Route path="/metas" element={criancaAtiva
                     ? <MetasPage key={criancaAtiva.id} crianca={criancaAtiva} aoAbrirPainel={() => definirPainelAberto(true)} />
                     : <Navigate to={sessao ? "/selecionar-crianca" : "/login"} replace />} />
-                <Route path="/configuracoes" element={<ConfiguracoesPage />} />
+                <Route path="/configuracoes" element={!criancaAtiva
+                    ? <Navigate to={sessao ? "/selecionar-crianca" : "/login"} replace />
+                    : painelLiberado
+                        ? <ConfiguracoesPage key={criancaAtiva.id} crianca={criancaAtiva} responsavel={sessao.responsavel}
+                            criancas={sessao.criancas} aoTrocarCrianca={selecionarCrianca} aoSair={sair}
+                            aoVoltar={() => definirPainelLiberado(false)} />
+                        : <Navigate to="/home" replace />} />
                 <Route path="/financeiro" element={!criancaAtiva
                     ? <Navigate to={sessao ? "/selecionar-crianca" : "/login"} replace />
                     : painelLiberado

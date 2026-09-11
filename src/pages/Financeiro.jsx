@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { buscarExtrato } from "../services/extratoService";
+import { buscarExtrato, buscarSaldo } from "../services/extratoService";
 import RegistrarEconomia from "../components/RegistrarEconomia";
 import RegistrarRetirada from "../components/RegistrarRetirada";
-import icone from "../assets/icons/icone_minibank_original.svg";
-import logo from "../assets/icons/logo_minibank_original.svg";
+import CabecalhoPainel from "../components/CabecalhoPainel";
 import "../styles/painelPais.css";
 
 export default function Financeiro({ crianca, responsavel, criancas, aoTrocarCrianca, aoSair, aoVoltar }) {
     const [extrato, definirExtrato] = useState([]);
+    const [saldo, definirSaldo] = useState(null);
     const [carregando, definirCarregando] = useState(true);
     const [erro, definirErro] = useState("");
     const [sucesso, definirSucesso] = useState("");
@@ -21,10 +20,17 @@ export default function Financeiro({ crianca, responsavel, criancas, aoTrocarCri
         definirErro("");
         async function carregar() {
             try {
-                const dados = await buscarExtrato(crianca.id);
-                if (!cancelado) definirExtrato(dados);
-            } catch {
-                if (!cancelado) definirErro("Não foi possível carregar o extrato. Tente novamente.");
+                const [dados, saldoAtual] = await Promise.all([
+                    buscarExtrato(crianca.id),
+                    buscarSaldo(crianca.id),
+                ]);
+                if (!cancelado) {
+                    definirExtrato(dados);
+                    definirSaldo(saldoAtual);
+                }
+            } catch (falha) {
+                const mensagem = falha.response?.data?.mensagem;
+                if (!cancelado) definirErro(typeof mensagem === "string" ? mensagem : "Não foi possível carregar o financeiro. Tente novamente.");
             } finally {
                 if (!cancelado) definirCarregando(false);
             }
@@ -33,12 +39,6 @@ export default function Financeiro({ crianca, responsavel, criancas, aoTrocarCri
         return () => { cancelado = true; };
     }, [crianca.id, atualizacao]);
 
-    let centavos = 0;
-    for (const movimento of extrato) {
-        if (movimento.tipo === "ENTRADA") centavos += Math.round(Number(movimento.valor) * 100);
-        if (movimento.tipo === "RETIRADA") centavos -= Math.round(Number(movimento.valor) * 100);
-    }
-    const saldo = centavos / 100;
     const indisponivel = carregando || Boolean(erro);
     const movimentos = [...extrato].sort((a, b) => b.data.localeCompare(a.data) || b.id - a.id);
 
@@ -55,24 +55,8 @@ export default function Financeiro({ crianca, responsavel, criancas, aoTrocarCri
 
     return (
         <div className="pagina-painel">
-            <header className="cabecalho-painel">
-                <div className="conteudo-cabecalho-painel">
-                    <div className="marca-painel">
-                        <img className="icone-painel" src={icone} alt="" />
-                        <div><img className="logotipo-painel" src={logo} alt="MiniBank" /><span className="identificacao-painel">Painel dos Pais</span><p>Olá, {responsavel.nome.split(" ")[0]}!</p></div>
-                    </div>
-                    <div className="acoes-cabecalho-painel">
-                        <label className="seletor-crianca-painel">Criança
-                            <select className="form-select" value={crianca.id} onChange={evento => aoTrocarCrianca(Number(evento.target.value))}>
-                                {criancas.map(item => <option key={item.id} value={item.id}>{item.nome}</option>)}
-                            </select>
-                        </label>
-                        <Link className="btn botao-secundario-painel" to="/home" onClick={aoVoltar}>Voltar ao modo criança</Link>
-                        <button className="btn botao-secundario-painel" onClick={aoSair}>Sair</button>
-                    </div>
-                    <nav className="navegacao-painel" aria-label="Painel dos Pais"><span aria-current="page">Financeiro</span></nav>
-                </div>
-            </header>
+            <CabecalhoPainel crianca={crianca} responsavel={responsavel} criancas={criancas}
+                aoTrocarCrianca={aoTrocarCrianca} aoSair={aoSair} aoVoltar={aoVoltar} />
             <main className="conteudo-painel">
                 <h1>Financeiro de {crianca.nome}</h1>
                 <section className="saldo-total-painel" aria-label="Saldo total">

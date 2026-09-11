@@ -75,16 +75,33 @@
 
 .navegacao-painel {
     width: 100%;
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
 }
 
-.navegacao-painel span {
+.navegacao-painel a {
     display: inline-block;
-    background: #10b981;
-    color: white;
+    color: #6b7280;
+    text-decoration: none;
     padding: 10px 16px;
     border-radius: 12px;
     font-size: 14px;
     font-weight: 700;
+}
+
+.navegacao-painel a:hover {
+    background: #f3f4f6;
+}
+
+.navegacao-painel a[aria-current="page"] {
+    background: #10b981;
+    color: white;
+}
+
+.cabecalho-painel a[aria-disabled="true"] {
+    opacity: 0.65;
+    cursor: wait;
 }
 
 .conteudo-painel {
