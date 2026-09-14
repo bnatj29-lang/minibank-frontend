@@ -6,7 +6,8 @@ import {
     criarMissao as criarMissaoAPI,
     atualizarMissao as atualizarMissaoAPI,
     excluirMissao as excluirMissaoAPI,
-    calcularMedia
+    calcularMedia,
+    calcularMesada
 } from "../services/missaoService";
 
 // esqueleto da pagina
@@ -19,6 +20,7 @@ function Missoes() {
     const [modalAberto, setModalAberto] = useState(false);
     const [missaoParaEditar, setMissaoParaEditar] = useState(null);
     const [missaoParaExcluir, setMissaoParaExcluir] = useState(null);
+    const [mesada, setMesada] = useState(0);
 
     const criancaId = 1;
 
@@ -31,6 +33,10 @@ function Missoes() {
             const resultadoMedia = await calcularMedia(criancaId);
 
             setMedia(resultadoMedia);
+
+            const resultadoMesada = await calcularMesada(criancaId);
+
+            setMesada(resultadoMesada);
         };
 
         carregarMissoes();

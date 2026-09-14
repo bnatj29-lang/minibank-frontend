@@ -36,3 +36,10 @@ export const calcularMedia = async (criancaId) => {
 
     return resposta.data;
 };
+
+// Calcula o valor da mesada com base na média das missões
+export const calcularMesada = async (criancaId) => {
+    const resposta = await api.get(`/missoes/${criancaId}/mesada`);
+
+    return resposta.data;
+};
