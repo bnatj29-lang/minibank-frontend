@@ -214,6 +214,8 @@ function Missoes() {
             <h2>Resumo</h2>
             <p>Média das Missões: {media}</p>
 
+            <p>Mesada: R$ {mesada}</p>
+
             <ModalCriterio
                 isOpen={modalAberto}
                 onClose={() => setModalAberto(false)}
