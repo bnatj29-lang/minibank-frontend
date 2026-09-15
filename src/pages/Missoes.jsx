@@ -7,7 +7,7 @@ import {
     atualizarMissao as atualizarMissaoAPI,
     excluirMissao as excluirMissaoAPI,
     calcularMedia,
-    calcularMesada
+    calcularMesada as calcularMesadaAPI
 } from "../services/missaoService";
 
 // esqueleto da pagina
@@ -150,6 +150,16 @@ function Missoes() {
         }
     };
 
+    const calcularMesada = async () => {
+        try {
+            const resultado = await calcularMesadaAPI(criancaId);
+
+            setMesada(resultado);
+        } catch (erro){
+            console.error("Erro ao calcular mesada:", erro);
+        }
+    };
+
 
 
     return (
@@ -223,6 +233,12 @@ function Missoes() {
             <p>Média das Missões: {media}</p>
 
             <p>Mesada: R$ {mesada}</p>
+
+            <button onClick={calcularMesada}>
+                Calcular Mesada
+            </button>
+
+
 
             <ModalCriterio
                 isOpen={modalAberto}
