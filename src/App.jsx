@@ -11,6 +11,7 @@ import { lerSessao, salvarSessao } from "./services/sessaoService";
 import ConfiguracoesPage from "./pages/ConfiguracoesPage";
 import Financeiro from "./pages/Financeiro";
 import MetasPage from "./pages/MetasPage";
+import Missoes from "./pages/Missoes";
 
 function App() {
     const navegar = useNavigate();
@@ -78,6 +79,8 @@ function App() {
                             criancas={sessao.criancas} aoTrocarCrianca={selecionarCrianca} aoSair={sair}
                             aoVoltar={() => definirPainelLiberado(false)} />
                         : <Navigate to="/home" replace />} />
+                <Route path="/missoes" element={<Missoes />} />
+
             </Routes>
 
             {painelAberto && sessao && criancaAtiva && <PainelPaisModal
