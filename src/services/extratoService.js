@@ -25,4 +25,9 @@ export async function buscarExtrato(criancaId){
     return resposta.data;
 }
 
+export async function buscarSaldo(criancaId) {
+    const resposta = await api.get(`/extrato/${criancaId}/saldo`);
+    return resposta.data;
+}
+
 //as regras de negocio estao no backend - extratoService
