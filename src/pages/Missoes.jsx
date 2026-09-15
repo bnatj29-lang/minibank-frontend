@@ -21,6 +21,7 @@ function Missoes() {
     const [missaoParaEditar, setMissaoParaEditar] = useState(null);
     const [missaoParaExcluir, setMissaoParaExcluir] = useState(null);
     const [mesada, setMesada] = useState(0);
+    const [modalMesadaAberto, setModalMesadaAberto] = useState(false);
 
     const criancaId = 1;
 
@@ -155,6 +156,8 @@ function Missoes() {
             const resultado = await calcularMesadaAPI(criancaId);
 
             setMesada(resultado);
+
+            setModalMesadaAberto(true);
         } catch (erro){
             console.error("Erro ao calcular mesada:", erro);
         }
