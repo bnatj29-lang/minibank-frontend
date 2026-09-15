@@ -83,6 +83,10 @@ function Missoes() {
 
             setMissoes(novasMissoes);
 
+            const resultadoMedia = await calcularMedia(criancaId);
+
+            setMedia(resultadoMedia);
+
         } catch (erro) {
 
             console.error("Erro ao atualizar nota:", erro);
