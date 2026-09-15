@@ -5,7 +5,7 @@ import React from "react";
 //onConfirmar  → confirma o registro
 //mesada       → mostra o valor calculado
 
-function ConfirmarMesada ({isOpen, isClose, onConfirmar, mesada}) {
+function ConfirmarMesada ({isOpen, onClose, onConfirmar, mesada}) {
 
   if (!isOpen) {
       return null;

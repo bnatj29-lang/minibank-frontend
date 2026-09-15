@@ -259,9 +259,9 @@ function Missoes() {
             />
 
             <ConfirmarMesada
-            isOpen={ModalMesadaAberto}
-            onClose={setModalMesadaAberto(false)}
-            onConfirmar={() => {}}
+            isOpen={modalMesadaAberto}
+            onClose={() => setModalMesadaAberto(false)}
+            onConfirmar={() => {}}  //vazio por enquanto
             mesada={mesada}
             />
         </div>
