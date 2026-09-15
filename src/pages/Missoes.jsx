@@ -87,6 +87,10 @@ function Missoes() {
 
             setMedia(resultadoMedia);
 
+            const resultadoMesada = await calcularMesada(criancaId);
+
+            setMesada(resultadoMesada);
+
         } catch (erro) {
 
             console.error("Erro ao atualizar nota:", erro);
