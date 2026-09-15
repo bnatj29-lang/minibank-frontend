@@ -7,6 +7,8 @@ import React from "react";
 
 function ConfirmarMesada ({isOpen, onClose, onConfirmar, mesada}) {
 
+    console.log("CONFIRMARMESADA RECEBEU:", isOpen);
+
   if (!isOpen) {
       return null;
   }

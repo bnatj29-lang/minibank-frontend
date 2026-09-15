@@ -8,7 +8,8 @@ import {
     atualizarMissao as atualizarMissaoAPI,
     excluirMissao as excluirMissaoAPI,
     calcularMedia,
-    calcularMesada as calcularMesadaAPI
+    calcularMesada as calcularMesadaAPI,
+    registrarMesada
 } from "../services/missaoService";
 
 // esqueleto da pagina
@@ -164,6 +165,20 @@ function Missoes() {
         }
     };
 
+    const confirmarMesada = async () => {
+        try {
+            await registrarMesada(criancaId);
+
+            setModalMesadaAberto(false);
+
+        } catch (erro) {
+            console.error("Erro ao registrar mesada:", erro);
+        }
+    };
+
+    console.log("ESTADO DO MODAL:", modalMesadaAberto);
+
+
 
 
     return (
@@ -261,7 +276,7 @@ function Missoes() {
             <ConfirmarMesada
             isOpen={modalMesadaAberto}
             onClose={() => setModalMesadaAberto(false)}
-            onConfirmar={() => {}}  //vazio por enquanto
+            onConfirmar={confirmarMesada}
             mesada={mesada}
             />
         </div>
