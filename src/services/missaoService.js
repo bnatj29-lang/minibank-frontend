@@ -43,3 +43,9 @@ export const calcularMesada = async (criancaId) => {
 
     return resposta.data;
 };
+
+export const registrarMesada = async (criancaId) => {
+    const resposta = await api.post('/missoes/${criancaId}/mesada/registrar');
+
+    return resposta.data;
+};
