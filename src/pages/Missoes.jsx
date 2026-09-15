@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ModalCriterio from "../components/ModalCriterio";
+import ConfirmarMesada from "../components/ConfirmarMesada"
 import ConfirmarExclusaoMissoes from "../components/ConfirmarExclusaoMissoes";
 import {
     listarMissoes,
@@ -249,11 +250,19 @@ function Missoes() {
                 onCriar={missaoParaEditar ? editarMissao : criarMissao}
                 missaoParaEditar={missaoParaEditar}
             />
+
             <ConfirmarExclusaoMissoes
             isOpen={missaoParaExcluir !== null}
             onClose={() => setMissaoParaExcluir(null)}
             onConfirmar={excluirMissao}
             missao={missaoParaExcluir}
+            />
+
+            <ConfirmarMesada
+            isOpen={ModalMesadaAberto}
+            onClose={setModalMesadaAberto(false)}
+            onConfirmar={() => {}}
+            mesada={mesada}
             />
         </div>
     );
