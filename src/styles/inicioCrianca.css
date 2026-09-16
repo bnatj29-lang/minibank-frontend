@@ -1,0 +1,503 @@
+.pagina-inicio-crianca {
+    min-height: 100vh;
+    background: linear-gradient(160deg, #f0fdf4, #fff 40%, #f0f9ff);
+    color: #1f2937;
+    font-family: ui-sans-serif, system-ui, sans-serif;
+}
+
+.cabecalho-inicio-crianca {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: #ffffffcc;
+    backdrop-filter: blur(8px);
+}
+
+.cabecalho-home-conteudo {
+    display: grid;
+    grid-template-columns: auto minmax(180px, 1fr) auto;
+    align-items: center;
+    gap: 24px;
+}
+
+.saudacao-cabecalho-inicio {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+}
+
+.saudacao-cabecalho-inicio strong {
+    color: #1f2937;
+    font-size: 16px;
+    font-weight: 800;
+    overflow-wrap: anywhere;
+}
+
+.saudacao-cabecalho-inicio span {
+    color: #6b7280;
+    font-size: 12px;
+}
+
+.seletor-crianca-inicio {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 150px;
+    padding: 6px 10px;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0 1px 2px #0000000d;
+}
+
+.seletor-crianca-inicio select {
+    min-width: 100px;
+    padding: 2px 24px 2px 0;
+    border: 0;
+    box-shadow: none;
+    color: #1f2937;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.seletor-crianca-inicio select:focus {
+    box-shadow: none;
+}
+
+.avatar-crianca-inicio {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    flex: 0 0 28px;
+    border-radius: 50%;
+    background: #d1fae5;
+    color: #047857;
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.botao-sair-inicio {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: 0;
+    border-radius: 10px;
+    background: transparent;
+    color: #9ca3af;
+}
+
+.botao-sair-inicio:hover {
+    color: #ef4444;
+    background: #fef2f2;
+}
+
+.botao-sair-inicio::after {
+    content: attr(data-legenda);
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    z-index: 5;
+    padding: 5px 8px;
+    border-radius: 6px;
+    background: #1f2937;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-3px);
+    transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.botao-sair-inicio:hover::after,
+.botao-sair-inicio:focus-visible::after {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.conteudo-inicio-crianca {
+    max-width: 1024px;
+    padding: 32px 24px;
+    margin: auto;
+    display: grid;
+    gap: 24px;
+}
+
+.saudacao-crianca h1 {
+    font-size: 30px;
+    font-weight: 800;
+}
+
+.saudacao-crianca p,
+.descricao-inicio-crianca {
+    color: #6b7280;
+    font-size: 14px;
+}
+
+/* O cofrinho exibe os três saldos recebidos da API. */
+.cofrinho-crianca {
+    padding: 32px;
+    border-radius: 24px;
+    background: linear-gradient(135deg, #10b981, #14b8a6);
+    color: white;
+    box-shadow: 0 12px 24px #10b98126;
+}
+
+.titulo-cofrinho {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.titulo-cofrinho h2 {
+    font-size: 16px;
+}
+
+.titulo-cofrinho strong {
+    font-size: 44px;
+    font-weight: 800;
+    overflow-wrap: anywhere;
+}
+
+.titulo-cofrinho img {
+    width: 80px;
+    height: 80px;
+}
+
+.cofrinho-crianca p {
+    margin: 4px 0 0;
+}
+
+.divisao-cofrinho {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.divisao-cofrinho > div {
+    padding: 16px;
+    border-radius: 16px;
+    background: #ffffff26;
+}
+
+.divisao-cofrinho h3,
+.divisao-cofrinho p {
+    font-size: 13px;
+}
+
+.divisao-cofrinho strong {
+    font-size: 24px;
+    overflow-wrap: anywhere;
+}
+
+.grade-principal-home {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(260px, 1fr);
+    gap: 24px;
+    align-items: start;
+}
+
+.grade-principal-home > .metas-embutidas {
+    grid-column: 1;
+}
+
+.grade-principal-home > .cartao-missoes-home {
+    grid-column: 2;
+}
+
+.metas-home-crianca {
+    padding: 24px;
+    background: white;
+    border: 2px dashed #bae6fd;
+    border-radius: 24px;
+    box-shadow: 0 1px 3px #0000000d;
+}
+
+/* A Home usa o componente MetasPage abaixo; este resumo antigo fica oculto. */
+.metas-home-resumo {
+    display: none;
+}
+
+.cartao-missoes-home {
+    margin: 0;
+}
+
+.link-missoes-home {
+    display: block;
+    margin-top: 16px;
+    color: #047857;
+    text-align: center;
+    font-weight: 700;
+}
+
+.cabecalho-metas-home,
+.cabecalho-cartao-meta-home {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.metas-home-crianca h2,
+.cartao-inicio-crianca h2 {
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.quantidade-metas-home {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 20px;
+    background: #eff6ff;
+    color: #0284c7;
+    font-size: 13px;
+    vertical-align: middle;
+}
+
+.metas-home-crianca p {
+    margin: 0;
+    color: #6b7280;
+}
+
+.cartao-meta-home {
+    padding: 20px;
+    margin-top: 16px;
+    border: 1px solid #f3f4f6;
+    border-radius: 16px;
+    box-shadow: 0 1px 3px #0000000d;
+}
+
+.cabecalho-cartao-meta-home h3,
+.conquistas-home h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 800;
+}
+
+.cabecalho-cartao-meta-home p,
+.restante-meta,
+.conquistas-home p {
+    margin: 4px 0 0;
+    color: #6b7280;
+    font-size: 13px;
+}
+
+.cabecalho-cartao-meta-home > strong {
+    color: #0284c7;
+    font-size: 20px;
+}
+
+.cartao-meta-home .progresso-meta {
+    width: 100%;
+    margin-top: 12px;
+}
+
+.cartao-meta-home .restante-meta {
+    text-align: right;
+}
+
+.botao-acao-meta-home {
+    display: block;
+    width: 100%;
+    margin-top: 12px;
+    text-align: center;
+    background: #eff6ff;
+    color: #0369a1;
+    border: 1px solid #dbeafe;
+    border-radius: 12px;
+    padding: 10px 16px;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.botao-acao-meta-home:hover {
+    background: #dbeafe;
+    color: #075985;
+}
+
+.meta-alcancada {
+    color: #a16207 !important;
+    font-weight: 700;
+}
+
+.metas-home-vazias {
+    padding-top: 16px;
+    color: #6b7280;
+}
+
+.conquistas-home {
+    padding-top: 16px;
+}
+
+.grade-inicio-crianca {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    gap: 24px;
+    align-items: start;
+}
+
+.metas-embutidas {
+    min-width: 0;
+}
+
+.conteudo-metas-embutido {
+    padding: 0;
+}
+
+.conteudo-metas-embutido .saldo-livre-metas {
+    display: none;
+}
+
+.metas-embutidas .lista-conquistas h2 {
+    font-size: 20px;
+    color: #1f2937;
+}
+
+.cartao-inicio-crianca {
+    padding: 24px;
+    background: white;
+    border: 1px solid #f3f4f6;
+    border-radius: 24px;
+    box-shadow: 0 1px 3px #0000000d;
+}
+
+.movimentacoes-crianca,
+.missoes-crianca {
+    list-style: none;
+    padding: 0;
+    margin: 16px 0 0;
+}
+
+.movimentacoes-crianca li,
+.missoes-crianca li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 12px 0;
+    overflow-wrap: anywhere;
+}
+
+.movimentacoes-crianca li {
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.movimentacoes-crianca p {
+    color: #6b7280;
+    font-size: 12px;
+    margin: 4px 0 0;
+}
+
+.entrada-crianca {
+    color: #047857;
+    font-weight: 700;
+}
+
+.retirada-crianca {
+    color: #b91c1c;
+    font-weight: 700;
+}
+
+.missoes-crianca li {
+    background: linear-gradient(90deg, #fffbeb, #fefce8);
+    border: 1px solid #fef3c7;
+    border-radius: 16px;
+    padding: 12px;
+    margin-bottom: 10px;
+}
+
+.missoes-crianca span {
+    font-size: 22px;
+    font-weight: 800;
+    color: #b45309;
+}
+
+.media-crianca {
+    text-align: center;
+    border-top: 1px solid #f3f4f6;
+    margin-top: 16px;
+    padding-top: 16px;
+}
+
+.media-crianca p {
+    font-size: 13px;
+    margin-bottom: 4px;
+}
+
+.media-crianca strong {
+    font-size: 24px;
+    color: #047857;
+}
+
+@media (max-width: 767px) {
+    .cabecalho-home-conteudo {
+        grid-template-columns: 1fr auto;
+        gap: 12px 16px;
+    }
+
+    .cabecalho-home-conteudo .saudacao-cabecalho-inicio {
+        grid-column: 1 / -1;
+        grid-row: 2;
+        order: 3;
+    }
+
+    .cabecalho-home-conteudo .navegacao-metas {
+        justify-content: flex-end;
+    }
+
+    .grade-principal-home {
+        grid-template-columns: 1fr;
+    }
+
+    .grade-principal-home > .metas-embutidas,
+    .grade-principal-home > .cartao-missoes-home {
+        grid-column: auto;
+    }
+
+    .grade-inicio-crianca {
+        grid-template-columns: 1fr;
+    }
+
+    .conteudo-inicio-crianca {
+        padding: 24px 16px;
+    }
+
+    .cofrinho-crianca {
+        padding: 24px;
+    }
+
+    .titulo-cofrinho strong {
+        font-size: 32px;
+    }
+
+    .titulo-cofrinho img {
+        width: 48px;
+        height: 48px;
+    }
+
+    .seletor-crianca-inicio {
+        width: 100%;
+    }
+
+    .seletor-crianca-inicio select {
+        flex: 1;
+    }
+}
+
+@media (max-width: 380px) {
+    .divisao-cofrinho {
+        grid-template-columns: 1fr;
+    }
+}

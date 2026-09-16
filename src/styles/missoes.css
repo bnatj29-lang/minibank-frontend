@@ -1,0 +1,223 @@
+/* Lista de critérios e resumo ao lado, como no painel do Figma. */
+.titulo-missoes,
+.cabecalho-missao {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.titulo-missoes p,
+.ajuda-missao {
+    color: #6b7280;
+    font-size: 14px;
+    margin: 8px 0 0;
+}
+
+.grade-missoes {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(260px, 1fr);
+    align-items: start;
+    gap: 24px;
+}
+
+.lista-missoes,
+.resumo-missoes {
+    background: white;
+    border: 1px solid #f3f4f6;
+    border-radius: 24px;
+    box-shadow: 0 1px 3px #0000000d;
+    overflow: hidden;
+}
+
+.resumo-missoes,
+.cartao-missao,
+.instrucao-missoes {
+    padding: 24px;
+}
+
+.instrucao-missoes {
+    margin: 0;
+    color: #6b7280;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.cartao-missao {
+    border-top: 1px solid #f3f4f6;
+}
+
+.cabecalho-missao {
+    margin-bottom: 16px;
+}
+
+.cabecalho-missao h2 {
+    font-size: 16px;
+    font-weight: 800;
+    margin: 0;
+    overflow-wrap: anywhere;
+}
+
+.nota-atual-missao {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 8px;
+    background: #d1fae5;
+    color: #047857;
+    font-size: 12px;
+}
+
+.botao-nota-missao {
+    min-width: 36px;
+    min-height: 40px;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    background: #f9fafb;
+    color: #4b5563;
+    font-weight: 700;
+}
+
+.botao-icone-missao {
+    position: relative;
+    min-width: 44px;
+    padding: 8px 10px;
+    font-size: 16px;
+    line-height: 1;
+}
+
+.botao-icone-missao::after {
+    content: attr(data-legenda);
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    z-index: 3;
+    padding: 5px 8px;
+    border-radius: 6px;
+    background: #1f2937;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-3px);
+    transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.botao-icone-missao:hover::after,
+.botao-icone-missao:focus-visible::after {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.botao-nota-missao:hover,
+.botao-nota-missao[aria-pressed="true"] {
+    background: #059669;
+    color: white;
+    border-color: #059669;
+}
+
+.botao-nota-missao:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
+
+.botao-excluir-missao {
+    background: #fef2f2;
+    color: #b91c1c;
+    border: 1px solid #fecaca;
+}
+
+.botao-excluir-missao:hover {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.resumo-missoes h2 {
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.resumo-missoes dl > div {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 16px 0;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.resumo-missoes dt {
+    font-size: 14px;
+    color: #6b7280;
+}
+
+.resumo-missoes dd {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 800;
+    color: #059669;
+    overflow-wrap: anywhere;
+}
+
+.resumo-missoes dl > div:last-child dd {
+    color: #4f46e5;
+}
+
+.resumo-missoes button {
+    width: 100%;
+}
+
+.link-missoes {
+    display: block;
+    text-align: center;
+    margin-top: 16px;
+    color: #047857;
+}
+
+.faixas-resumo-missoes {
+    padding: 16px;
+    margin: 16px 0;
+    border: 1px solid #e0f2fe;
+    border-radius: 16px;
+    background: #f0f9ff;
+    color: #0369a1;
+}
+
+.faixas-resumo-missoes h3 {
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.faixas-resumo-missoes p {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    font-size: 13px;
+    margin: 8px 0 0;
+}
+
+.missoes-vazias {
+    padding: 48px 24px;
+    text-align: center;
+    color: #6b7280;
+}
+
+.missoes-vazias > span {
+    font-size: 40px;
+}
+
+.missoes-vazias h2 {
+    font-size: 18px;
+    margin-top: 16px;
+}
+
+@media (max-width: 900px) {
+    .grade-missoes {
+        grid-template-columns: 1fr;
+    }
+}
