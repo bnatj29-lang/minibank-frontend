@@ -60,7 +60,8 @@ function App() {
                     ? <SelecionarCriancaPage familia={sessao} aoSelecionar={selecionarCrianca} aoSair={sair} />
                     : <Navigate to="/login" replace />} />
                 <Route path="/home" element={criancaAtiva
-                    ? <Home crianca={criancaAtiva} aoAbrirPainel={() => definirPainelAberto(true)} />
+                    ? <Home key={criancaAtiva.id} crianca={criancaAtiva} criancas={sessao.criancas}
+                        aoTrocarCrianca={selecionarCrianca} aoAbrirPainel={() => definirPainelAberto(true)} aoSair={sair} />
                     : <Navigate to={sessao ? "/selecionar-crianca" : "/login"} replace />} />
                 <Route path="/metas" element={criancaAtiva
                     ? <MetasPage key={criancaAtiva.id} crianca={criancaAtiva} aoAbrirPainel={() => definirPainelAberto(true)} />
@@ -79,7 +80,13 @@ function App() {
                             criancas={sessao.criancas} aoTrocarCrianca={selecionarCrianca} aoSair={sair}
                             aoVoltar={() => definirPainelLiberado(false)} />
                         : <Navigate to="/home" replace />} />
-                <Route path="/missoes" element={<Missoes />} />
+                <Route path="/missoes" element={!criancaAtiva
+                    ? <Navigate to={sessao ? "/selecionar-crianca" : "/login"} replace />
+                    : painelLiberado
+                        ? <Missoes key={criancaAtiva.id} crianca={criancaAtiva} responsavel={sessao.responsavel}
+                            criancas={sessao.criancas} aoTrocarCrianca={selecionarCrianca} aoSair={sair}
+                            aoVoltar={() => definirPainelLiberado(false)} />
+                        : <Navigate to="/home" replace />} />
 
             </Routes>
 

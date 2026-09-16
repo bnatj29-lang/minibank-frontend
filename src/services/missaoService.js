@@ -1,5 +1,15 @@
 import api from "./api";
 
+export function mensagemErroMissao(falha, mensagemPadrao) {
+    const dados = falha.response?.data;
+    if (typeof dados?.mensagem === "string") return dados.mensagem;
+    if (falha.response?.status === 400 && dados && typeof dados === "object") {
+        const mensagens = Object.values(dados).filter(valor => typeof valor === "string");
+        if (mensagens.length) return mensagens.join(" ");
+    }
+    return mensagemPadrao;
+}
+
 // Busca todas as missões de uma criança
 export const listarMissoes = async (criancaId) => {
     const resposta = await api.get(`/missoes/crianca/${criancaId}`);

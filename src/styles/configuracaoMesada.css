@@ -1,6 +1,6 @@
 /* Formulário de mesada dentro do Painel dos Pais. */
 .configuracao-mesada {
-    max-width: 640px;
+    max-width: 512px;
     width: 100%;
 }
 
@@ -45,6 +45,10 @@
     font-size: 14px;
     font-weight: 700;
     color: #374151;
+}
+
+.configuracao-mesada .campo-obrigatorio {
+    color: #dc2626;
 }
 
 .configuracao-mesada .form-control {

@@ -1,56 +1,19 @@
 import React from "react";
+import { Modal } from "react-bootstrap";
 
-function ConfirmarExclusao({ isOpen, onClose, onConfirmar, missao }) {
-
-    if (!isOpen) {
-        return null;
-    }
-
+export default function ConfirmarExclusaoMissoes({ missao, aoFechar, aoConfirmar, enviando, erro }) {
     return (
-        <div className="modal d-block" tabIndex="-1">
-            <div className="modal-dialog">
-                <div className="modal-content">
-
-                    <div className="modal-header">
-                        <h5 className="modal-title">
-                            Excluir Missão
-                        </h5>
-
-                        <button
-                            type="button"
-                            className="btn-close"
-                            onClick={onClose}
-                        ></button>
-                    </div>
-
-                    <div className="modal-body">
-                        <p>
-                            Deseja excluir a missão "{missao.criterio}"?
-                        </p>
-                    </div>
-
-                    <div className="modal-footer">
-                        <button
-                            type="button"
-                            className="btn btn-secondary"
-                            onClick={onClose}
-                        >
-                            Cancelar
-                        </button>
-
-                        <button
-                            type="button"
-                            className="btn btn-danger"
-                            onClick={onConfirmar}
-                        >
-                            Excluir
-                        </button>
-                    </div>
-
-                </div>
-            </div>
-        </div>
+        <Modal show centered className="modal-painel" onHide={aoFechar} backdrop={enviando ? "static" : true} keyboard={!enviando} aria-labelledby="titulo-excluir-missao">
+            <Modal.Header closeButton={!enviando}><Modal.Title id="titulo-excluir-missao">Excluir Missão</Modal.Title></Modal.Header>
+            <Modal.Body aria-busy={enviando}>
+                <p>Deseja excluir a missão <strong>{missao.criterio}</strong>?</p>
+                <p>A média e a mesada serão consultadas novamente após a exclusão.</p>
+                {erro && <p className="erro-painel" role="alert">{erro}</p>}
+            </Modal.Body>
+            <Modal.Footer>
+                <button type="button" className="btn botao-secundario-painel" disabled={enviando} onClick={aoFechar}>Cancelar</button>
+                <button type="button" className="btn botao-excluir-missao" disabled={enviando} onClick={aoConfirmar}>{enviando ? "Excluindo…" : "Excluir"}</button>
+            </Modal.Footer>
+        </Modal>
     );
 }
-
-export default ConfirmarExclusao;

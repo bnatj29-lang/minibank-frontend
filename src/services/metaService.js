@@ -19,6 +19,16 @@ export async function excluirMeta(criancaId, metaId) {
     await api.delete(`/metas/${criancaId}/excluir/${metaId}`);
 }
 
+export async function guardarDinheiroMeta(criancaId, metaId, valorAporte) {
+    const resposta = await api.post(`/metas/${criancaId}/metas/${metaId}/guardar`, { valorAporte });
+    return resposta.data;
+}
+
+export async function conquistarMeta(criancaId, metaId) {
+    const resposta = await api.post(`/metas/${criancaId}/metas/${metaId}/conquistar`);
+    return resposta.data;
+}
+
 export function mensagemErroMeta(falha, mensagemPadrao) {
     const mensagem = falha.response?.data?.mensagem;
     return typeof mensagem === "string" ? mensagem : mensagemPadrao;

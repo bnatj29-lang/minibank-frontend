@@ -28,14 +28,20 @@
     gap: 10px;
 }
 
+.linha-marca-painel {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
 .icone-painel {
     width: 36px;
     height: 36px;
 }
 
 .logotipo-painel {
-    width: 100px;
-    height: 20px;
+    width: 112px;
+    height: 22px;
     object-fit: contain;
 }
 
@@ -51,7 +57,8 @@
 }
 
 .marca-painel p {
-    margin: 4px 0 0;
+    margin: 6px 0 0;
+    line-height: 1.2;
     font-size: 12px;
     color: #6b7280;
 }
@@ -63,14 +70,114 @@
     gap: 12px;
 }
 
-.seletor-crianca-painel {
-    font-size: 12px;
+.saldo-cabecalho-painel {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 8px 12px;
+    border: 1px solid #d1fae5;
+    border-radius: 12px;
+    background: #ecfdf5;
     color: #6b7280;
+    font-size: 12px;
+    line-height: 1.1;
+    white-space: nowrap;
+}
+
+.saldo-cabecalho-painel strong {
+    color: #047857;
+    font-size: 15px;
+}
+
+.seletor-crianca-painel {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 150px;
+    padding: 6px 10px;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0 1px 2px #0000000d;
 }
 
 .seletor-crianca-painel select {
-    border-radius: 12px;
-    max-width: 220px;
+    min-width: 100px;
+    padding: 2px 24px 2px 0;
+    border: 0;
+    color: #1f2937;
+    font-size: 14px;
+    font-weight: 700;
+    box-shadow: none;
+}
+
+.seletor-crianca-painel select:focus {
+    box-shadow: none;
+}
+
+.avatar-crianca-painel {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    flex: 0 0 28px;
+    border-radius: 50%;
+    background: #d1fae5;
+    color: #047857;
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.botao-voltar-painel {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.botao-sair-painel {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: 0;
+    border-radius: 10px;
+    background: transparent;
+    color: #9ca3af;
+}
+
+.botao-sair-painel:hover {
+    color: #ef4444;
+    background: #fef2f2;
+}
+
+.botao-sair-painel::after {
+    content: attr(data-legenda);
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    z-index: 5;
+    padding: 5px 8px;
+    border-radius: 6px;
+    background: #1f2937;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-3px);
+    transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.botao-sair-painel:hover::after,
+.botao-sair-painel:focus-visible::after {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .navegacao-painel {
@@ -81,11 +188,13 @@
 }
 
 .navegacao-painel a {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
     color: #6b7280;
     text-decoration: none;
     padding: 10px 16px;
-    border-radius: 12px;
+    border-radius: 16px;
     font-size: 14px;
     font-weight: 700;
 }
@@ -120,6 +229,60 @@
 }
 
 /* Saldo e ações financeiras. */
+.saldos-financeiro {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.saldo-metas-painel,
+.saldo-livre-painel {
+    padding: 20px;
+    border-radius: 16px;
+}
+
+.saldo-metas-painel {
+    background: #fffbeb;
+    color: #92400e;
+}
+
+.saldo-livre-painel {
+    background: #f0f9ff;
+    color: #0369a1;
+}
+
+.saldo-metas-painel p,
+.saldo-livre-painel p {
+    margin: 0;
+    font-size: 12px;
+}
+
+.saldo-metas-painel strong,
+.saldo-livre-painel strong {
+    display: block;
+    font-size: 28px;
+    margin: 4px 0;
+    overflow-wrap: anywhere;
+}
+
+.conteudo-missoes {
+    min-width: 0;
+}
+
+.acoes-missao,
+.notas-missao {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+}
+
+@media (max-width: 767px) {
+    .saldos-financeiro {
+        grid-template-columns: 1fr;
+    }
+}
+
 .saldo-total-painel {
     padding: 20px;
     border-radius: 16px;
@@ -130,6 +293,10 @@
 .saldo-total-painel p {
     margin: 0;
     font-size: 12px;
+}
+
+.emote-saldo {
+    margin-right: 4px;
 }
 
 .saldo-total-painel strong {
@@ -294,16 +461,16 @@
 
 /* Botões e formulários das janelas. */
 .botao-acessar-painel {
-    background: #4f46e5;
+    background: #10b981;
     color: white;
-    border-radius: 12px;
+    border-radius: 16px;
     padding: 10px 16px;
     font-size: 14px;
     font-weight: 700;
 }
 
 .botao-acessar-painel:hover, .botao-acessar-painel:disabled {
-    background: #4338ca;
+    background: #059669;
     color: white;
 }
 
@@ -311,7 +478,7 @@
     background: #f0f9ff;
     color: #0369a1;
     border: 1px solid #e0f2fe;
-    border-radius: 12px;
+    border-radius: 16px;
     padding: 10px 16px;
     font-size: 14px;
 }

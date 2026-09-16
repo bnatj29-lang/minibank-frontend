@@ -19,10 +19,6 @@ export default function RegistrarMovimentacao({ crianca, tipo, saldo, aoFechar, 
             definirErro("Digite um valor maior que zero, com até duas casas decimais.");
             return;
         }
-        if (!entrada && Math.round(quantia * 100) > Math.round(saldo * 100)) {
-            definirErro("Saldo insuficiente para essa retirada.");
-            return;
-        }
         envioEmAndamento.current = true;
         definirEnviando(true);
         definirErro("");
@@ -43,7 +39,7 @@ export default function RegistrarMovimentacao({ crianca, tipo, saldo, aoFechar, 
             <Modal.Header closeButton={!enviando}><Modal.Title id="titulo-movimentacao">{titulo}</Modal.Title></Modal.Header>
             <form onSubmit={registrar} aria-busy={enviando}>
                 <Modal.Body>
-                    <p className="descricao-painel">{crianca.nome} · Saldo total: {saldo.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</p>
+                    <p className="descricao-painel">{crianca.nome} · {entrada ? "Saldo total" : "Saldo livre"}: {saldo.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</p>
                     <fieldset disabled={enviando} className="campos-movimentacao">
                         <div>
                             <label className="form-label" htmlFor="valor-movimentacao">Valor (R$)</label>

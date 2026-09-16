@@ -1,40 +1,19 @@
 import React from "react";
+import { Modal } from "react-bootstrap";
 
-//isOpen       → mostra ou esconde o modal
-//onClose      → fecha o modal
-//onConfirmar  → confirma o registro
-//mesada       → mostra o valor calculado
-
-function ConfirmarMesada ({isOpen, onClose, onConfirmar, mesada}) {
-
-    console.log("CONFIRMARMESADA RECEBEU:", isOpen);
-
-  if (!isOpen) {
-      return null;
-  }
-
-  return (
-      <div>
-          <h3>Confirmar Mesada</h3>
-
-          <p>
-              A mesada calculada foi de R$ {mesada}.
-          </p>
-
-          <p>
-              Deseja registrar essa mesada no extrato?
-          </p>
-
-          <button onClick={onClose}>
-              Cancelar
-          </button>
-
-          <button onClick={onConfirmar}>
-              Confirmar
-          </button>
-      </div>
-  );
-
+export default function ConfirmarMesada({ crianca, mesada, aoFechar, aoConfirmar, enviando, erro }) {
+    return (
+        <Modal show centered className="modal-painel" onHide={aoFechar} backdrop={enviando ? "static" : true} keyboard={!enviando} aria-labelledby="titulo-confirmar-mesada">
+            <Modal.Header closeButton={!enviando}><Modal.Title id="titulo-confirmar-mesada">Registrar mesada</Modal.Title></Modal.Header>
+            <Modal.Body aria-busy={enviando}>
+                <p>A mesada calculada para <strong>{crianca.nome}</strong> é de <strong>{Number(mesada).toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</strong>.</p>
+                <p>Deseja registrar a mesada no extrato? Essa ação cria uma nova entrada de dinheiro.</p>
+                {erro && <p className="erro-painel" role="alert">{erro}</p>}
+            </Modal.Body>
+            <Modal.Footer>
+                <button type="button" className="btn botao-secundario-painel" disabled={enviando} onClick={aoFechar}>Cancelar</button>
+                <button type="button" className="btn botao-acessar-painel" disabled={enviando} onClick={aoConfirmar}>{enviando ? "Registrando…" : "Registrar mesada"}</button>
+            </Modal.Footer>
+        </Modal>
+    );
 }
-
-export default ConfirmarMesada;

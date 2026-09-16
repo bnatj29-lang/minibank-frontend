@@ -48,7 +48,7 @@
 }
 
 .conteudo-metas {
-    max-width: 768px;
+    max-width: 1024px;
     padding: 32px 24px;
     margin: auto;
 }
@@ -262,10 +262,14 @@
 }
 
 .botao-editar-meta {
+    position: relative;
+    min-width: 40px;
+    padding: 8px 10px;
     background: #f3f4f6;
     color: #4b5563;
-    border-radius: 8px;
-    font-size: 12px;
+    border-radius: 12px;
+    font-size: 16px;
+    line-height: 1;
 }
 
 .botao-editar-meta:hover {
@@ -274,16 +278,65 @@
 }
 
 .botao-excluir-meta {
+    position: relative;
+    min-width: 40px;
+    padding: 8px 10px;
     background: #fef2f2;
     color: #b91c1c;
-    border-radius: 8px;
-    font-size: 12px;
+    border-radius: 12px;
+    font-size: 16px;
+    line-height: 1;
     flex-shrink: 0;
 }
 
 .botao-excluir-meta:hover {
     background: #fee2e2;
     color: #991b1b;
+}
+
+.botao-editar-meta::after,
+.botao-excluir-meta::after {
+    content: attr(data-legenda);
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    z-index: 3;
+    padding: 5px 8px;
+    border-radius: 6px;
+    background: #1f2937;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-3px);
+    transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.botao-editar-meta:hover::after,
+.botao-editar-meta:focus-visible::after,
+.botao-excluir-meta:hover::after,
+.botao-excluir-meta:focus-visible::after {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.botao-ver-conquistas {
+    align-self: center;
+    margin-top: 8px;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    color: #374151;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.botao-ver-conquistas:hover {
+    background: #f9fafb;
+    color: #111827;
 }
 
 .botao-confirmar-exclusao {
@@ -351,6 +404,38 @@
 }
 
 /* Janelas de criação e confirmação de exclusão. */
+.saldo-livre-metas {
+    padding: 16px;
+    border-radius: 12px;
+    background: #ecfdf5;
+    color: #047857;
+}
+
+.resumo-aporte-meta {
+    padding: 16px;
+    margin-bottom: 16px;
+    border-radius: 16px;
+    background: #f0f9ff;
+    color: #0369a1;
+}
+
+.resumo-aporte-meta p {
+    margin: 8px 0;
+    font-size: 14px;
+}
+
+.valores-rapidos-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.valores-rapidos-meta button[aria-pressed="true"] {
+    background: #047857;
+    color: white;
+}
+
 .modal-metas .modal-content {
     border: 0;
     border-radius: 24px;

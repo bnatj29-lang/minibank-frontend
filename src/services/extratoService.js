@@ -30,4 +30,12 @@ export async function buscarSaldo(criancaId) {
     return resposta.data;
 }
 
-//as regras de negocio estao no backend - extratoService
+export async function buscarSaldoEmMetas(criancaId) {
+    const resposta = await api.get(`/extrato/${criancaId}/saldo-metas`);
+    return resposta.data;
+}
+
+export async function buscarSaldoLivre(criancaId) {
+    const resposta = await api.get(`/extrato/${criancaId}/saldo-livre`);
+    return resposta.data;
+}

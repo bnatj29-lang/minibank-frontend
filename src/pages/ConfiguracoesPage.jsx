@@ -97,10 +97,6 @@ export default function ConfiguracoesPage({ crianca, responsavel, criancas, aoTr
             definirErro("A nota mínima intermediária deve ser maior que 0 e menor que 10.");
             return;
         }
-        if (configuracao.notaMinimaMaxima <= configuracao.notaMinimaIntermediaria || configuracao.notaMinimaMaxima > 10) {
-            definirErro("A nota da faixa máxima deve ser maior que a intermediária e não pode passar de 10.");
-            return;
-        }
 
         envioEmAndamento.current = true;
         definirEnviando(true);
@@ -143,7 +139,7 @@ export default function ConfiguracoesPage({ crianca, responsavel, criancas, aoTr
                             <fieldset disabled={enviando} className="campos-configuracao-mesada">
                                 <section className="cartao-configuracao-mesada">
                                     <h2>Mesada Base</h2>
-                                    <label className="form-label" htmlFor="valor-base">Valor base (R$)</label>
+                                    <label className="form-label" htmlFor="valor-base">Valor base (R$)<span className="campo-obrigatorio"> *</span></label>
                                     <input id="valor-base" name="valorBase" type="number" className="form-control" required min="0.01" max="99999999.99" step="0.01"
                                         placeholder="Ex: 300" value={dados.valorBase} onChange={atualizarCampo} />
                                 </section>
@@ -152,7 +148,7 @@ export default function ConfiguracoesPage({ crianca, responsavel, criancas, aoTr
                                     <p className="descricao-configuracao-mesada">Configure as notas e os valores correspondentes.</p>
                                     <div className="campos-configuracao-mesada">
                                         <div>
-                                            <label className="form-label" htmlFor="nota-intermediaria">Nota mínima da faixa intermediária</label>
+                                            <label className="form-label" htmlFor="nota-intermediaria">Nota mínima da faixa intermediária<span className="campo-obrigatorio"> *</span></label>
                                             <input id="nota-intermediaria" name="notaMinimaIntermediaria" type="number" className="form-control" required min="0.01" max="9.99" step="0.01"
                                                 placeholder="Ex: 7" value={dados.notaMinimaIntermediaria} onChange={atualizarCampo} aria-describedby="ajuda-nota-intermediaria" />
                                             <p className="ajuda-configuracao-mesada" id="ajuda-nota-intermediaria">Notas abaixo disso recebem o valor da faixa baixa.</p>
@@ -160,25 +156,25 @@ export default function ConfiguracoesPage({ crianca, responsavel, criancas, aoTr
                                         <div className="faixas-mesada">
                                             <div className="faixa-baixa-mesada">
                                                 <h3>Abaixo de {notaIntermediaria}</h3>
-                                                <label className="form-label" htmlFor="valor-faixa-baixa">Valor (R$)</label>
+                                                <label className="form-label" htmlFor="valor-faixa-baixa">Valor (R$)<span className="campo-obrigatorio"> *</span></label>
                                                 <input id="valor-faixa-baixa" name="valorFaixaBaixa" type="number" className="form-control" required min="0.01" max="99999999.99" step="0.01"
                                                     placeholder="Ex: 250" value={dados.valorFaixaBaixa} onChange={atualizarCampo} />
                                             </div>
                                             <div className="faixa-intermediaria-mesada">
                                                 <h3>De {notaIntermediaria} até menos de {notaMaxima}</h3>
-                                                <label className="form-label" htmlFor="valor-faixa-intermediaria">Valor (R$)</label>
+                                                <label className="form-label" htmlFor="valor-faixa-intermediaria">Valor (R$)<span className="campo-obrigatorio"> *</span></label>
                                                 <input id="valor-faixa-intermediaria" name="valorFaixaIntermediaria" type="number" className="form-control" required min="0.01" max="99999999.99" step="0.01"
                                                     placeholder="Ex: 300" value={dados.valorFaixaIntermediaria} onChange={atualizarCampo} />
                                             </div>
                                             <div className="faixa-maxima-mesada">
                                                 <h3>A partir de {notaMaxima}</h3>
-                                                <label className="form-label" htmlFor="valor-faixa-maxima">Valor (R$)</label>
+                                                <label className="form-label" htmlFor="valor-faixa-maxima">Valor (R$)<span className="campo-obrigatorio"> *</span></label>
                                                 <input id="valor-faixa-maxima" name="valorFaixaMaxima" type="number" className="form-control" required min="0.01" max="99999999.99" step="0.01"
                                                     placeholder="Ex: 350" value={dados.valorFaixaMaxima} onChange={atualizarCampo} />
                                             </div>
                                         </div>
                                         <div>
-                                            <label className="form-label" htmlFor="nota-maxima">Nota para a faixa máxima</label>
+                                            <label className="form-label" htmlFor="nota-maxima">Nota para a faixa máxima<span className="campo-obrigatorio"> *</span></label>
                                             <input id="nota-maxima" name="notaMinimaMaxima" type="number" className="form-control" required min="0.01" max="10" step="0.01"
                                                 placeholder="Ex: 10" value={dados.notaMinimaMaxima} onChange={atualizarCampo} aria-describedby="ajuda-nota-maxima" />
                                             <p className="ajuda-configuracao-mesada" id="ajuda-nota-maxima">Notas iguais ou superiores a este valor recebem o valor da faixa máxima.</p>

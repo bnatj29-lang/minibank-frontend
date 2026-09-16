@@ -1,83 +1,28 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import { Modal } from "react-bootstrap";
 
-function ModalCriterio({ isOpen, onClose, onCriar, missaoParaEditar }) {
-    const [criterio, setCriterio] = useState("");
-
-    useEffect(() => {
-        if (missaoParaEditar) {
-            setCriterio(missaoParaEditar.criterio);
-        } else {
-            setCriterio("");
-        }
-    }, [missaoParaEditar, isOpen]);
-
-    if (!isOpen) {
-        return null;
+export default function ModalCriterio({ missao, aoFechar, aoSalvar, enviando, erro }) {
+    const [criterio, definirCriterio] = useState(missao?.criterio || "");
+    function salvar(evento) {
+        evento.preventDefault();
+        if (!enviando && criterio.trim()) aoSalvar(criterio.trim());
     }
-
-    const handleSalvar = () => {
-        if (!criterio.trim()) {
-            return;
-        }
-
-        onCriar(criterio);
-        setCriterio("");
-        onClose();
-    };
-
     return (
-        <div className="modal d-block" tabIndex="-1">
-            <div className="modal-dialog">
-                <div className="modal-content">
-
-                    <div className="modal-header">
-                        <h5 className="modal-title">
-                            {missaoParaEditar ? "Editar Missão" : "Nova Missão"}
-                        </h5>
-
-                        <button
-                            type="button"
-                            className="btn-close"
-                            onClick={onClose}
-                        ></button>
-                    </div>
-
-                    <div className="modal-body">
-                        <label className="form-label">
-                            Nome da missão *
-                        </label>
-
-                        <input
-                            type="text"
-                            className="form-control"
-                            placeholder="Ex: Arrumar o quarto, Fazer as tarefas..."
-                            value={criterio}
-                            onChange={(e) => setCriterio(e.target.value)}
-                        />
-                    </div>
-
-                    <div className="modal-footer">
-                        <button
-                            type="button"
-                            className="btn btn-secondary"
-                            onClick={onClose}
-                        >
-                            Cancelar
-                        </button>
-
-                        <button
-                            type="button"
-                            className="btn btn-success"
-                            onClick={handleSalvar}
-                        >
-                            {missaoParaEditar ? "Salvar" : "Criar"}
-                        </button>
-                    </div>
-
-                </div>
-            </div>
-        </div>
+        <Modal show centered className="modal-painel" onHide={aoFechar} backdrop={enviando ? "static" : true} keyboard={!enviando} aria-labelledby="titulo-criterio">
+            <Modal.Header closeButton={!enviando}><Modal.Title id="titulo-criterio">{missao ? "Editar Missão" : "Nova Missão"}</Modal.Title></Modal.Header>
+            <form onSubmit={salvar} aria-busy={enviando}>
+                <Modal.Body>
+                    <label className="form-label" htmlFor="criterio-missao">Nome da missão</label>
+                    <input id="criterio-missao" className="form-control" required autoFocus disabled={enviando}
+                        value={criterio} onChange={evento => definirCriterio(evento.target.value)} placeholder="Ex: Organização, Estudos, Respeito" />
+                    {!missao && <p className="ajuda-missao">A missão começa com nota 0, que entra na média. Depois de criar, você pode atribuir outra nota.</p>}
+                    {erro && <p className="erro-painel" role="alert">{erro}</p>}
+                </Modal.Body>
+                <Modal.Footer>
+                    <button type="button" className="btn botao-secundario-painel" disabled={enviando} onClick={aoFechar}>Cancelar</button>
+                    <button type="submit" className="btn botao-acessar-painel" disabled={enviando}>{enviando ? "Salvando…" : missao ? "Salvar" : "Criar"}</button>
+                </Modal.Footer>
+            </form>
+        </Modal>
     );
 }
-
-export default ModalCriterio;

@@ -4,11 +4,13 @@ import { listarMetas, mensagemErroMeta } from "../services/metaService";
 import CriarMetaModal from "../components/CriarMetaModal";
 import EditarMetaModal from "../components/EditarMetaModal";
 import ExcluirMetaModal from "../components/ExcluirMetaModal";
-import icone from "../assets/icons/icone_minibank_original.svg";
+import GuardarDinheiroModal from "../components/GuardarDinheiroModal";
+import ConquistarMetaModal from "../components/ConquistarMetaModal";
+import { buscarSaldoLivre } from "../services/extratoService";
 import logo from "../assets/icons/logo_minibank_original.svg";
 import "../styles/metas.css";
 
-export default function MetasPage({ crianca, aoAbrirPainel }) {
+export default function MetasPage({ crianca, aoAbrirPainel, aoAtualizarSaldos, embutido = false }) {
     const [metas, definirMetas] = useState([]);
     const [carregando, definirCarregando] = useState(true);
     const [erro, definirErro] = useState("");
@@ -17,6 +19,10 @@ export default function MetasPage({ crianca, aoAbrirPainel }) {
     const [criacaoAberta, definirCriacaoAberta] = useState(false);
     const [metaParaEditar, definirMetaParaEditar] = useState(null);
     const [metaParaExcluir, definirMetaParaExcluir] = useState(null);
+    const [metaParaGuardar, definirMetaParaGuardar] = useState(null);
+    const [metaParaConquistar, definirMetaParaConquistar] = useState(null);
+    const [saldoLivre, definirSaldoLivre] = useState(null);
+    const [conquistasExpandidas, definirConquistasExpandidas] = useState(false);
 
     useEffect(() => {
         let cancelado = false;
@@ -25,8 +31,11 @@ export default function MetasPage({ crianca, aoAbrirPainel }) {
 
         async function carregarMetas() {
             try {
-                const dados = await listarMetas(crianca.id);
-                if (!cancelado) definirMetas(dados);
+                const [dados, saldo] = await Promise.all([listarMetas(crianca.id), buscarSaldoLivre(crianca.id)]);
+                if (!cancelado) {
+                    definirMetas(dados);
+                    definirSaldoLivre(saldo);
+                }
             } catch (falha) {
                 if (!cancelado) definirErro(mensagemErroMeta(falha, "Não foi possível carregar as metas. Tente novamente."));
             } finally {
@@ -42,6 +51,10 @@ export default function MetasPage({ crianca, aoAbrirPainel }) {
         definirCriacaoAberta(false);
         definirMetaParaEditar(null);
         definirMetaParaExcluir(null);
+        definirMetaParaGuardar(null);
+        definirMetaParaConquistar(null);
+        definirConquistasExpandidas(false);
+        if (aoAtualizarSaldos) aoAtualizarSaldos();
         definirSucesso(mensagem);
         definirCarregando(true);
         definirAtualizacao(atual => atual + 1);
@@ -58,13 +71,13 @@ export default function MetasPage({ crianca, aoAbrirPainel }) {
 
     const metasAtuais = metas.filter(meta => meta.status !== "CONQUISTADA");
     const metasConquistadas = metas.filter(meta => meta.status === "CONQUISTADA");
+    const conquistasVisiveis = conquistasExpandidas ? metasConquistadas : metasConquistadas.slice(0, 3);
 
     return (
-        <div className="pagina-metas">
-            <header className="cabecalho-metas">
+        <div className={embutido ? "metas-embutidas" : "pagina-metas"}>
+            {!embutido && <header className="cabecalho-metas">
                 <div className="conteudo-cabecalho-metas">
                     <Link to="/home" className="marca-metas" aria-label="MiniBank — início">
-                        <img className="icone-metas" src={icone} alt="" />
                         <img className="logotipo-metas" src={logo} alt="MiniBank" />
                     </Link>
                     <nav className="navegacao-metas" aria-label="Navegação da criança">
@@ -72,8 +85,8 @@ export default function MetasPage({ crianca, aoAbrirPainel }) {
                         <button className="btn botao-pais-metas" type="button" onClick={aoAbrirPainel}>Painel dos Pais</button>
                     </nav>
                 </div>
-            </header>
-            <main className="conteudo-metas">
+            </header>}
+            <main className={embutido ? "conteudo-metas-embutido" : "conteudo-metas"}>
                 <div className="titulo-pagina-metas">
                     <div>
                         <h1>Minhas Metas</h1>
@@ -82,6 +95,7 @@ export default function MetasPage({ crianca, aoAbrirPainel }) {
                     <button className="btn botao-nova-meta" type="button" onClick={abrirCriacao} disabled={carregando || Boolean(erro)}>+ Nova Meta</button>
                 </div>
                 {sucesso && <p className="sucesso-metas" role="status">{sucesso}</p>}
+                {!carregando && !erro && <p className="saldo-livre-metas">Saldo livre disponível: <strong>{formatarValor(saldoLivre)}</strong></p>}
                 {carregando ? (
                     <p className="estado-metas" role="status">Carregando metas…</p>
                 ) : erro ? (
@@ -109,9 +123,9 @@ export default function MetasPage({ crianca, aoAbrirPainel }) {
                                             </div>
                                             <div className="acoes-cartao-meta">
                                                 <button className="btn botao-editar-meta" type="button"
-                                                    aria-label={`Editar meta ${meta.nomeMeta}`} onClick={() => { definirSucesso(""); definirMetaParaEditar(meta); }}>Editar</button>
+                                                    aria-label={`Editar meta ${meta.nomeMeta}`} data-legenda="Editar" onClick={() => { definirSucesso(""); definirMetaParaEditar(meta); }}>✏️</button>
                                                 <button className="btn botao-excluir-meta" type="button"
-                                                    aria-label={`Excluir meta ${meta.nomeMeta}`} onClick={() => { definirSucesso(""); definirMetaParaExcluir(meta); }}>Excluir</button>
+                                                    aria-label={`Excluir meta ${meta.nomeMeta}`} data-legenda="Excluir" onClick={() => { definirSucesso(""); definirMetaParaExcluir(meta); }}>🗑️</button>
                                             </div>
                                         </div>
                                         <div className="resumo-progresso-meta">
@@ -123,19 +137,29 @@ export default function MetasPage({ crianca, aoAbrirPainel }) {
                                         {meta.status === "ALCANÇADA" ? (
                                             <p className="meta-alcancada">🏆 Você juntou o suficiente para esta meta!</p>
                                         ) : <p className="restante-meta">Faltam <strong>{formatarValor(meta.valorRestante)}</strong></p>}
+                                        {meta.status === "ALCANÇADA" ? (
+                                            <button className="btn botao-nova-meta" type="button" onClick={() => { definirSucesso(""); definirMetaParaConquistar(meta); }}>🏆 Conquistar meta</button>
+                                        ) : (
+                                            <button className="btn botao-nova-meta" type="button" disabled={saldoLivre <= 0}
+                                                onClick={() => { definirSucesso(""); definirMetaParaGuardar(meta); }}>{saldoLivre <= 0 ? "Sem saldo livre no momento" : "Guardar dinheiro"}</button>
+                                        )}
                                     </article>
                                 ))}
                             </section>
                         )}
                         {metasConquistadas.length > 0 && (
                             <section className="lista-conquistas" aria-label="Metas conquistadas">
-                                <h2>Metas Conquistadas</h2>
-                                {metasConquistadas.map(meta => (
+                                <h2>🏆 Metas Conquistadas</h2>
+                                {conquistasVisiveis.map(meta => (
                                     <article className="meta-conquistada" key={meta.id}>
                                         <div><h3>{meta.nomeMeta}</h3><p>{formatarValor(meta.valorMeta)}</p></div>
                                         <span>🏆 Conquistada</span>
                                     </article>
                                 ))}
+                                {metasConquistadas.length > 3 && <button type="button" className="btn botao-ver-conquistas"
+                                    onClick={() => definirConquistasExpandidas(expandidas => !expandidas)}>
+                                    {conquistasExpandidas ? "↑ Ver menos" : `↓ Ver todas as conquistas (${metasConquistadas.length})`}
+                                </button>}
                             </section>
                         )}
                     </>
@@ -144,6 +168,10 @@ export default function MetasPage({ crianca, aoAbrirPainel }) {
             {criacaoAberta && <CriarMetaModal crianca={crianca} aoFechar={() => definirCriacaoAberta(false)} aoCriar={() => atualizarMetas("Meta criada com sucesso!")} />}
             {metaParaEditar && <EditarMetaModal key={metaParaEditar.id} criancaId={crianca.id} meta={metaParaEditar} aoFechar={() => definirMetaParaEditar(null)} aoEditar={() => atualizarMetas("Meta atualizada com sucesso!")} />}
             {metaParaExcluir && <ExcluirMetaModal criancaId={crianca.id} meta={metaParaExcluir} aoFechar={() => definirMetaParaExcluir(null)} aoExcluir={() => atualizarMetas("Meta excluída com sucesso.")} />}
+            {metaParaGuardar && <GuardarDinheiroModal key={metaParaGuardar.id} criancaId={crianca.id} meta={metaParaGuardar} saldoLivre={saldoLivre}
+                aoFechar={() => definirMetaParaGuardar(null)} aoGuardar={() => atualizarMetas("Dinheiro guardado na meta com sucesso!")} />}
+            {metaParaConquistar && <ConquistarMetaModal criancaId={crianca.id} meta={metaParaConquistar}
+                aoFechar={() => definirMetaParaConquistar(null)} aoConquistar={() => atualizarMetas("Meta conquistada! O gasto foi registrado no extrato.")} />}
         </div>
     );
 }

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { buscarExtrato, buscarSaldo } from "../services/extratoService";
+import { buscarExtrato, buscarSaldo, buscarSaldoEmMetas, buscarSaldoLivre } from "../services/extratoService";
 import RegistrarEconomia from "../components/RegistrarEconomia";
 import RegistrarRetirada from "../components/RegistrarRetirada";
 import CabecalhoPainel from "../components/CabecalhoPainel";
@@ -8,6 +8,8 @@ import "../styles/painelPais.css";
 export default function Financeiro({ crianca, responsavel, criancas, aoTrocarCrianca, aoSair, aoVoltar }) {
     const [extrato, definirExtrato] = useState([]);
     const [saldo, definirSaldo] = useState(null);
+    const [saldoEmMetas, definirSaldoEmMetas] = useState(null);
+    const [saldoLivre, definirSaldoLivre] = useState(null);
     const [carregando, definirCarregando] = useState(true);
     const [erro, definirErro] = useState("");
     const [sucesso, definirSucesso] = useState("");
@@ -20,13 +22,17 @@ export default function Financeiro({ crianca, responsavel, criancas, aoTrocarCri
         definirErro("");
         async function carregar() {
             try {
-                const [dados, saldoAtual] = await Promise.all([
+                const [dados, saldoAtual, valorEmMetas, valorLivre] = await Promise.all([
                     buscarExtrato(crianca.id),
                     buscarSaldo(crianca.id),
+                    buscarSaldoEmMetas(crianca.id),
+                    buscarSaldoLivre(crianca.id),
                 ]);
                 if (!cancelado) {
                     definirExtrato(dados);
                     definirSaldo(saldoAtual);
+                    definirSaldoEmMetas(valorEmMetas);
+                    definirSaldoLivre(valorLivre);
                 }
             } catch (falha) {
                 const mensagem = falha.response?.data?.mensagem;
@@ -56,17 +62,29 @@ export default function Financeiro({ crianca, responsavel, criancas, aoTrocarCri
     return (
         <div className="pagina-painel">
             <CabecalhoPainel crianca={crianca} responsavel={responsavel} criancas={criancas}
-                aoTrocarCrianca={aoTrocarCrianca} aoSair={aoSair} aoVoltar={aoVoltar} />
+                aoTrocarCrianca={aoTrocarCrianca} aoSair={aoSair} aoVoltar={aoVoltar} atualizacao={atualizacao} />
             <main className="conteudo-painel">
                 <h1>Financeiro de {crianca.nome}</h1>
+                <div className="saldos-financeiro">
                 <section className="saldo-total-painel" aria-label="Saldo total">
-                    <p>Saldo Total</p>
+                    <p><span className="emote-saldo" aria-hidden="true">💰</span> Saldo Total</p>
                     <strong>{indisponivel ? "—" : formatarValor(saldo)}</strong>
                     <p>tudo que {crianca.nome} tem</p>
                 </section>
+                <section className="saldo-livre-painel" aria-label="Saldo livre">
+                    <p><span className="emote-saldo" aria-hidden="true">👛</span> Saldo Livre</p>
+                    <strong>{indisponivel ? "—" : formatarValor(saldoLivre)}</strong>
+                    <p>não alocado em metas</p>
+                </section>
+                <section className="saldo-metas-painel" aria-label="Reservado em metas">
+                    <p><span className="emote-saldo" aria-hidden="true">🎯</span> Em Metas</p>
+                    <strong>{indisponivel ? "—" : formatarValor(saldoEmMetas)}</strong>
+                    <p>guardado por {crianca.nome}</p>
+                </section>
+                </div>
                 <div className="acoes-financeiro">
                     <button className="acao-entrada" disabled={indisponivel} onClick={() => definirOperacao("ENTRADA")}><span aria-hidden="true">↓</span><strong>Registrar Entrada</strong><p>Adicionar dinheiro para {crianca.nome} (ex: mesada)</p></button>
-                    <button className="acao-retirada" disabled={indisponivel || saldo <= 0} onClick={() => definirOperacao("RETIRADA")}><span aria-hidden="true">↑</span><strong>Registrar Retirada</strong><p>Registrar gasto de {crianca.nome}</p></button>
+                    <button className="acao-retirada" disabled={indisponivel || saldoLivre <= 0} onClick={() => definirOperacao("RETIRADA")}><span aria-hidden="true">↑</span><strong>Registrar Retirada</strong><p>Registrar gasto do saldo livre de {crianca.nome}</p></button>
                 </div>
                 {sucesso && <p className="sucesso-painel" role="status">{sucesso}</p>}
                 <section className="extrato-painel" aria-busy={carregando}>
@@ -80,7 +98,7 @@ export default function Financeiro({ crianca, responsavel, criancas, aoTrocarCri
                                 <tbody>{movimentos.map(item => (
                                     <tr key={item.id}>
                                         <td>{item.data.split("-").reverse().join("/")}</td>
-                                        <td><span className={item.tipo === "ENTRADA" ? "tipo-entrada" : "tipo-retirada"}>{item.tipo === "ENTRADA" ? "Entrada" : "Retirada"}</span></td>
+                                        <td><span className={item.tipo === "ENTRADA" ? "tipo-entrada" : "tipo-retirada"}>{item.tipo === "ENTRADA" ? "↑ Entrada" : "↓ Retirada"}</span></td>
                                         <td>{item.descricao || "—"}</td>
                                         <td className={item.tipo === "ENTRADA" ? "valor-entrada" : "valor-retirada"}>{item.tipo === "ENTRADA" ? "+" : "−"}{formatarValor(item.valor)}</td>
                                     </tr>
@@ -91,7 +109,7 @@ export default function Financeiro({ crianca, responsavel, criancas, aoTrocarCri
                 </section>
             </main>
             {operacao === "ENTRADA" && <RegistrarEconomia crianca={crianca} saldo={saldo} aoFechar={() => definirOperacao(null)} aoRegistrar={registroConcluido} />}
-            {operacao === "RETIRADA" && <RegistrarRetirada crianca={crianca} saldo={saldo} aoFechar={() => definirOperacao(null)} aoRegistrar={registroConcluido} />}
+            {operacao === "RETIRADA" && <RegistrarRetirada crianca={crianca} saldo={saldoLivre} aoFechar={() => definirOperacao(null)} aoRegistrar={registroConcluido} />}
         </div>
     );
 }

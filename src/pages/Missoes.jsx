@@ -1,455 +1,222 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import ModalCriterio from "../components/ModalCriterio";
 import ConfirmarMesada from "../components/ConfirmarMesada";
 import ConfirmarExclusaoMissoes from "../components/ConfirmarExclusaoMissoes";
+import CabecalhoPainel from "../components/CabecalhoPainel";
+import { buscarConfiguracaoMesada } from "../services/configuracaoMesadaService";
+import { listarMissoes, criarMissao, atualizarMissao, excluirMissao, calcularMedia, calcularMesada, registrarMesada, mensagemErroMissao } from "../services/missaoService";
+import "../styles/painelPais.css";
+import "../styles/missoes.css";
 
-import {
-    listarMissoes,
-    criarMissao as criarMissaoAPI,
-    atualizarMissao as atualizarMissaoAPI,
-    excluirMissao as excluirMissaoAPI,
-    calcularMedia,
-    calcularMesada as calcularMesadaAPI,
-    registrarMesada
-} from "../services/missaoService";
+export default function Missoes({ crianca, responsavel, criancas, aoTrocarCrianca, aoSair, aoVoltar }) {
+    const [missoes, definirMissoes] = useState([]);
+    const [media, definirMedia] = useState(null);
+    const [mesada, definirMesada] = useState(null);
+    const [configuracao, definirConfiguracao] = useState(null);
+    const [erroConfiguracao, definirErroConfiguracao] = useState("");
+    const [carregando, definirCarregando] = useState(true);
+    const [enviando, definirEnviando] = useState(false);
+    const [erroLista, definirErroLista] = useState("");
+    const [erroMedia, definirErroMedia] = useState("");
+    const [erroMesada, definirErroMesada] = useState("");
+    const [erro, definirErro] = useState("");
+    const [sucesso, definirSucesso] = useState("");
+    const [atualizacao, definirAtualizacao] = useState(0);
+    const [criterioAberto, definirCriterioAberto] = useState(false);
+    const [missaoParaEditar, definirMissaoParaEditar] = useState(null);
+    const [missaoParaExcluir, definirMissaoParaExcluir] = useState(null);
+    const [mesadaAberta, definirMesadaAberta] = useState(false);
+    const envioEmAndamento = useRef(false);
+    const paginaAberta = useRef(true);
 
-function Missoes() {
-
-    const [nota, setNota] = useState(0);
-
-    const [missoes, setMissoes] = useState([]);
-
-    const [media, setMedia] = useState(0);
-
-    const [modalAberto, setModalAberto] = useState(false);
-
-    const [missaoParaEditar, setMissaoParaEditar] = useState(null);
-
-    const [missaoParaExcluir, setMissaoParaExcluir] = useState(null);
-
-    const [mesada, setMesada] = useState(0);
-
-    const [modalMesadaAberto, setModalMesadaAberto] = useState(false);
-
-    // Temporariamente estamos usando a criança de ID 1.
-    const criancaId = 1;
-
-
-    // Carrega as missões, a média e o valor da mesada
-    // quando a página é aberta.
     useEffect(() => {
-
-        const carregarMissoes = async () => {
-
-            const dados = await listarMissoes(criancaId);
-
-            setMissoes(dados);
-
-
-            const resultadoMedia = await calcularMedia(criancaId);
-
-            setMedia(resultadoMedia);
-
-
-            // IMPORTANTE:
-            // Aqui usamos calcularMesadaAPI.
-            // Essa função apenas BUSCA o valor da mesada.
-            // Ela NÃO abre o modal.
-            const resultadoMesada =
-                await calcularMesadaAPI(criancaId);
-
-            setMesada(resultadoMesada);
-        };
-
-        carregarMissoes();
-
+        paginaAberta.current = true;
+        return () => { paginaAberta.current = false; };
     }, []);
 
-
-    // Cria uma nova missão
-    const criarMissao = async (criterio) => {
-
-        try {
-
-            const novaMissao = await criarMissaoAPI(
-                criancaId,
-                criterio,
-                0
-            );
-
-            setMissoes([...missoes, novaMissao]);
-
-        } catch (erro) {
-
-            console.error("Erro ao criar missão:", erro);
-
+    useEffect(() => {
+        let cancelado = false;
+        definirCarregando(true);
+        definirErroLista("");
+        definirErroMedia("");
+        definirErroMesada("");
+        definirErroConfiguracao("");
+        definirConfiguracao(null);
+        definirMedia(null);
+        definirMesada(null);
+        async function carregar() {
+            // Uma falha na mesada não impede a consulta das missões e da média.
+            const [lista, mediaAtual, mesadaAtual, configuracaoAtual] = await Promise.allSettled([
+                listarMissoes(crianca.id), calcularMedia(crianca.id), calcularMesada(crianca.id),
+                buscarConfiguracaoMesada(crianca.id),
+            ]);
+            if (cancelado) return;
+            if (lista.status === "fulfilled") definirMissoes(lista.value);
+            else definirErroLista(mensagemErroMissao(lista.reason, "Não foi possível carregar as missões."));
+            if (mediaAtual.status === "fulfilled") definirMedia(mediaAtual.value);
+            else definirErroMedia(mensagemErroMissao(mediaAtual.reason, "Não foi possível consultar a média."));
+            if (mesadaAtual.status === "fulfilled") definirMesada(mesadaAtual.value);
+            else definirErroMesada(mensagemErroMissao(mesadaAtual.reason, "Não foi possível consultar a mesada. Confira a configuração e tente novamente."));
+            if (configuracaoAtual.status === "fulfilled") definirConfiguracao(configuracaoAtual.value);
+            else definirErroConfiguracao(mensagemErroMissao(configuracaoAtual.reason, "Não foi possível consultar as faixas da mesada."));
+            definirCarregando(false);
         }
-    };
+        carregar();
+        return () => { cancelado = true; };
+    }, [crianca.id, atualizacao]);
 
+    function atualizar() {
+        definirCarregando(true);
+        definirAtualizacao(valor => valor + 1);
+    }
 
-    // Altera a nota de uma missão
-    const alterarNota = async (missao, novaNota) => {
+    function fecharJanelas() {
+        if (envioEmAndamento.current) return;
+        definirCriterioAberto(false);
+        definirMissaoParaEditar(null);
+        definirMissaoParaExcluir(null);
+        definirMesadaAberta(false);
+        definirErro("");
+    }
 
+    // Após gravar, fecha a janela e consulta novamente. Uma falha na consulta não repete a gravação.
+    async function salvarAlteracao(acao, mensagem) {
+        if (envioEmAndamento.current || carregando) return;
+        envioEmAndamento.current = true;
+        definirEnviando(true);
+        definirErro("");
+        definirSucesso("");
         try {
-
-            // Envia a nova nota para o backend
-            await atualizarMissaoAPI(
-                missao.id,
-                missao.criterio,
-                novaNota
-            );
-
-
-            // Atualiza a nota na tela
-            const novasMissoes = missoes.map((item) => {
-
-                if (item.id === missao.id) {
-
-                    return {
-                        ...item,
-                        nota: novaNota
-                    };
-
-                }
-
-                return item;
-            });
-
-            setMissoes(novasMissoes);
-
-
-            // Recalcula a média
-            const resultadoMedia =
-                await calcularMedia(criancaId);
-
-            setMedia(resultadoMedia);
-
-
-            // Recalcula a mesada
-            const resultadoMesada =
-                await calcularMesadaAPI(criancaId);
-
-            setMesada(resultadoMesada);
-
-        } catch (erro) {
-
-            console.error(
-                "Erro ao atualizar nota:",
-                erro
-            );
-
+            await acao();
+        } catch (falha) {
+            if (paginaAberta.current) definirErro(mensagemErroMissao(falha, "Não foi possível confirmar a operação. Confira os dados antes de tentar novamente."));
+            return;
+        } finally {
+            envioEmAndamento.current = false;
+            if (paginaAberta.current) definirEnviando(false);
         }
-    };
+        if (!paginaAberta.current) return;
+        fecharJanelas();
+        definirSucesso(mensagem);
+        atualizar();
+    }
 
+    function salvarCriterio(criterio) {
+        if (missaoParaEditar) {
+            return salvarAlteracao(() => atualizarMissao(missaoParaEditar.id, criterio, missaoParaEditar.nota), "Missão atualizada com sucesso!");
+        }
+        return salvarAlteracao(() => criarMissao(crianca.id, criterio, 0), "Missão criada com sucesso!");
+    }
 
-    // Edita o nome de uma missão
-    const editarMissao = async (criterioNovo) => {
+    function alterarNota(missao, nota) {
+        return salvarAlteracao(() => atualizarMissao(missao.id, missao.criterio, nota), "Nota atualizada com sucesso!");
+    }
 
+    function confirmarExclusao() {
+        return salvarAlteracao(() => excluirMissao(missaoParaExcluir.id), "Missão excluída com sucesso.");
+    }
+
+    async function abrirMesada() {
+        if (envioEmAndamento.current || carregando) return;
+        envioEmAndamento.current = true;
+        definirEnviando(true);
+        definirErro("");
+        definirSucesso("");
         try {
-
-            await atualizarMissaoAPI(
-                missaoParaEditar.id,
-                criterioNovo,
-                missaoParaEditar.nota
-            );
-
-
-            const novasMissoes = missoes.map((missao) => {
-
-                if (missao.id === missaoParaEditar.id) {
-
-                    return {
-                        ...missao,
-                        criterio: criterioNovo
-                    };
-
-                }
-
-                return missao;
-            });
-
-
-            setMissoes(novasMissoes);
-
-            setMissaoParaEditar(null);
-
-        } catch (erro) {
-
-            console.error(
-                "Erro ao atualizar missão:",
-                erro
-            );
-
+            const valor = await calcularMesada(crianca.id);
+            if (!paginaAberta.current) return;
+            definirMesada(valor);
+            definirErroMesada("");
+            definirMesadaAberta(true);
+        } catch (falha) {
+            if (paginaAberta.current) definirErro(mensagemErroMissao(falha, "Não foi possível calcular a mesada."));
+        } finally {
+            envioEmAndamento.current = false;
+            if (paginaAberta.current) definirEnviando(false);
         }
-    };
+    }
 
+    function confirmarRegistroMesada() {
+        return salvarAlteracao(() => registrarMesada(crianca.id), "Mesada registrada no extrato com sucesso!");
+    }
 
-    // Exclui uma missão
-    const excluirMissao = async () => {
+    const bloqueado = carregando || enviando;
+    const janelaAberta = criterioAberto || Boolean(missaoParaExcluir) || mesadaAberta;
 
-        try {
+    function formatarValor(valor) {
+        return Number(valor).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+    }
 
-            // Envia o DELETE para o backend
-            await excluirMissaoAPI(
-                missaoParaExcluir.id
-            );
-
-
-            // Remove a missão da tela
-            const novasMissoes = missoes.filter(
-                (missao) =>
-                    missao.id !== missaoParaExcluir.id
-            );
-
-
-            setMissoes(novasMissoes);
-
-            setMissaoParaExcluir(null);
-
-        } catch (erro) {
-
-            console.error(
-                "Erro ao excluir missão:",
-                erro
-            );
-
-        }
-    };
-
-
-    // Calcula a mesada quando o usuário
-    // clica no botão "Calcular Mesada"
-    const calcularMesada = async () => {
-
-        try {
-
-            const resultado =
-                await calcularMesadaAPI(criancaId);
-
-            console.log(
-                "MESADA RECEBIDA DO BACKEND:",
-                resultado
-            );
-
-
-            setMesada(resultado);
-
-
-            // Aqui o modal é aberto.
-            // Ele NÃO deve abrir sozinho ao carregar a página.
-            setModalMesadaAberto(true);
-
-        } catch (erro) {
-
-            console.error(
-                "Erro ao calcular mesada:",
-                erro
-            );
-
-        }
-    };
-
-
-    // Confirma o registro da mesada no extrato
-    const confirmarMesada = async () => {
-
-        try {
-
-            await registrarMesada(criancaId);
-
-
-            // Depois que a mesada foi registrada,
-            // fecha o modal.
-            setModalMesadaAberto(false);
-
-        } catch (erro) {
-
-            console.error(
-                "Erro ao registrar mesada:",
-                erro
-            );
-
-        }
-    };
-
+    function formatarNota(nota) {
+        return Number(nota).toLocaleString("pt-BR", { maximumFractionDigits: 2 });
+    }
 
     return (
-        <div>
-
-            <h1>Missões</h1>
-
-            <p>
-                Atribua notas de 0 a 10 para cada missão
-            </p>
-
-
-            <button
-                onClick={() => setModalAberto(true)}
-            >
-                + Nova Missão
-            </button>
-
-
-            <hr />
-
-
-            <h2>Missões</h2>
-
-
-            {missoes.map((missao) => (
-
-                <div key={missao.id}>
-
-                    <div className="d-flex align-items-center gap-2">
-
-                        <h3>
-                            {missao.criterio}
-                        </h3>
-
-
-                        <button
-                            type="button"
-                            className="btn btn-outline-secondary"
-                            onClick={() => {
-
-                                setMissaoParaEditar(missao);
-
-                                setModalAberto(true);
-
-                            }}
-                        >
-                            ✏️
-                        </button>
-
-
-                        <button
-                            type="button"
-                            className="btn btn-outline-danger"
-                            onClick={() => {
-
-                                setMissaoParaExcluir(missao);
-
-                            }}
-                        >
-                            🗑️
-                        </button>
-
-                    </div>
-
-
-                    <p>
-                        Nota: {missao.nota}
-                    </p>
-
-
-                    <div className="d-flex gap-2">
-
-                        {[
-                            0, 1, 2, 3, 4,
-                            5, 6, 7, 8, 9, 10
-                        ].map((numero) => (
-
-                            <button
-                                key={numero}
-                                onClick={() =>
-                                    alterarNota(
-                                        missao,
-                                        numero
-                                    )
-                                }
-                                className={
-                                    missao.nota === numero
-                                        ? "btn btn-success"
-                                        : "btn btn-outline-secondary"
-                                }
-                            >
-                                {numero}
-                            </button>
-
-                        ))}
-
-                    </div>
-
+        <div className="pagina-painel">
+            <CabecalhoPainel crianca={crianca} responsavel={responsavel} criancas={criancas}
+                aoTrocarCrianca={aoTrocarCrianca} aoSair={aoSair} aoVoltar={aoVoltar} bloqueado={enviando} atualizacao={atualizacao} />
+            <main className="conteudo-painel">
+                <header className="titulo-missoes">
+                    <div><h1>Missões</h1><p>Avalie {crianca.nome} com notas de 0 a 10.</p></div>
+                    <button type="button" className="btn botao-acessar-painel" disabled={bloqueado || Boolean(erroLista)}
+                        onClick={() => { definirErro(""); definirSucesso(""); definirCriterioAberto(true); }}>+ Nova Missão</button>
+                </header>
+                {sucesso && <p className="sucesso-painel" role="status">{sucesso}</p>}
+                {erro && !janelaAberta && <p className="erro-painel" role="alert">{erro}</p>}
+                {carregando && <p role="status">Atualizando missões e resumo…</p>}
+                <div className="grade-missoes" aria-busy={carregando}>
+                    <section className="lista-missoes" aria-label="Missões da criança">
+                        {erroLista ? <p className="erro-painel" role="alert">{erroLista}</p> : !carregando && missoes.length === 0 ? (
+                            <div className="missoes-vazias"><span aria-hidden="true">⭐</span><h2>Nenhum critério cadastrado</h2><p>Crie critérios como Organização, Estudos e Respeito.</p></div>
+                        ) : !carregando && <>
+                            <p className="instrucao-missoes">Clique no número para atribuir a nota.</p>
+                            {missoes.map(missao => (
+                                <article className="cartao-missao" key={missao.id}>
+                                    <div className="cabecalho-missao">
+                                        <h2><span aria-hidden="true">⭐</span> {missao.criterio} <span className="nota-atual-missao">Nota: {missao.nota}</span></h2>
+                                        <div className="acoes-missao">
+                                            <button type="button" className="btn botao-secundario-painel botao-icone-missao" disabled={bloqueado} aria-label={"Editar " + missao.criterio} data-legenda="Editar" title="Editar missão"
+                                                onClick={() => { definirErro(""); definirMissaoParaEditar(missao); definirCriterioAberto(true); }}>✏️</button>
+                                            <button type="button" className="btn botao-excluir-missao botao-icone-missao" disabled={bloqueado} aria-label={"Excluir " + missao.criterio} data-legenda="Excluir" title="Excluir missão"
+                                                onClick={() => { definirErro(""); definirMissaoParaExcluir(missao); }}>🗑️</button>
+                                        </div>
+                                    </div>
+                                    <div className="notas-missao" role="group" aria-label={"Nota de " + missao.criterio}>
+                                        {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(nota => (
+                                            <button type="button" className="botao-nota-missao" key={nota} disabled={bloqueado}
+                                                aria-pressed={Number(missao.nota) === nota} onClick={() => alterarNota(missao, nota)}>{nota}</button>
+                                        ))}
+                                    </div>
+                                </article>
+                            ))}
+                        </>}
+                    </section>
+                    <aside className="resumo-missoes" aria-label="Resumo das missões">
+                        <h2>Resumo</h2>
+                        <dl>
+                            <div><dt>Média das Missões</dt><dd>{carregando || media === null ? "—" : Number(media).toLocaleString("pt-BR", { maximumFractionDigits: 2 })}</dd></div>
+                            <div><dt>Mesada Base</dt><dd>{carregando || !configuracao ? "—" : formatarValor(configuracao.valorBase)}</dd></div>
+                            <div><dt>Mesada Calculada</dt><dd>{carregando || mesada === null ? "—" : Number(mesada).toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</dd></div>
+                        </dl>
+                        {!carregando && configuracao && <section className="faixas-resumo-missoes" aria-label="Faixas configuradas">
+                            <h3>Faixas configuradas</h3>
+                            <p><span>Abaixo de {formatarNota(configuracao.notaMinimaIntermediaria)}</span><strong>{formatarValor(configuracao.valorFaixaBaixa)}</strong></p>
+                            <p><span>De {formatarNota(configuracao.notaMinimaIntermediaria)} até menos de {formatarNota(configuracao.notaMinimaMaxima)}</span><strong>{formatarValor(configuracao.valorFaixaIntermediaria)}</strong></p>
+                            <p><span>A partir de {formatarNota(configuracao.notaMinimaMaxima)}</span><strong>{formatarValor(configuracao.valorFaixaMaxima)}</strong></p>
+                        </section>}
+                        {erroConfiguracao && <p className="erro-painel" role="alert">{erroConfiguracao}</p>}
+                        {!carregando && !configuracao && !erroConfiguracao && <p>A mesada desta criança ainda não foi configurada.</p>}
+                        {erroMedia && <p className="erro-painel" role="alert">{erroMedia}</p>}
+                        {erroMesada && <p className="erro-painel" role="alert">{erroMesada}</p>}
+                        <button type="button" className="btn botao-acessar-painel" disabled={bloqueado || Boolean(erroLista) || mesada === null}
+                            onClick={abrirMesada}>Calcular Mesada</button>
+                    </aside>
                 </div>
-
-            ))}
-
-
-            <h2>Resumo</h2>
-
-
-            <p>
-                Média das Missões: {media}
-            </p>
-
-
-            <p>
-                Mesada: R$ {mesada}
-            </p>
-
-
-            <button onClick={calcularMesada}>
-                Calcular Mesada
-            </button>
-
-
-            {/* Modal para criar ou editar missão */}
-            <ModalCriterio
-                isOpen={modalAberto}
-                onClose={() => {
-
-                    setModalAberto(false);
-
-                    setMissaoParaEditar(null);
-
-                }}
-                onCriar={
-                    missaoParaEditar
-                        ? editarMissao
-                        : criarMissao
-                }
-                missaoParaEditar={
-                    missaoParaEditar
-                }
-            />
-
-
-            {/* Modal para confirmar exclusão */}
-            <ConfirmarExclusaoMissoes
-                isOpen={
-                    missaoParaExcluir !== null
-                }
-                onClose={() =>
-                    setMissaoParaExcluir(null)
-                }
-                onConfirmar={
-                    excluirMissao
-                }
-                missao={
-                    missaoParaExcluir
-                }
-            />
-
-
-            {/* Modal para confirmar o registro da mesada */}
-            <ConfirmarMesada
-                isOpen={
-                    modalMesadaAberto
-                }
-                onClose={() =>
-                    setModalMesadaAberto(false)
-                }
-                onConfirmar={
-                    confirmarMesada
-                }
-                mesada={
-                    mesada
-                }
-            />
-
+                {(erroLista || erroMedia || erroMesada || erroConfiguracao) && <button type="button" className="btn botao-secundario-painel" disabled={bloqueado} onClick={atualizar}>Tentar novamente</button>}
+            </main>
+            {criterioAberto && <ModalCriterio missao={missaoParaEditar} aoFechar={fecharJanelas} aoSalvar={salvarCriterio} enviando={enviando} erro={erro} />}
+            {missaoParaExcluir && <ConfirmarExclusaoMissoes missao={missaoParaExcluir} aoFechar={fecharJanelas} aoConfirmar={confirmarExclusao} enviando={enviando} erro={erro} />}
+            {mesadaAberta && <ConfirmarMesada mesada={mesada} crianca={crianca} aoFechar={fecharJanelas} aoConfirmar={confirmarRegistroMesada} enviando={enviando} erro={erro} />}
         </div>
     );
 }
-
-
-export default Missoes;

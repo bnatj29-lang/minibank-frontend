@@ -3,7 +3,6 @@ import {Link, useLocation, useNavigate} from "react-router-dom";
 import CampoSenha from "./CampoSenha";
 import {entrarUsuario, mensagemErroAutenticacao} from "../services/usuarioService";
 import logo from "../assets/icons/logo_minibank_original.svg";
-import icone from "../assets/icons/icone_minibank_original.svg";
 import "../styles/autenticacao.css";
 
 export default function Login({ aoEntrar }) {
@@ -37,9 +36,7 @@ export default function Login({ aoEntrar }) {
     return <main className="pagina-autenticacao">
         <div className="formulario-entrada">
             <header className="marca-autenticacao">
-                <img className="icone-marca-autenticacao" src={icone} alt=""/>
                 <img className="logotipo-marca-autenticacao" src={logo} alt="MiniBank"/>
-                <p>Educação financeira para toda a família</p>
             </header>
             <section className="cartao-entrada">
                 <h1>Entrar na sua conta</h1>
