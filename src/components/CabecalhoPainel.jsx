@@ -8,6 +8,7 @@ function IconeNavegacao({ tipo }) {
     const propriedades = { width: 16, height: 16, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, strokeLinecap: "round", strokeLinejoin: "round", "aria-hidden": true };
     if (tipo === "financeiro") return <svg {...propriedades}><path d="M12 1v22" /><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H7" /></svg>;
     if (tipo === "missoes") return <svg {...propriedades}><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>;
+    if (tipo === "crianca") return <svg {...propriedades}><path d="M20 21a8 8 0 0 0-16 0" /><circle cx="12" cy="7" r="4" /></svg>;
     return <svg {...propriedades}><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.38a2 2 0 0 0-.73-2.73l-.15-.09a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" /><circle cx="12" cy="12" r="3" /></svg>;
 }
 
@@ -17,7 +18,7 @@ function IconeCabecalho({ tipo }) {
     return <svg {...propriedades}><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" /><polyline points="16 17 21 12 16 7" /><line x1="21" y1="12" x2="9" y2="12" /></svg>;
 }
 
-export default function CabecalhoPainel({ crianca, responsavel, criancas, aoTrocarCrianca, aoSair, aoVoltar, bloqueado = false, atualizacao = 0 }) {
+export default function CabecalhoPainel({ crianca, responsavel, criancas, aoTrocarCrianca, aoAdicionarCrianca, aoSair, aoVoltar, bloqueado = false, atualizacao = 0 }) {
     const [saldoTotal, definirSaldoTotal] = useState(null);
 
     useEffect(() => {
@@ -52,7 +53,7 @@ export default function CabecalhoPainel({ crianca, responsavel, criancas, aoTroc
                     </div>
                 </div>
                 <div className="acoes-cabecalho-painel">
-                    <SeletorCrianca crianca={crianca} criancas={criancas} aoTrocarCrianca={aoTrocarCrianca} bloqueado={bloqueado} />
+                    <SeletorCrianca crianca={crianca} criancas={criancas} aoTrocarCrianca={aoTrocarCrianca} aoAdicionarCrianca={aoAdicionarCrianca} bloqueado={bloqueado} />
                     <div className="saldo-cabecalho-painel">
                         <span>Saldo total</span>
                         <strong>{saldoTotal === null ? "—" : Number(saldoTotal).toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</strong>
@@ -63,6 +64,7 @@ export default function CabecalhoPainel({ crianca, responsavel, criancas, aoTroc
                 <nav className="navegacao-painel" aria-label="Painel dos Pais">
                     <NavLink to="/financeiro" onClick={verificarNavegacao} aria-disabled={bloqueado}><IconeNavegacao tipo="financeiro" />Financeiro</NavLink>
                     <NavLink to="/missoes" onClick={verificarNavegacao} aria-disabled={bloqueado}><IconeNavegacao tipo="missoes" />Missões</NavLink>
+                    <NavLink to="/crianca" onClick={verificarNavegacao} aria-disabled={bloqueado}><IconeNavegacao tipo="crianca" />Criança</NavLink>
                     <NavLink to="/configuracoes" onClick={verificarNavegacao} aria-disabled={bloqueado}><IconeNavegacao tipo="configuracoes" />Configurações</NavLink>
                 </nav>
             </div>

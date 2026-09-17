@@ -4,6 +4,92 @@
     width: 100%;
 }
 
+.gerenciador-criancas {
+    max-width: 384px;
+    width: 100%;
+}
+
+.titulo-gerenciador-criancas {
+    margin-bottom: 24px;
+}
+
+.titulo-gerenciador-criancas h2 {
+    margin: 0;
+    color: #1f2937;
+    font-size: 20px;
+    font-weight: 900;
+}
+
+.titulo-gerenciador-criancas p {
+    margin: 4px 0 0;
+    color: #6b7280;
+    font-size: 14px;
+}
+
+.cartao-dados-crianca {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.resumo-dados-crianca {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+    margin-bottom: 4px;
+    border-radius: 16px;
+    background: #f9fafb;
+}
+
+.icone-dados-crianca {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 16px;
+    background: #d1fae5;
+    color: #10b981;
+    font-size: 24px;
+}
+
+.resumo-dados-crianca > div {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.resumo-dados-crianca strong {
+    color: #1f2937;
+    font-size: 16px;
+    font-weight: 900;
+}
+
+.resumo-dados-crianca small {
+    color: #6b7280;
+    font-size: 14px;
+}
+
+.formulario-dados-crianca {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.acoes-dados-crianca {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 4px;
+}
+
+.acoes-dados-crianca .confirmacao-mesada {
+    margin: 0;
+    padding: 0;
+    background: transparent;
+}
+
 .titulo-configuracao-mesada {
     margin-bottom: 24px;
 }

@@ -5,7 +5,7 @@ import RegistrarRetirada from "../components/RegistrarRetirada";
 import CabecalhoPainel from "../components/CabecalhoPainel";
 import "../styles/painelPais.css";
 
-export default function Financeiro({ crianca, responsavel, criancas, aoTrocarCrianca, aoSair, aoVoltar }) {
+export default function Financeiro({ crianca, responsavel, criancas, aoTrocarCrianca, aoAdicionarCrianca, aoSair, aoVoltar }) {
     const [extrato, definirExtrato] = useState([]);
     const [saldo, definirSaldo] = useState(null);
     const [saldoEmMetas, definirSaldoEmMetas] = useState(null);
@@ -62,7 +62,7 @@ export default function Financeiro({ crianca, responsavel, criancas, aoTrocarCri
     return (
         <div className="pagina-painel">
             <CabecalhoPainel crianca={crianca} responsavel={responsavel} criancas={criancas}
-                aoTrocarCrianca={aoTrocarCrianca} aoSair={aoSair} aoVoltar={aoVoltar} atualizacao={atualizacao} />
+                aoTrocarCrianca={aoTrocarCrianca} aoAdicionarCrianca={aoAdicionarCrianca} aoSair={aoSair} aoVoltar={aoVoltar} atualizacao={atualizacao} />
             <main className="conteudo-painel">
                 <h1>Financeiro de {crianca.nome}</h1>
                 <div className="saldos-financeiro">

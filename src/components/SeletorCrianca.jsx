@@ -9,7 +9,7 @@ function IconeSeletor({ tipo }) {
     return <svg {...propriedades}><path d="m5 12 4 4L19 6" /></svg>;
 }
 
-export default function SeletorCrianca({ crianca, criancas, aoTrocarCrianca, bloqueado = false }) {
+export default function SeletorCrianca({ crianca, criancas, aoTrocarCrianca, aoAdicionarCrianca, bloqueado = false }) {
     const [aberto, definirAberto] = useState(false);
     const referencia = useRef(null);
     const indiceAtual = Math.max(0, criancas.findIndex(item => item.id === crianca.id));
@@ -45,6 +45,9 @@ export default function SeletorCrianca({ crianca, criancas, aoTrocarCrianca, blo
                         {selecionada && <span className="check-seletor-crianca"><IconeSeletor tipo="check" /></span>}
                     </button>;
                 })}
+                {aoAdicionarCrianca && <button type="button" className="opcao-adicionar-crianca" onClick={() => { definirAberto(false); aoAdicionarCrianca(); }}>
+                    <span aria-hidden="true">＋</span> Adicionar criança
+                </button>}
             </div>}
         </div>
     );

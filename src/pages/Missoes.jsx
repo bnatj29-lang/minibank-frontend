@@ -8,7 +8,7 @@ import { listarMissoes, criarMissao, atualizarMissao, excluirMissao, calcularMed
 import "../styles/painelPais.css";
 import "../styles/missoes.css";
 
-export default function Missoes({ crianca, responsavel, criancas, aoTrocarCrianca, aoSair, aoVoltar }) {
+export default function Missoes({ crianca, responsavel, criancas, aoTrocarCrianca, aoAdicionarCrianca, aoSair, aoVoltar }) {
     const [missoes, definirMissoes] = useState([]);
     const [media, definirMedia] = useState(null);
     const [mesada, definirMesada] = useState(null);
@@ -154,7 +154,7 @@ export default function Missoes({ crianca, responsavel, criancas, aoTrocarCrianc
     return (
         <div className="pagina-painel">
             <CabecalhoPainel crianca={crianca} responsavel={responsavel} criancas={criancas}
-                aoTrocarCrianca={aoTrocarCrianca} aoSair={aoSair} aoVoltar={aoVoltar} bloqueado={enviando} atualizacao={atualizacao} />
+                aoTrocarCrianca={aoTrocarCrianca} aoAdicionarCrianca={aoAdicionarCrianca} aoSair={aoSair} aoVoltar={aoVoltar} bloqueado={enviando} atualizacao={atualizacao} />
             <main className="conteudo-painel">
                 <header className="titulo-missoes">
                     <div><h1>Missões</h1><p>Avalie {crianca.nome} com notas de 0 a 10.</p></div>

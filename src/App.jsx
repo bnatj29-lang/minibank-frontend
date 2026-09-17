@@ -12,6 +12,8 @@ import ConfiguracoesPage from "./pages/ConfiguracoesPage";
 import Financeiro from "./pages/Financeiro";
 import MetasPage from "./pages/MetasPage";
 import Missoes from "./pages/Missoes";
+import CriancaPage from "./pages/CriancaPage";
+import AdicionarCriancaModal from "./components/AdicionarCriancaModal";
 
 function App() {
     const navegar = useNavigate();
@@ -35,6 +37,14 @@ function App() {
         }
     }
 
+    function atualizarCriancas(criancas, criancaAtivaId = sessao?.criancaAtivaId) {
+        if (sessao) definirSessao({ ...sessao, criancas, criancaAtivaId });
+    }
+
+    function abrirAdicionarCrianca() {
+        definirAdicionarCriancaAberto(true);
+    }
+
     function sair() {
         definirSessao(null);
         definirPainelLiberado(false);
@@ -43,6 +53,7 @@ function App() {
     }
 
     const [painelAberto, definirPainelAberto] = useState(false);
+    const [adicionarCriancaAberto, definirAdicionarCriancaAberto] = useState(false);
 
     const tratarSucessoPainel = () => {
         definirPainelLiberado(true);
@@ -60,8 +71,8 @@ function App() {
                     ? <SelecionarCriancaPage familia={sessao} aoSelecionar={selecionarCrianca} aoSair={sair} />
                     : <Navigate to="/login" replace />} />
                 <Route path="/home" element={criancaAtiva
-                    ? <Home key={criancaAtiva.id} crianca={criancaAtiva} criancas={sessao.criancas}
-                        aoTrocarCrianca={selecionarCrianca} aoAbrirPainel={() => definirPainelAberto(true)} aoSair={sair} />
+                    ? <Home key={criancaAtiva.id} crianca={criancaAtiva}
+                        aoAbrirPainel={() => definirPainelAberto(true)} aoSair={sair} />
                     : <Navigate to={sessao ? "/selecionar-crianca" : "/login"} replace />} />
                 <Route path="/metas" element={criancaAtiva
                     ? <MetasPage key={criancaAtiva.id} crianca={criancaAtiva} aoAbrirPainel={() => definirPainelAberto(true)} />
@@ -70,30 +81,45 @@ function App() {
                     ? <Navigate to={sessao ? "/selecionar-crianca" : "/login"} replace />
                     : painelLiberado
                         ? <ConfiguracoesPage key={criancaAtiva.id} crianca={criancaAtiva} responsavel={sessao.responsavel}
-                            criancas={sessao.criancas} aoTrocarCrianca={selecionarCrianca} aoSair={sair}
+                            criancas={sessao.criancas} aoTrocarCrianca={selecionarCrianca} aoAdicionarCrianca={abrirAdicionarCrianca} aoSair={sair}
                             aoVoltar={() => definirPainelLiberado(false)} />
+                        : <Navigate to="/home" replace />} />
+                <Route path="/crianca" element={!criancaAtiva
+                    ? <Navigate to={sessao ? "/selecionar-crianca" : "/login"} replace />
+                    : painelLiberado
+                        ? <CriancaPage key={criancaAtiva.id} crianca={criancaAtiva} responsavel={sessao.responsavel}
+                            criancas={sessao.criancas} aoTrocarCrianca={selecionarCrianca} aoAdicionarCrianca={abrirAdicionarCrianca} aoSair={sair}
+                            aoVoltar={() => definirPainelLiberado(false)} aoAtualizarCriancas={atualizarCriancas} />
                         : <Navigate to="/home" replace />} />
                 <Route path="/financeiro" element={!criancaAtiva
                     ? <Navigate to={sessao ? "/selecionar-crianca" : "/login"} replace />
                     : painelLiberado
                         ? <Financeiro key={criancaAtiva.id} crianca={criancaAtiva} responsavel={sessao.responsavel}
-                            criancas={sessao.criancas} aoTrocarCrianca={selecionarCrianca} aoSair={sair}
+                            criancas={sessao.criancas} aoTrocarCrianca={selecionarCrianca} aoAdicionarCrianca={abrirAdicionarCrianca} aoSair={sair}
                             aoVoltar={() => definirPainelLiberado(false)} />
                         : <Navigate to="/home" replace />} />
                 <Route path="/missoes" element={!criancaAtiva
                     ? <Navigate to={sessao ? "/selecionar-crianca" : "/login"} replace />
                     : painelLiberado
                         ? <Missoes key={criancaAtiva.id} crianca={criancaAtiva} responsavel={sessao.responsavel}
-                            criancas={sessao.criancas} aoTrocarCrianca={selecionarCrianca} aoSair={sair}
+                            criancas={sessao.criancas} aoTrocarCrianca={selecionarCrianca} aoAdicionarCrianca={abrirAdicionarCrianca} aoSair={sair}
                             aoVoltar={() => definirPainelLiberado(false)} />
                         : <Navigate to="/home" replace />} />
-
             </Routes>
 
             {painelAberto && sessao && criancaAtiva && <PainelPaisModal
                 email={sessao.responsavel.email}
                 aoFechar={() => definirPainelAberto(false)}
                 aoAcessar={tratarSucessoPainel}
+            />}
+            {adicionarCriancaAberto && sessao && <AdicionarCriancaModal
+                responsavel={sessao.responsavel}
+                aoFechar={() => definirAdicionarCriancaAberto(false)}
+                aoConcluir={(criancas, criancaId) => {
+                    atualizarCriancas(criancas, criancaId);
+                    definirAdicionarCriancaAberto(false);
+                    navegar("/home");
+                }}
             />}
         </div>
     );

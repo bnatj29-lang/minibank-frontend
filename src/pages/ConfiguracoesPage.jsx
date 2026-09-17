@@ -13,7 +13,7 @@ const configuracaoVazia = {
     valorFaixaMaxima: "",
 };
 
-export default function ConfiguracoesPage({ crianca, responsavel, criancas, aoTrocarCrianca, aoSair, aoVoltar }) {
+export default function ConfiguracoesPage({ crianca, responsavel, criancas, aoTrocarCrianca, aoAdicionarCrianca, aoSair, aoVoltar }) {
     const [dados, definirDados] = useState(configuracaoVazia);
     const [carregando, definirCarregando] = useState(true);
     const [enviando, definirEnviando] = useState(false);
@@ -122,7 +122,7 @@ export default function ConfiguracoesPage({ crianca, responsavel, criancas, aoTr
     return (
         <div className="pagina-painel">
             <CabecalhoPainel crianca={crianca} responsavel={responsavel} criancas={criancas}
-                aoTrocarCrianca={aoTrocarCrianca} aoSair={aoSair} aoVoltar={aoVoltar} bloqueado={enviando} />
+                aoTrocarCrianca={aoTrocarCrianca} aoAdicionarCrianca={aoAdicionarCrianca} aoSair={aoSair} aoVoltar={aoVoltar} bloqueado={enviando} />
             <main className="conteudo-painel">
                 <div className="configuracao-mesada">
                     <header className="titulo-configuracao-mesada">

@@ -518,6 +518,53 @@
     font-weight: 700;
 }
 
+.modal-adicionar-crianca .modal-content {
+    border: 0;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 20px 45px #0f172a26;
+}
+
+.modal-adicionar-crianca .modal-header,
+.modal-adicionar-crianca .modal-footer {
+    border: 0;
+    padding: 20px 24px;
+}
+
+.modal-adicionar-crianca .modal-body {
+    padding: 0 24px 4px;
+}
+
+.modal-adicionar-crianca .form-control {
+    margin-bottom: 16px;
+}
+
+.aviso-adicionar-crianca {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding: 12px 14px;
+    border: 1px solid #a7f3d0;
+    border-radius: 16px;
+    background: #ecfdf5;
+    color: #047857;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.aviso-adicionar-crianca > span:first-child {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    flex: 0 0 24px;
+    border-radius: 50%;
+    background: #d1fae5;
+    font-size: 13px;
+}
+
 .modal-painel .form-control:focus {
     border-color: #818cf8;
     box-shadow: 0 0 0 3px #e0e7ff;

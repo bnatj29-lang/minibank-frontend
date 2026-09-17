@@ -4,13 +4,12 @@ import { buscarSaldo, buscarSaldoLivre, buscarSaldoEmMetas, buscarExtrato } from
 import { listarMissoes, calcularMedia } from "../services/missaoService";
 import { listarMetas, mensagemErroMeta } from "../services/metaService";
 import MetasPage from "./MetasPage";
-import SeletorCrianca from "../components/SeletorCrianca";
 import icone from "../assets/icons/icone_minibank_original.svg";
 import logo from "../assets/icons/logo_minibank_original.svg";
 import "../styles/metas.css";
 import "../styles/inicioCrianca.css";
 
-export default function Home({ crianca, criancas, aoTrocarCrianca, aoAbrirPainel, aoSair }) {
+export default function Home({ crianca, aoAbrirPainel, aoSair }) {
     const [saldos, definirSaldos] = useState(null);
     const [extrato, definirExtrato] = useState([]);
     const [missoes, definirMissoes] = useState([]);
@@ -88,8 +87,6 @@ export default function Home({ crianca, criancas, aoTrocarCrianca, aoAbrirPainel
                         <span>{dataAtual} · {crianca.idade} {crianca.idade === 1 ? "ano" : "anos"}</span>
                     </div>
                     <nav className="navegacao-metas" aria-label="Navegação da criança">
-                        {criancas?.length > 1 && <SeletorCrianca crianca={crianca} criancas={criancas} aoTrocarCrianca={aoTrocarCrianca} />}
-                        {criancas?.length <= 1 && <Link className="btn botao-secundario-meta" to="/selecionar-crianca">Trocar criança</Link>}
                         <button type="button" className="btn botao-pais-metas" onClick={aoAbrirPainel}>Painel dos Pais</button>
                         <button type="button" className="botao-sair-inicio" onClick={aoSair} aria-label="Sair" data-legenda="Sair">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" /><polyline points="16 17 21 12 16 7" /><line x1="21" y1="12" x2="9" y2="12" /></svg>

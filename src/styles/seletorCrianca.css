@@ -122,6 +122,26 @@
     color: #10b981;
 }
 
+.opcao-adicionar-crianca {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 8px;
+    margin-top: 4px;
+    padding: 10px;
+    border: 0;
+    border-top: 1px solid #f3f4f6;
+    background: #fff;
+    color: #059669;
+    font-size: 14px;
+    font-weight: 800;
+    text-align: left;
+}
+
+.opcao-adicionar-crianca:hover {
+    background: #ecfdf5;
+}
+
 @media (max-width: 575px) {
     .menu-seletor-crianca {
         right: auto;
