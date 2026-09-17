@@ -238,6 +238,66 @@
     color: #6b7280;
 }
 
+.estado-vazio-selecao {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 40px 24px;
+    border: 1px solid #d1fae5;
+    border-radius: 24px;
+    background: #ffffffd9;
+    box-shadow: 0 4px 12px #d1fae566;
+    text-align: center;
+}
+
+.icone-estado-vazio-selecao {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 72px;
+    height: 72px;
+    margin-bottom: 20px;
+    border: 4px solid #a7f3d0;
+    border-radius: 50%;
+    background: #d1fae5;
+}
+
+.icone-estado-vazio-selecao img {
+    width: 46px;
+    height: 46px;
+    object-fit: contain;
+}
+
+.estado-vazio-selecao h2 {
+    margin: 0;
+    color: #1f2937;
+    font-size: 20px;
+    font-weight: 900;
+}
+
+.estado-vazio-selecao p {
+    margin: 8px 0 24px;
+    color: #6b7280;
+    font-size: 14px;
+}
+
+.botao-cadastrar-crianca-selecao {
+    border: 0;
+    border-radius: 14px;
+    background: #10b981;
+    color: #fff;
+    padding: 12px 20px;
+    font-size: 14px;
+    font-weight: 800;
+    box-shadow: 0 4px 8px #10b98133;
+}
+
+.botao-cadastrar-crianca-selecao:hover {
+    background: #059669;
+}
+
 .botao-recarregar {
     display: inline-block;
     border: 1px solid #a7f3d0;

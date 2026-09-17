@@ -28,7 +28,7 @@ function App() {
     function entrarFamilia(familia) {
         definirPainelLiberado(false);
         definirPainelAberto(false);
-        definirSessao({ responsavel: familia.responsavel, criancas: familia.criancas, criancaAtivaId: null });
+        definirSessao({ responsavel: familia.responsavel, criancas: familia.criancas, token: familia.token, criancaAtivaId: null });
     }
 
     function selecionarCrianca(id) {
@@ -68,7 +68,8 @@ function App() {
                 <Route path="/cadastro" element={<CadastroPage />} />
                 <Route path="/login" element={<Login aoEntrar={entrarFamilia} />} />
                 <Route path="/selecionar-crianca" element={sessao
-                    ? <SelecionarCriancaPage familia={sessao} aoSelecionar={selecionarCrianca} aoSair={sair} />
+                    ? <SelecionarCriancaPage familia={sessao} aoSelecionar={selecionarCrianca} aoSair={sair}
+                        aoAdicionarCrianca={abrirAdicionarCrianca} />
                     : <Navigate to="/login" replace />} />
                 <Route path="/home" element={criancaAtiva
                     ? <Home key={criancaAtiva.id} crianca={criancaAtiva}

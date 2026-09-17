@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { editarCrianca, listarCriancas, mensagemErroCrianca } from "../services/criancaService";
+import { editarCrianca, excluirCrianca, listarCriancas, mensagemErroCrianca } from "../services/criancaService";
+import ExcluirCriancaModal from "./ExcluirCriancaModal";
 
 export default function GerenciarCriancas({ crianca, responsavel, criancas, aoAtualizar }) {
     const [nome, definirNome] = useState("");
     const [idade, definirIdade] = useState("");
     const [erro, definirErro] = useState("");
+    const [erroExclusao, definirErroExclusao] = useState("");
     const [sucesso, definirSucesso] = useState("");
     const [enviando, definirEnviando] = useState(false);
+    const [exclusaoAberta, definirExclusaoAberta] = useState(false);
 
     useEffect(() => {
         definirNome(crianca.nome);
         definirIdade(String(crianca.idade));
-        definirErro("");
+        definirErroExclusao("");
     }, [crianca.id, crianca.nome, crianca.idade]);
 
     async function salvar(evento) {
@@ -36,6 +39,22 @@ export default function GerenciarCriancas({ crianca, responsavel, criancas, aoAt
         }
     }
 
+    async function confirmarExclusao() {
+        if (enviando) return;
+        definirErroExclusao("");
+        definirEnviando(true);
+        try {
+            await excluirCrianca(crianca.id, responsavel.id);
+            const listaAtualizada = await listarCriancas(responsavel.id);
+            aoAtualizar(listaAtualizada, listaAtualizada[0]?.id ?? null);
+            definirExclusaoAberta(false);
+        } catch (falha) {
+            definirErroExclusao(mensagemErroCrianca(falha, "Não foi possível excluir a criança. Tente novamente."));
+        } finally {
+            definirEnviando(false);
+        }
+    }
+
     return <section className="gerenciador-criancas">
         <header className="titulo-gerenciador-criancas"><h2>Dados da Criança</h2><p>Edite as informações do perfil.</p></header>
         <div className="cartao-dados-crianca cartao-configuracao-mesada">
@@ -46,6 +65,12 @@ export default function GerenciarCriancas({ crianca, responsavel, criancas, aoAt
                 {erro && <p className="erro-painel" role="alert">{erro}</p>}
                 <div className="acoes-dados-crianca"><button type="submit" className="btn botao-salvar-mesada" disabled={enviando}>{enviando ? "Salvando…" : "Salvar"}</button>{sucesso && <p className="confirmacao-mesada" role="status">✓ {sucesso}</p>}</div>
             </form>
+            <button type="button" className="botao-excluir-crianca-link" disabled={enviando}
+                onClick={() => { definirErro(""); definirErroExclusao(""); definirExclusaoAberta(true); }}>
+                Excluir criança
+            </button>
         </div>
+        {exclusaoAberta && <ExcluirCriancaModal crianca={crianca} aoFechar={() => definirExclusaoAberta(false)}
+            aoConfirmar={confirmarExclusao} enviando={enviando} erro={erroExclusao} />}
     </section>;
 }

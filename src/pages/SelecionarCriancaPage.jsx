@@ -5,7 +5,7 @@ import logo from "../assets/icons/logo_minibank_original.svg";
 import icone from "../assets/icons/icone_minibank_original.svg";
 import "../styles/selecaoCrianca.css";
 
-export default function SelecionarCriancaPage({ familia, aoSelecionar, aoSair }) {
+export default function SelecionarCriancaPage({ familia, aoSelecionar, aoSair, aoAdicionarCrianca }) {
     const navegar = useNavigate();
     const [saldos, definirSaldos] = useState({});
     const [tentativa, definirTentativa] = useState(0);
@@ -59,7 +59,6 @@ export default function SelecionarCriancaPage({ familia, aoSelecionar, aoSair })
             <header className="cabecalho-selecao">
                 <div className="conteudo-cabecalho-selecao">
                     <div className="marca-selecao">
-                        <img className="icone-selecao" src={icone} alt="" />
                         <img className="logotipo-selecao" src={logo} alt="MiniBank" />
                     </div>
                     <div className="responsavel-selecao">
@@ -71,12 +70,18 @@ export default function SelecionarCriancaPage({ familia, aoSelecionar, aoSair })
             <main className="conteudo-selecao">
                 <div className="apresentacao-selecao">
                     <h1>{saudacao}, {familia.responsavel.nome.trim().split(" ")[0]}! 👋</h1>
-                    <p>Quem você deseja acessar hoje?</p>
+                    {familia.criancas.length > 0 && <p>Quem você deseja acessar hoje?</p>}
                 </div>
-                {familia.criancas.length === 0 && (
-                    <p className="aviso-selecao" role="status">Nenhuma criança cadastrada nesta conta.</p>
-                )}
-                <div className="lista-criancas">
+                {familia.criancas.length === 0 ? (
+                    <section className="estado-vazio-selecao" aria-label="Nenhuma criança cadastrada">
+                        <span className="icone-estado-vazio-selecao" aria-hidden="true"><img src={icone} alt="" /></span>
+                        <h2>Vamos adicionar uma criança?</h2>
+                        <p>Cadastre uma criança para continuar usando o MiniBank.</p>
+                        <button type="button" className="botao-cadastrar-crianca-selecao" onClick={aoAdicionarCrianca}>
+                            + Cadastrar criança
+                        </button>
+                    </section>
+                ) : <div className="lista-criancas">
                     {familia.criancas.map(crianca => (
                         <button
                             className="cartao-crianca"
@@ -100,7 +105,7 @@ export default function SelecionarCriancaPage({ familia, aoSelecionar, aoSair })
                             <span className="acessar-crianca">Acessar →</span>
                         </button>
                     ))}
-                </div>
+                </div>}
                 {temErroSaldo && (
                     <div className="aviso-selecao" role="status">
                         <p>Não foi possível carregar todos os saldos. Você ainda pode selecionar uma criança.</p>

@@ -1,6 +1,10 @@
 // Guarda somente os dados necessários para navegar. Não guarda senhas.
 const chaveSessao = "minibank-familia";
 
+export function obterToken() {
+    return lerSessao()?.token || null;
+}
+
 export function lerSessao() {
     try {
         const sessao = JSON.parse(sessionStorage.getItem(chaveSessao));
@@ -21,4 +25,8 @@ export function salvarSessao(sessao) {
     } catch {
         // Se o navegador bloquear o armazenamento, a navegação continua em memória.
     }
+}
+
+export function limparSessao() {
+    salvarSessao(null);
 }

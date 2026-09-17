@@ -90,6 +90,46 @@
     background: transparent;
 }
 
+.botao-excluir-crianca-link {
+    align-self: flex-start;
+    padding: 4px 0;
+    border: 0;
+    background: transparent;
+    color: #9ca3af;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.botao-excluir-crianca-link:hover,
+.botao-excluir-crianca-link:focus-visible {
+    color: #dc2626;
+    text-decoration: underline;
+}
+
+.botao-excluir-crianca-link:disabled {
+    color: #d1d5db;
+}
+
+.botao-excluir-crianca {
+    background: #dc2626;
+    color: #fff;
+    border-radius: 16px;
+    padding: 10px 16px;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.botao-excluir-crianca:hover,
+.botao-excluir-crianca:disabled {
+    background: #b91c1c;
+    color: #fff;
+}
+
+.descricao-modal-crianca {
+    color: #6b7280;
+    font-size: 14px;
+}
+
 .titulo-configuracao-mesada {
     margin-bottom: 24px;
 }

@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import ModalCriterio from "../components/ModalCriterio";
 import ConfirmarMesada from "../components/ConfirmarMesada";
 import ConfirmarExclusaoMissoes from "../components/ConfirmarExclusaoMissoes";
@@ -46,10 +47,14 @@ export default function Missoes({ crianca, responsavel, criancas, aoTrocarCrianc
         definirMesada(null);
         async function carregar() {
             // Uma falha na mesada não impede a consulta das missões e da média.
-            const [lista, mediaAtual, mesadaAtual, configuracaoAtual] = await Promise.allSettled([
-                listarMissoes(crianca.id), calcularMedia(crianca.id), calcularMesada(crianca.id),
-                buscarConfiguracaoMesada(crianca.id),
+            const [lista, mediaAtual, configuracaoAtual] = await Promise.allSettled([
+                listarMissoes(crianca.id), calcularMedia(crianca.id), buscarConfiguracaoMesada(crianca.id),
             ]);
+            let mesadaAtual = { status: "fulfilled", value: null };
+            if (configuracaoAtual.status === "fulfilled" && configuracaoAtual.value) {
+                const resultadoMesada = await Promise.allSettled([calcularMesada(crianca.id)]);
+                mesadaAtual = resultadoMesada[0];
+            }
             if (cancelado) return;
             if (lista.status === "fulfilled") definirMissoes(lista.value);
             else definirErroLista(mensagemErroMissao(lista.reason, "Não foi possível carregar as missões."));
@@ -205,7 +210,10 @@ export default function Missoes({ crianca, responsavel, criancas, aoTrocarCrianc
                             <p><span>A partir de {formatarNota(configuracao.notaMinimaMaxima)}</span><strong>{formatarValor(configuracao.valorFaixaMaxima)}</strong></p>
                         </section>}
                         {erroConfiguracao && <p className="erro-painel" role="alert">{erroConfiguracao}</p>}
-                        {!carregando && !configuracao && !erroConfiguracao && <p>A mesada desta criança ainda não foi configurada.</p>}
+                        {!carregando && !configuracao && !erroConfiguracao && <div className="mesada-sem-configuracao">
+                            <p>A mesada desta criança ainda não foi configurada.</p>
+                            <Link className="btn botao-acessar-painel" to="/configuracoes">Configurar mesada</Link>
+                        </div>}
                         {erroMedia && <p className="erro-painel" role="alert">{erroMedia}</p>}
                         {erroMesada && <p className="erro-painel" role="alert">{erroMesada}</p>}
                         <button type="button" className="btn botao-acessar-painel" disabled={bloqueado || Boolean(erroLista) || mesada === null}

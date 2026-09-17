@@ -31,6 +31,17 @@
     overflow: hidden;
 }
 
+.mesada-sem-configuracao {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.mesada-sem-configuracao p {
+    margin: 0;
+}
+
 .resumo-missoes,
 .cartao-missao,
 .instrucao-missoes {

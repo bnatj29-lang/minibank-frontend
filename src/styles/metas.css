@@ -174,6 +174,12 @@
     font-weight: 700;
 }
 
+.cartao-meta .meta-alcancada {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    margin-bottom: 12px;
+}
+
 /* Metas já conquistadas não têm botão de exclusão. */
 .lista-conquistas {
     display: flex;

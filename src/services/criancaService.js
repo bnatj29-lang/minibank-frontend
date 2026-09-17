@@ -14,10 +14,14 @@ export async function editarCrianca(criancaId, responsavelId, dados) {
     await api.put(`/criancas/${criancaId}/responsavel/${responsavelId}`, dados);
 }
 
+export async function excluirCrianca(criancaId, responsavelId) {
+    await api.delete(`/criancas/${criancaId}/responsavel/${responsavelId}`);
+}
+
 export function mensagemErroCrianca(falha, mensagemPadrao) {
     const dados = falha.response?.data;
     if (typeof dados?.mensagem === "string") return dados.mensagem;
-    if (dados && typeof dados === "object") {
+    if (falha.response?.status === 400 && dados && typeof dados === "object") {
         const mensagens = Object.values(dados).filter(valor => typeof valor === "string");
         if (mensagens.length) return mensagens.join(" ");
     }
