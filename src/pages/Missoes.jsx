@@ -147,6 +147,7 @@ export default function Missoes({ crianca, responsavel, criancas, aoTrocarCrianc
 
     const bloqueado = carregando || enviando;
     const janelaAberta = criterioAberto || Boolean(missaoParaExcluir) || mesadaAberta;
+    const mesadaSemConfiguracao = !carregando && !configuracao && !erroConfiguracao;
 
     function formatarValor(valor) {
         return Number(valor).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
@@ -210,14 +211,16 @@ export default function Missoes({ crianca, responsavel, criancas, aoTrocarCrianc
                             <p><span>A partir de {formatarNota(configuracao.notaMinimaMaxima)}</span><strong>{formatarValor(configuracao.valorFaixaMaxima)}</strong></p>
                         </section>}
                         {erroConfiguracao && <p className="erro-painel" role="alert">{erroConfiguracao}</p>}
-                        {!carregando && !configuracao && !erroConfiguracao && <div className="mesada-sem-configuracao">
+                        {mesadaSemConfiguracao && <div className="mesada-sem-configuracao">
                             <p>A mesada desta criança ainda não foi configurada.</p>
                             <Link className="btn botao-acessar-painel" to="/configuracoes">Configurar mesada</Link>
                         </div>}
                         {erroMedia && <p className="erro-painel" role="alert">{erroMedia}</p>}
                         {erroMesada && <p className="erro-painel" role="alert">{erroMesada}</p>}
-                        <button type="button" className="btn botao-acessar-painel" disabled={bloqueado || Boolean(erroLista) || mesada === null}
-                            onClick={abrirMesada}>Calcular Mesada</button>
+                        <span className="botao-calcular-mesada-container" data-legenda={mesadaSemConfiguracao ? "É necessário configurar a mesada antes de calcular" : undefined}>
+                            <button type="button" className="btn botao-acessar-painel botao-calcular-mesada" disabled={bloqueado || Boolean(erroLista) || mesada === null}
+                                onClick={abrirMesada}>Calcular Mesada</button>
+                        </span>
                     </aside>
                 </div>
                 {(erroLista || erroMedia || erroMesada || erroConfiguracao) && <button type="button" className="btn botao-secundario-painel" disabled={bloqueado} onClick={atualizar}>Tentar novamente</button>}

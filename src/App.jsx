@@ -14,6 +14,8 @@ import MetasPage from "./pages/MetasPage";
 import Missoes from "./pages/Missoes";
 import CriancaPage from "./pages/CriancaPage";
 import AdicionarCriancaModal from "./components/AdicionarCriancaModal";
+import RecuperarSenhaPage from "./pages/RecuperarSenhaPage";
+import RedefinirSenhaPage from "./pages/RedefinirSenhaPage";
 
 function App() {
     const navegar = useNavigate();
@@ -67,6 +69,8 @@ function App() {
                 <Route path="/" element={<Navigate to="/login" replace />} />
                 <Route path="/cadastro" element={<CadastroPage />} />
                 <Route path="/login" element={<Login aoEntrar={entrarFamilia} />} />
+                <Route path="/recuperar-senha" element={<RecuperarSenhaPage />} />
+                <Route path="/redefinir-senha" element={<RedefinirSenhaPage />} />
                 <Route path="/selecionar-crianca" element={sessao
                     ? <SelecionarCriancaPage familia={sessao} aoSelecionar={selecionarCrianca} aoSair={sair}
                         aoAdicionarCrianca={abrirAdicionarCrianca} />

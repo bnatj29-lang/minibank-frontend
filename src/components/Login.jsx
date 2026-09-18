@@ -33,7 +33,7 @@ export default function Login({ aoEntrar }) {
         }
     }
 
-    return <main className="pagina-autenticacao">
+    return <main className="pagina-autenticacao pagina-login">
         <div className="formulario-entrada">
             <header className="marca-autenticacao">
                 <img className="logotipo-marca-autenticacao" src={logo} alt="MiniBank"/>
@@ -43,6 +43,8 @@ export default function Login({ aoEntrar }) {
                 {estado?.cadastroSucesso &&
                     <div className="alert alert-success" role="status">Conta criada com sucesso! Entre com seu e-mail e
                         senha.</div>}
+                {estado?.senhaRedefinida &&
+                    <div className="alert alert-success" role="status">Sua senha foi redefinida com sucesso. Faça login novamente.</div>}
                 <form onSubmit={enviarFormulario} aria-busy={enviando}>
                     <fieldset disabled={enviando} className="campos-formulario">
                         <div>
@@ -83,6 +85,7 @@ export default function Login({ aoEntrar }) {
                                 type="submit">{enviando ? "Entrando…" : "Entrar"}</button>
                     </fieldset>
                 </form>
+                <p className="link-esqueceu-senha"><Link to="/recuperar-senha" state={{ email }}>Esqueceu sua senha?</Link></p>
                 <div className="divisor-autenticacao"><span>ou</span></div>
                 <Link to="/cadastro" className="btn link-cadastro">Criar conta gratuita</Link>
             </section>

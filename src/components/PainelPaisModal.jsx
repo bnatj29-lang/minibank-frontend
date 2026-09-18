@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Modal } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import CampoSenha from "./CampoSenha";
 import { verificarSenhaPainel } from "../services/painelService";
 import "../styles/painelPais.css";
@@ -39,6 +40,7 @@ export default function PainelPaisModal({ email, aoFechar, aoAcessar }) {
                             aoAlterar={evento => { definirSenha(evento.target.value); definirErro(""); }}
                             exemplo="••••••" preenchimentoAutomatico="off" />
                     </fieldset>
+                    <p className="link-esqueceu-senha link-esqueceu-senha-painel"><Link to="/recuperar-senha" state={{ email }} onClick={aoFechar}>Esqueceu sua senha?</Link></p>
                     {erro && <p className="erro-painel" role="alert">{erro}</p>}
                 </Modal.Body>
                 <Modal.Footer>
