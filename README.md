@@ -26,6 +26,25 @@ npm run dev
 ```
 A aplicação sobe normalmente em `http://localhost:5173`
 
+### URL da API
+
+A instância central do Axios em `src/services/api.js` usa `VITE_API_URL`.
+Se a variável estiver ausente ou vazia, usa `http://localhost:8080`.
+Para apontar temporariamente para outro backend, substitua o marcador abaixo
+pela URL pública do backend:
+
+```bash
+VITE_API_URL='URL_PUBLICA_DO_BACKEND' npm run dev
+```
+
+Reinicie o Vite quando mudar a variável. Para gerar um build, passe a variável
+ao executar `npm run build`: o Vite incorpora esse valor nos arquivos gerados.
+Variáveis `VITE_*` são públicas no frontend e não devem conter segredos.
+Não versione URLs temporárias de túneis.
+
+Ao acessar o frontend por um túnel, o CORS do backend precisa permitir a origem
+exata desse frontend, preservando `http://localhost:5173` na lista atual.
+
 ## 4. Estrutura de pastas
 ```
 src/
