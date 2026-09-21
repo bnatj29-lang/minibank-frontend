@@ -242,13 +242,13 @@
 }
 
 .saldo-metas-painel {
-    background: #fffbeb;
+    background: #fffbb2;
     color: #92400e;
 }
 
 .saldo-livre-painel {
-    background: #f0f9ff;
-    color: #0369a1;
+    background: #bcecf0;
+    color: #3c85ae;
 }
 
 .saldo-metas-painel p,
@@ -286,7 +286,7 @@
 .saldo-total-painel {
     padding: 20px;
     border-radius: 16px;
-    background: linear-gradient(135deg, #10b981, #14b8a6);
+    background: linear-gradient(135deg, #29cc96, #8fd5ce);
     color: white;
 }
 
@@ -591,11 +591,32 @@
 }
 
 .sucesso-painel {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
     color: #047857;
     background: #ecfdf5;
     border-radius: 12px;
     padding: 12px;
     margin: 0;
+}
+
+.fechar-sucesso-registro {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 32px;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: inherit;
+    font-size: 22px;
+    line-height: 1;
+    cursor: pointer;
 }
 
 .pagina-painel button:focus-visible, .pagina-painel a:focus-visible, .modal-painel button:focus-visible {

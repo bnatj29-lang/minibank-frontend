@@ -1,10 +1,11 @@
 import React, { useRef, useState } from "react";
 import { Modal } from "react-bootstrap";
 import { editarMeta, mensagemErroMeta } from "../services/metaService";
+import { formatarMoedaInput, valorMonetarioParaNumero } from "../utils/moeda";
 
 export default function EditarMetaModal({ criancaId, meta, aoFechar, aoEditar }) {
     const [nome, definirNome] = useState(meta.nomeMeta);
-    const [valor, definirValor] = useState(String(meta.valorMeta));
+    const [valor, definirValor] = useState(() => formatarMoedaInput(meta.valorMeta));
     const [erro, definirErro] = useState("");
     const [enviando, definirEnviando] = useState(false);
     const envioEmAndamento = useRef(false);
@@ -22,7 +23,7 @@ export default function EditarMetaModal({ criancaId, meta, aoFechar, aoEditar })
             return;
         }
 
-        const quantia = Number(valor);
+        const quantia = valorMonetarioParaNumero(valor);
         const centavos = Math.round(quantia * 100);
         if (!Number.isFinite(quantia) || quantia <= 0 || Math.abs(quantia * 100 - centavos) > 0.00001) {
             definirErro("Informe um valor maior que zero, com até duas casas decimais.");
@@ -66,9 +67,10 @@ export default function EditarMetaModal({ criancaId, meta, aoFechar, aoEditar })
                         </div>
                         <div>
                             <label className="form-label" htmlFor="valor-editar-meta">Valor que você quer juntar (R$)</label>
-                            <input id="valor-editar-meta" type="number" className="form-control" value={valor}
-                                required min="0.01" step="0.01" aria-describedby="valor-guardado-meta"
-                                onChange={evento => { definirValor(evento.target.value); definirErro(""); }} />
+                            <input id="valor-editar-meta" type="text" inputMode="decimal" className="form-control" value={valor}
+                                required aria-describedby="valor-guardado-meta"
+                                onChange={evento => { definirValor(evento.target.value); definirErro(""); }}
+                                onBlur={() => definirValor(formatarMoedaInput(valor))} />
                             <p className="ajuda-editar-meta" id="valor-guardado-meta">
                                 Já guardado: {Number(meta.valorGuardado).toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
                             </p>

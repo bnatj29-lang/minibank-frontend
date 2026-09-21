@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import CabecalhoPainel from "../components/CabecalhoPainel";
 import { buscarConfiguracaoMesada, salvarConfiguracaoMesada, mensagemErroMesada } from "../services/configuracaoMesadaService";
+import { formatarMoedaInput, valorMonetarioParaNumero } from "../utils/moeda";
 import "../styles/painelPais.css";
 import "../styles/configuracaoMesada.css";
 
@@ -12,6 +13,8 @@ const configuracaoVazia = {
     valorFaixaIntermediaria: "",
     valorFaixaMaxima: "",
 };
+
+const camposMonetarios = ["valorBase", "valorFaixaBaixa", "valorFaixaIntermediaria", "valorFaixaMaxima"];
 
 export default function ConfiguracoesPage({ crianca, responsavel, criancas, aoTrocarCrianca, aoAdicionarCrianca, aoSair, aoVoltar }) {
     const [dados, definirDados] = useState(configuracaoVazia);
@@ -41,12 +44,12 @@ export default function ConfiguracoesPage({ crianca, responsavel, criancas, aoTr
                 if (cancelado) return;
                 if (configuracao) {
                     definirDados({
-                        valorBase: String(configuracao.valorBase),
+                        valorBase: formatarMoedaInput(configuracao.valorBase),
                         notaMinimaIntermediaria: String(configuracao.notaMinimaIntermediaria),
                         notaMinimaMaxima: String(configuracao.notaMinimaMaxima),
-                        valorFaixaBaixa: String(configuracao.valorFaixaBaixa),
-                        valorFaixaIntermediaria: String(configuracao.valorFaixaIntermediaria),
-                        valorFaixaMaxima: String(configuracao.valorFaixaMaxima),
+                        valorFaixaBaixa: formatarMoedaInput(configuracao.valorFaixaBaixa),
+                        valorFaixaIntermediaria: formatarMoedaInput(configuracao.valorFaixaIntermediaria),
+                        valorFaixaMaxima: formatarMoedaInput(configuracao.valorFaixaMaxima),
                     });
                 } else {
                     definirDados(configuracaoVazia);
@@ -76,7 +79,9 @@ export default function ConfiguracoesPage({ crianca, responsavel, criancas, aoTr
         // Converte os campos em números e impede valores vazios ou arredondamentos inesperados.
         const configuracao = {};
         for (const campo of Object.keys(configuracaoVazia)) {
-            const valor = Number(dados[campo]);
+            const valor = camposMonetarios.includes(campo)
+                ? valorMonetarioParaNumero(dados[campo])
+                : Number(dados[campo]);
             if (dados[campo].trim() === "" || !Number.isFinite(valor)) {
                 definirErro("Preencha todos os campos com números válidos.");
                 return;
@@ -140,8 +145,9 @@ export default function ConfiguracoesPage({ crianca, responsavel, criancas, aoTr
                                 <section className="cartao-configuracao-mesada">
                                     <h2>Mesada Base</h2>
                                     <label className="form-label" htmlFor="valor-base">Valor base (R$)<span className="campo-obrigatorio"> *</span></label>
-                                    <input id="valor-base" name="valorBase" type="number" className="form-control" required min="0.01" max="99999999.99" step="0.01"
-                                        placeholder="Ex: 300" value={dados.valorBase} onChange={atualizarCampo} />
+                                    <input id="valor-base" name="valorBase" type="text" inputMode="decimal" className="form-control" required
+                                        placeholder="Ex: 300" value={dados.valorBase} onChange={atualizarCampo}
+                                        onBlur={() => definirDados(atuais => ({ ...atuais, valorBase: formatarMoedaInput(atuais.valorBase) }))} />
                                 </section>
                                 <section className="cartao-configuracao-mesada">
                                     <h2>Faixas de Cálculo</h2>
@@ -157,20 +163,23 @@ export default function ConfiguracoesPage({ crianca, responsavel, criancas, aoTr
                                             <div className="faixa-baixa-mesada">
                                                 <h3>Abaixo de {notaIntermediaria}</h3>
                                                 <label className="form-label" htmlFor="valor-faixa-baixa">Valor (R$)<span className="campo-obrigatorio"> *</span></label>
-                                                <input id="valor-faixa-baixa" name="valorFaixaBaixa" type="number" className="form-control" required min="0.01" max="99999999.99" step="0.01"
-                                                    placeholder="Ex: 250" value={dados.valorFaixaBaixa} onChange={atualizarCampo} />
+                                                <input id="valor-faixa-baixa" name="valorFaixaBaixa" type="text" inputMode="decimal" className="form-control" required
+                                                    placeholder="Ex: 250" value={dados.valorFaixaBaixa} onChange={atualizarCampo}
+                                                    onBlur={() => definirDados(atuais => ({ ...atuais, valorFaixaBaixa: formatarMoedaInput(atuais.valorFaixaBaixa) }))} />
                                             </div>
                                             <div className="faixa-intermediaria-mesada">
                                                 <h3>De {notaIntermediaria} até menos de {notaMaxima}</h3>
                                                 <label className="form-label" htmlFor="valor-faixa-intermediaria">Valor (R$)<span className="campo-obrigatorio"> *</span></label>
-                                                <input id="valor-faixa-intermediaria" name="valorFaixaIntermediaria" type="number" className="form-control" required min="0.01" max="99999999.99" step="0.01"
-                                                    placeholder="Ex: 300" value={dados.valorFaixaIntermediaria} onChange={atualizarCampo} />
+                                                <input id="valor-faixa-intermediaria" name="valorFaixaIntermediaria" type="text" inputMode="decimal" className="form-control" required
+                                                    placeholder="Ex: 300" value={dados.valorFaixaIntermediaria} onChange={atualizarCampo}
+                                                    onBlur={() => definirDados(atuais => ({ ...atuais, valorFaixaIntermediaria: formatarMoedaInput(atuais.valorFaixaIntermediaria) }))} />
                                             </div>
                                             <div className="faixa-maxima-mesada">
                                                 <h3>A partir de {notaMaxima}</h3>
                                                 <label className="form-label" htmlFor="valor-faixa-maxima">Valor (R$)<span className="campo-obrigatorio"> *</span></label>
-                                                <input id="valor-faixa-maxima" name="valorFaixaMaxima" type="number" className="form-control" required min="0.01" max="99999999.99" step="0.01"
-                                                    placeholder="Ex: 350" value={dados.valorFaixaMaxima} onChange={atualizarCampo} />
+                                                <input id="valor-faixa-maxima" name="valorFaixaMaxima" type="text" inputMode="decimal" className="form-control" required
+                                                    placeholder="Ex: 350" value={dados.valorFaixaMaxima} onChange={atualizarCampo}
+                                                    onBlur={() => definirDados(atuais => ({ ...atuais, valorFaixaMaxima: formatarMoedaInput(atuais.valorFaixaMaxima) }))} />
                                             </div>
                                         </div>
                                         <div>

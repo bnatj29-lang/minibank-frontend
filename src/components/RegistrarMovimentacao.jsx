@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "react";
 import { Modal } from "react-bootstrap";
 import { registrarExtrato } from "../services/extratoService";
+import { formatarMoedaInput, valorMonetarioParaNumero } from "../utils/moeda";
 
 export default function RegistrarMovimentacao({ crianca, tipo, saldo, aoFechar, aoRegistrar }) {
     const [valor, definirValor] = useState("");
@@ -14,7 +15,7 @@ export default function RegistrarMovimentacao({ crianca, tipo, saldo, aoFechar, 
     async function registrar(evento) {
         evento.preventDefault();
         if (envioEmAndamento.current) return;
-        const quantia = Number(valor);
+        const quantia = valorMonetarioParaNumero(valor);
         if (!Number.isFinite(quantia) || quantia <= 0 || Math.abs(quantia * 100 - Math.round(quantia * 100)) > 0.00001) {
             definirErro("Digite um valor maior que zero, com até duas casas decimais.");
             return;
@@ -43,7 +44,9 @@ export default function RegistrarMovimentacao({ crianca, tipo, saldo, aoFechar, 
                     <fieldset disabled={enviando} className="campos-movimentacao">
                         <div>
                             <label className="form-label" htmlFor="valor-movimentacao">Valor (R$)</label>
-                            <input id="valor-movimentacao" type="number" className="form-control" autoFocus required min="0.01" step="0.01" value={valor} onChange={evento => definirValor(evento.target.value)} placeholder="0,00" />
+                            <input id="valor-movimentacao" type="text" inputMode="decimal" className="form-control" autoFocus required value={valor}
+                                onChange={evento => definirValor(evento.target.value)} placeholder="0,00"
+                                onBlur={() => definirValor(formatarMoedaInput(valor))} />
                         </div>
                         <div>
                             <label className="form-label" htmlFor="descricao-movimentacao">Descrição (opcional)</label>

@@ -86,7 +86,15 @@ export default function Financeiro({ crianca, responsavel, criancas, aoTrocarCri
                     <button className="acao-entrada" disabled={indisponivel} onClick={() => definirOperacao("ENTRADA")}><span aria-hidden="true">↓</span><strong>Registrar Entrada</strong><p>Adicionar dinheiro para {crianca.nome} (ex: mesada)</p></button>
                     <button className="acao-retirada" disabled={indisponivel || saldoLivre <= 0} onClick={() => definirOperacao("RETIRADA")}><span aria-hidden="true">↑</span><strong>Registrar Retirada</strong><p>Registrar gasto do saldo livre de {crianca.nome}</p></button>
                 </div>
-                {sucesso && <p className="sucesso-painel" role="status">{sucesso}</p>}
+                {sucesso && <p className="sucesso-painel" role="status">
+                <span>{sucesso}</span>
+
+                <button type="button" className="fechar-sucesso-registro" aria-label="Fechar mensagem"
+                        onClick={() => definirSucesso("")}
+                >
+                    ×
+                </button>
+            </p>}
                 <section className="extrato-painel" aria-busy={carregando}>
                     <header><h2>Extrato</h2>{!indisponivel && <p>{extrato.length} movimentações</p>}</header>
                     {carregando ? <p className="estado-extrato" role="status">Carregando extrato…</p> : erro ? (

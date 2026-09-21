@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "react";
 import { Modal } from "react-bootstrap";
 import { guardarDinheiroMeta, mensagemErroMeta } from "../services/metaService";
+import { formatarMoedaInput, valorMonetarioParaNumero } from "../utils/moeda";
 
 export default function GuardarDinheiroModal({ criancaId, meta, saldoLivre, aoFechar, aoGuardar }) {
     const [valor, definirValor] = useState("");
@@ -15,7 +16,7 @@ export default function GuardarDinheiroModal({ criancaId, meta, saldoLivre, aoFe
     async function guardar(evento) {
         evento.preventDefault();
         if (envioEmAndamento.current) return;
-        const quantia = Number(valor);
+        const quantia = valorMonetarioParaNumero(valor);
         if (!valor.trim() || !Number.isFinite(quantia)) {
             definirErro("Informe o valor que deseja guardar.");
             return;
@@ -51,12 +52,14 @@ export default function GuardarDinheiroModal({ criancaId, meta, saldoLivre, aoFe
                     <p className="saldo-livre-metas">Saldo livre disponível: <strong>{formatarValor(saldoLivre)}</strong></p>
                     <fieldset disabled={enviando}>
                         <label className="form-label" htmlFor="valor-aporte">Quanto você quer guardar? (R$)</label>
-                        <input id="valor-aporte" type="number" className="form-control" required min="0.01" step="0.01"
-                            autoFocus placeholder="0,00" value={valor} onChange={evento => { definirValor(evento.target.value); definirErro(""); }} />
+                        <input id="valor-aporte" type="text" inputMode="decimal" className="form-control" required
+                            autoFocus placeholder="0,00" value={valor}
+                            onChange={evento => { definirValor(evento.target.value); definirErro(""); }}
+                            onBlur={() => definirValor(formatarMoedaInput(valor))} />
                         <div className="valores-rapidos-meta" aria-label="Valores rápidos">
                             {[10, 20, 50, 100].filter(quantia => quantia <= saldoLivre && quantia <= meta.valorRestante).map(quantia => (
                                 <button key={quantia} type="button" className="btn botao-secundario-meta"
-                                    aria-pressed={Number(valor) === quantia} onClick={() => { definirValor(String(quantia)); definirErro(""); }}>{formatarValor(quantia)}</button>
+                                    aria-pressed={valorMonetarioParaNumero(valor) === quantia} onClick={() => { definirValor(formatarMoedaInput(String(quantia))); definirErro(""); }}>{formatarValor(quantia)}</button>
                             ))}
                         </div>
                     </fieldset>

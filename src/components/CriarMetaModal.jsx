@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "react";
 import { Modal } from "react-bootstrap";
 import { criarMeta, mensagemErroMeta } from "../services/metaService";
+import { formatarMoedaInput, valorMonetarioParaNumero } from "../utils/moeda";
 
 export default function CriarMetaModal({ crianca, aoFechar, aoCriar }) {
     const [nome, definirNome] = useState("");
@@ -18,7 +19,7 @@ export default function CriarMetaModal({ crianca, aoFechar, aoCriar }) {
             return;
         }
 
-        const quantia = Number(valor);
+        const quantia = valorMonetarioParaNumero(valor);
         const centavos = Math.round(quantia * 100);
         if (!Number.isFinite(quantia) || quantia <= 0 || Math.abs(quantia * 100 - centavos) > 0.00001) {
             definirErro("Informe um valor maior que zero, com até duas casas decimais.");
@@ -59,9 +60,10 @@ export default function CriarMetaModal({ crianca, aoFechar, aoCriar }) {
                         </div>
                         <div>
                             <label className="form-label" htmlFor="valor-meta">Valor que você quer juntar (R$)</label>
-                            <input id="valor-meta" type="number" className="form-control" value={valor}
-                                required min="0.01" step="0.01" placeholder="Ex: 350"
-                                onChange={evento => { definirValor(evento.target.value); definirErro(""); }} />
+                            <input id="valor-meta" type="text" inputMode="decimal" className="form-control" value={valor}
+                                required placeholder="Ex: 350"
+                                onChange={evento => { definirValor(evento.target.value); definirErro(""); }}
+                                onBlur={() => definirValor(formatarMoedaInput(valor))} />
                         </div>
                     </fieldset>
                     {erro && <p className="erro-metas" role="alert">{erro}</p>}
