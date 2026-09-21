@@ -94,7 +94,11 @@ export default function MetasPage({ crianca, aoAbrirPainel, aoAtualizarSaldos, e
                     </div>
                     <button className="btn botao-nova-meta" type="button" onClick={abrirCriacao} disabled={carregando || Boolean(erro)}>+ Nova Meta</button>
                 </div>
-                {sucesso && <p className="sucesso-metas" role="status">{sucesso}</p>}
+                {sucesso && <p className="sucesso-metas" role="status">
+                    <span>{sucesso}</span>
+                    <button type="button" className="fechar-sucesso-metas" aria-label="Fechar mensagem"
+                        onClick={() => definirSucesso("")}>×</button>
+                </p>}
                 {!carregando && !erro && <p className="saldo-livre-metas">Saldo livre disponível: <strong>{formatarValor(saldoLivre)}</strong></p>}
                 {carregando ? (
                     <p className="estado-metas" role="status">Carregando metas…</p>

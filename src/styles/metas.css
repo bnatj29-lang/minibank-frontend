@@ -393,11 +393,37 @@
 }
 
 .sucesso-metas {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
     color: #047857;
     background: #ecfdf5;
     padding: 12px;
     border-radius: 12px;
     margin-bottom: 16px;
+}
+
+.fechar-sucesso-metas {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 32px;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: inherit;
+    font-size: 22px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.fechar-sucesso-metas:hover,
+.fechar-sucesso-metas:focus-visible {
+    background: #d1fae5;
 }
 
 .erro-metas {

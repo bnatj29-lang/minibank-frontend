@@ -232,6 +232,12 @@
     margin: 0;
 }
 
+@media (min-width: 768px) {
+    .grade-principal-home > .cartao-missoes-home {
+        margin-top: 76px;
+    }
+}
+
 .link-missoes-home {
     display: block;
     margin-top: 16px;
