@@ -1,7 +1,7 @@
 import api from "./api";
 
 export async function cadastrarUsuario(dados) {
-    const resposta = await api.post("/contas/cadastro", dados);
+    const resposta = await api.post("/contas/cadastro", dados, { timeout: 15000 });
     return resposta.data;
 }
 
@@ -11,6 +11,11 @@ export async function entrarUsuario({ email, senha }) {
 }
 
 export function mensagemErroAutenticacao(erro, cadastro = false) {
+    if (erro.code === "ECONNABORTED" || erro.code === "ETIMEDOUT") {
+        return cadastro
+            ? "O cadastro demorou mais que o esperado. Verifique sua conexão e tente novamente."
+            : "A solicitação demorou mais que o esperado. Tente novamente.";
+    }
     if (!erro.response) return "Não foi possível conectar ao servidor. Tente novamente.";
     if (erro.response.status === 401) return "E-mail ou senha incorretos.";
     if (erro.response.status === 409) return "Este e-mail já está cadastrado. Entre na sua conta.";
