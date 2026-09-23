@@ -23,7 +23,7 @@ export default function Home({ crianca, aoAbrirPainel, aoSair }) {
         let cancelado = false;
         definirCarregando(true);
         definirErros({});
-        definirSaldos(null);
+        definirSaldos(null); 
         definirMedia(null);
         definirMetas([]);
 
