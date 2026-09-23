@@ -29,6 +29,26 @@ export async function conquistarMeta(criancaId, metaId) {
     return resposta.data;
 }
 
+export async function solicitarConquista(criancaId, metaId) {
+    const resposta = await api.post(`/metas/${criancaId}/metas/${metaId}/solicitar-conquista`);
+    return resposta.data;
+}
+
+export async function listarSolicitacoes(criancaId) {
+    const resposta = await api.get(`/metas/${criancaId}/solicitacoes`);
+    return resposta.data;
+}
+
+export async function aprovarConquista(criancaId, metaId) {
+    const resposta = await api.post(`/metas/${criancaId}/metas/${metaId}/aprovar-conquista`);
+    return resposta.data;
+}
+
+export async function recusarConquista(criancaId, metaId) {
+    const resposta = await api.post(`/metas/${criancaId}/metas/${metaId}/recusar-conquista`);
+    return resposta.data;
+}
+
 export function mensagemErroMeta(falha, mensagemPadrao) {
     const mensagem = falha.response?.data?.mensagem;
     return typeof mensagem === "string" ? mensagem : mensagemPadrao;

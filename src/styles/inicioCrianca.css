@@ -174,6 +174,84 @@
     height: 80px;
 }
 
+.cofrinho-interativo {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 80px;
+    width: 80px;
+    height: 80px;
+    padding: 0;
+    border: 0;
+    border-radius: 20px;
+    background: transparent;
+    cursor: pointer;
+}
+
+.cofrinho-interativo img {
+    width: 80px;
+    height: 80px;
+}
+
+.cofrinho-interativo:focus-visible {
+    outline: 3px solid #fef08a;
+    outline-offset: 4px;
+}
+
+.moedas-cofrinho {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.moeda-cofrinho {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #d97706;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #fef3a7 0 12%, #facc15 38%, #eab308 72%, #ca8a04 100%);
+    box-shadow: inset 0 0 0 2px #fde68a, 0 2px 4px #92400e66;
+    color: #a16207;
+    opacity: 0;
+    animation: moeda-saindo-do-cofrinho 700ms ease-out var(--moeda-atraso) both;
+}
+
+.moeda-cofrinho::after {
+    content: "$";
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    font-size: 12px;
+    font-weight: 900;
+    line-height: 1;
+}
+
+@keyframes moeda-saindo-do-cofrinho {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(.35) rotate(0deg);
+    }
+    20% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        transform: translate(calc(-50% + var(--moeda-x)), calc(-50% + var(--moeda-y))) scale(1) rotate(360deg);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .moeda-cofrinho {
+        animation-duration: 1ms;
+        animation-delay: 0ms;
+    }
+}
+
 .cofrinho-crianca p {
     margin: 4px 0 0;
 }

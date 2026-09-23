@@ -544,3 +544,7 @@
         flex-wrap: wrap;
     }
 }
+.botao-solicitacao-enviada {
+    cursor: default;
+    opacity: 0.85;
+}
