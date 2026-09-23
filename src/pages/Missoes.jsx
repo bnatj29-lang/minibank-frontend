@@ -114,7 +114,7 @@ export default function Missoes({ crianca, responsavel, criancas, aoTrocarCrianc
     }
 
     function alterarNota(missao, nota) {
-        return salvarAlteracao(() => atualizarMissao(missao.id, missao.criterio, nota), "Nota atualizada com sucesso!");
+        return salvarAlteracao(() => atualizarMissao(missao.id, missao.criterio, nota), "");
     }
 
     function confirmarExclusao() {

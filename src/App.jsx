@@ -16,6 +16,7 @@ import CriancaPage from "./pages/CriancaPage";
 import AdicionarCriancaModal from "./components/AdicionarCriancaModal";
 import RecuperarSenhaPage from "./pages/RecuperarSenhaPage";
 import RedefinirSenhaPage from "./pages/RedefinirSenhaPage";
+import SolicitacoesPage from "./pages/SolicitacoesPage";
 
 function App() {
     const navegar = useNavigate();
@@ -107,6 +108,13 @@ function App() {
                     ? <Navigate to={sessao ? "/selecionar-crianca" : "/login"} replace />
                     : painelLiberado
                         ? <Missoes key={criancaAtiva.id} crianca={criancaAtiva} responsavel={sessao.responsavel}
+                            criancas={sessao.criancas} aoTrocarCrianca={selecionarCrianca} aoAdicionarCrianca={abrirAdicionarCrianca} aoSair={sair}
+                            aoVoltar={() => definirPainelLiberado(false)} />
+                        : <Navigate to="/home" replace />} />
+                <Route path="/solicitacoes" element={!criancaAtiva
+                    ? <Navigate to={sessao ? "/selecionar-crianca" : "/login"} replace />
+                    : painelLiberado
+                        ? <SolicitacoesPage key={criancaAtiva.id} crianca={criancaAtiva} responsavel={sessao.responsavel}
                             criancas={sessao.criancas} aoTrocarCrianca={selecionarCrianca} aoAdicionarCrianca={abrirAdicionarCrianca} aoSair={sair}
                             aoVoltar={() => definirPainelLiberado(false)} />
                         : <Navigate to="/home" replace />} />

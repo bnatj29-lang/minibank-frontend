@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { listarMetas, mensagemErroMeta } from "../services/metaService";
+import { listarMetas, mensagemErroMeta, solicitarConquista } from "../services/metaService";
 import CriarMetaModal from "../components/CriarMetaModal";
 import EditarMetaModal from "../components/EditarMetaModal";
 import ExcluirMetaModal from "../components/ExcluirMetaModal";
 import GuardarDinheiroModal from "../components/GuardarDinheiroModal";
-import ConquistarMetaModal from "../components/ConquistarMetaModal";
 import { buscarSaldoLivre } from "../services/extratoService";
 import logo from "../assets/icons/logo_minibank_original.svg";
 import "../styles/metas.css";
@@ -20,7 +19,6 @@ export default function MetasPage({ crianca, aoAbrirPainel, aoAtualizarSaldos, e
     const [metaParaEditar, definirMetaParaEditar] = useState(null);
     const [metaParaExcluir, definirMetaParaExcluir] = useState(null);
     const [metaParaGuardar, definirMetaParaGuardar] = useState(null);
-    const [metaParaConquistar, definirMetaParaConquistar] = useState(null);
     const [saldoLivre, definirSaldoLivre] = useState(null);
     const [conquistasExpandidas, definirConquistasExpandidas] = useState(false);
 
@@ -52,7 +50,6 @@ export default function MetasPage({ crianca, aoAbrirPainel, aoAtualizarSaldos, e
         definirMetaParaEditar(null);
         definirMetaParaExcluir(null);
         definirMetaParaGuardar(null);
-        definirMetaParaConquistar(null);
         definirConquistasExpandidas(false);
         if (aoAtualizarSaldos) aoAtualizarSaldos();
         definirSucesso(mensagem);
@@ -133,16 +130,28 @@ export default function MetasPage({ crianca, aoAbrirPainel, aoAtualizarSaldos, e
                                             </div>
                                         </div>
                                         <div className="resumo-progresso-meta">
-                                            <span>{meta.status === "ALCANÇADA" ? "Alcançada" : "Em andamento"}</span>
+                                            <span>{meta.status === "ALCANÇADA" ? "Alcançada" : meta.status === "AGUARDANDO_APROVACAO" ? "Aguardando aprovação" : "Em andamento"}</span>
                                             <strong>{Math.round(meta.percentual)}%</strong>
                                         </div>
                                         <progress className="progresso-meta" max="100" value={Math.max(0, Math.min(100, meta.percentual))}
                                             aria-label={`Progresso da meta ${meta.nomeMeta}`} />
                                         {meta.status === "ALCANÇADA" ? (
                                             <p className="meta-alcancada">🏆 Você juntou o suficiente para esta meta!</p>
+                                        ) : meta.status === "AGUARDANDO_APROVACAO" ? (
+                                            <p className="meta-alcancada">⏳ Aguardando aprovação do responsável</p>
                                         ) : <p className="restante-meta">Faltam <strong>{formatarValor(meta.valorRestante)}</strong></p>}
                                         {meta.status === "ALCANÇADA" ? (
-                                            <button className="btn botao-nova-meta" type="button" onClick={() => { definirSucesso(""); definirMetaParaConquistar(meta); }}>🏆 Conquistar meta</button>
+                                            <button className="btn botao-nova-meta" type="button" onClick={async () => {
+                                                definirSucesso("");
+                                                try {
+                                                    await solicitarConquista(crianca.id, meta.id);
+                                                    atualizarMetas("Solicitação enviada ao responsável.");
+                                                } catch (falha) {
+                                                    definirErro(mensagemErroMeta(falha, "Não foi possível solicitar a conquista."));
+                                                }
+                                            }}>🏆 Solicitar conquista</button>
+                                        ) : meta.status === "AGUARDANDO_APROVACAO" ? (
+                                            <button className="btn botao-nova-meta botao-solicitacao-enviada" type="button" disabled>⏳ Solicitação enviada ao responsável</button>
                                         ) : (
                                             <button className="btn botao-nova-meta" type="button" disabled={saldoLivre <= 0}
                                                 onClick={() => { definirSucesso(""); definirMetaParaGuardar(meta); }}>{saldoLivre <= 0 ? "Sem saldo livre no momento" : "Guardar dinheiro"}</button>
@@ -174,8 +183,6 @@ export default function MetasPage({ crianca, aoAbrirPainel, aoAtualizarSaldos, e
             {metaParaExcluir && <ExcluirMetaModal criancaId={crianca.id} meta={metaParaExcluir} aoFechar={() => definirMetaParaExcluir(null)} aoExcluir={() => atualizarMetas("Meta excluída com sucesso.")} />}
             {metaParaGuardar && <GuardarDinheiroModal key={metaParaGuardar.id} criancaId={crianca.id} meta={metaParaGuardar} saldoLivre={saldoLivre}
                 aoFechar={() => definirMetaParaGuardar(null)} aoGuardar={() => atualizarMetas("Dinheiro guardado na meta com sucesso!")} />}
-            {metaParaConquistar && <ConquistarMetaModal criancaId={crianca.id} meta={metaParaConquistar}
-                aoFechar={() => definirMetaParaConquistar(null)} aoConquistar={() => atualizarMetas("Meta conquistada! O gasto foi registrado no extrato.")} />}
         </div>
     );
 }

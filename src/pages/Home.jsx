@@ -18,6 +18,7 @@ export default function Home({ crianca, aoAbrirPainel, aoSair }) {
     const [erros, definirErros] = useState({});
     const [carregando, definirCarregando] = useState(true);
     const [atualizacao, definirAtualizacao] = useState(0);
+    const [animacaoMoedas, definirAnimacaoMoedas] = useState(0);
 
     useEffect(() => {
         let cancelado = false;
@@ -99,7 +100,15 @@ export default function Home({ crianca, aoAbrirPainel, aoSair }) {
                 <section className="cofrinho-crianca" aria-label="Meu cofrinho" aria-busy={carregando}>
                     <div className="titulo-cofrinho">
                         <div><h2>Meu Cofrinho</h2><strong>{carregando || !saldos ? "—" : formatarValor(saldos.total)}</strong><p>Total economizado</p></div>
-                        <img src={icone} alt="" />
+                        <button type="button" className="cofrinho-interativo" aria-label="Animar moedas do cofrinho"
+                            onClick={() => definirAnimacaoMoedas(valor => valor + 1)}>
+                            <img src={icone} alt="" />
+                            {animacaoMoedas > 0 && <span className="moedas-cofrinho" key={animacaoMoedas} aria-hidden="true">
+                                {["-52px", "-26px", "0px", "26px", "52px"].map((deslocamento, indice) => (
+                                    <span key={indice} className="moeda-cofrinho" style={{ "--moeda-x": deslocamento, "--moeda-y": `${-28 - (indice % 2) * 12}px`, "--moeda-atraso": `${indice * 55}ms` }} />
+                                ))}
+                            </span>}
+                        </button>
                     </div>
                     {erros.saldos && <p role="alert">{erros.saldos}</p>}
                     <div className="divisao-cofrinho">
@@ -119,7 +128,7 @@ export default function Home({ crianca, aoAbrirPainel, aoSair }) {
                             <article className="cartao-meta-home" key={meta.id}>
                                 <div className="cabecalho-cartao-meta-home"><div><h3>{meta.nomeMeta}</h3><p><strong>{formatarValor(meta.valorGuardado)}</strong> guardados de {formatarValor(meta.valorMeta)}</p></div><strong>{Math.round(meta.percentual)}%</strong></div>
                                 <progress className="progresso-meta" max="100" value={Math.max(0, Math.min(100, meta.percentual))} aria-label={`Progresso da meta ${meta.nomeMeta}`} />
-                                {meta.status === "ALCANÇADA" ? <p className="meta-alcancada">🏆 Meta alcançada! <Link to="/metas">Conquistar meta</Link></p> : <><p className="restante-meta">Faltam <strong>{formatarValor(meta.valorRestante)}</strong></p><Link className="btn botao-acao-meta-home" to="/metas">Guardar dinheiro</Link></>}
+                                {meta.status === "ALCANÇADA" ? <p className="meta-alcancada">🏆 Meta alcançada! <Link to="/metas">Solicitar conquista</Link></p> : meta.status === "AGUARDANDO_APROVACAO" ? <p className="meta-alcancada">⏳ Solicitação enviada ao responsável</p> : <><p className="restante-meta">Faltam <strong>{formatarValor(meta.valorRestante)}</strong></p><Link className="btn botao-acao-meta-home" to="/metas">Guardar dinheiro</Link></>}
                             </article>
                         ))}
                         {metasConquistadas.length > 0 && <div className="conquistas-home"><h3>Metas conquistadas</h3>{metasConquistadas.map(meta => <p key={meta.id}>🏆 <strong>{meta.nomeMeta}</strong> · {formatarValor(meta.valorMeta)}</p>)}</div>}

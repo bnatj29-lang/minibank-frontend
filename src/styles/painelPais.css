@@ -208,6 +208,90 @@
     color: white;
 }
 
+.badge-solicitacoes-painel {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 6px;
+    border-radius: 999px;
+    background: #fef08a;
+    color: #854d0e;
+    font-size: 11px;
+    font-weight: 800;
+}
+
+.titulo-solicitacoes { display: flex; justify-content: space-between; align-items: center; }
+.titulo-solicitacoes h1 { display: flex; align-items: center; gap: 8px; }
+.icone-titulo-solicitacoes { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 12px; background: #fef3c7; font-size: 19px; }
+.titulo-solicitacoes p { margin: 6px 0 0; color: #6b7280; }
+.lista-solicitacoes { display: grid; gap: 16px; }
+.cartao-solicitacao { padding: 22px 24px; border: 1px solid #ecfdf5; border-radius: 24px; background: #fff; box-shadow: 0 5px 16px #0f172a0a; }
+.rotulo-solicitacao { display: inline-flex; align-items: center; width: fit-content; padding: 6px 10px; border-radius: 999px; background: #fffbeb; color: #92400e; font-size: 12px; font-weight: 800; }
+.conteudo-cartao-solicitacao { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 14px; align-items: center; margin-top: 18px; }
+.icone-meta-solicitacao { display: inline-flex; align-items: center; justify-content: center; width: 46px; height: 46px; border-radius: 15px; background: #ecfdf5; font-size: 23px; }
+.nome-meta-solicitacao { min-width: 0; }
+.nome-meta-solicitacao > span { color: #6b7280; font-size: 12px; }
+.nome-meta-solicitacao h2 { margin: 2px 0 3px; color: #1f2937; font-size: 20px; font-weight: 800; overflow-wrap: anywhere; }
+.nome-meta-solicitacao p { margin: 0; color: #6b7280; font-size: 14px; }
+.valor-cartao-solicitacao { color: #047857; font-size: 21px; white-space: nowrap; }
+.rodape-solicitacao { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-top: 20px; padding-top: 16px; border-top: 1px solid #f3f4f6; color: #6b7280; font-size: 14px; }
+.rodape-solicitacao > div, .acoes-modal-solicitacao { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; }
+.valor-reservado-solicitacao { display: inline-flex; align-items: center; gap: 8px; }
+.valor-reservado-solicitacao > span:first-child { font-size: 17px; }
+.valor-reservado-solicitacao > span:last-child { display: flex; flex-direction: column; gap: 2px; }
+.valor-reservado-solicitacao strong { color: #374151; }
+.botao-aprovar-solicitacao { background: #10b981; color: white; border-radius: 14px; font-weight: 700; }
+.botao-aprovar-solicitacao:hover { background: #059669; color: white; }
+.botao-recusar-solicitacao { background: #fff1f2; color: #be123c; border: 1px solid #fecdd3; border-radius: 14px; font-weight: 700; }
+.botao-recusar-solicitacao:hover { background: #ffe4e6; color: #9f1239; }
+.solicitacoes-vazias { padding: 56px 24px; text-align: center; background: white; border: 1px dashed #d1d5db; border-radius: 24px; color: #6b7280; }
+.solicitacoes-vazias > span { display: block; font-size: 34px; margin-bottom: 10px; }
+.solicitacoes-vazias h2 { margin: 0 0 8px; color: #374151; font-size: 19px; }
+.solicitacoes-vazias p { margin: 0; }
+.modal-solicitacao-fundo { position: fixed; inset: 0; z-index: 1050; display: flex; align-items: center; justify-content: center; padding: 20px; background: #11182766; }
+.modal-solicitacao { width: min(100%, 520px); padding: 30px 32px; border: 1px solid #f3e8ff; border-radius: 28px; background: white; box-shadow: 0 24px 55px #0f172a38; }
+.modal-solicitacao h2 { margin: 0 0 10px; color: #1f2937; font-size: 23px; font-weight: 800; letter-spacing: -0.02em; }
+.modal-solicitacao p { margin: 0; color: #6b7280; line-height: 1.55; }
+.celebracao-solicitacao { position: relative; display: flex; align-items: center; justify-content: center; width: 68px; height: 68px; margin: -2px auto 18px; border-radius: 50%; background: #fef3c7; color: #b45309; box-shadow: 0 8px 20px #f59e0b24; }
+.celebracao-solicitacao > span { font-size: 32px; line-height: 1; }
+.celebracao-solicitacao i { position: absolute; color: #fbbf24; font-size: 15px; font-style: normal; }
+.celebracao-solicitacao i:first-of-type { top: 2px; right: -2px; }
+.celebracao-solicitacao i:last-of-type { bottom: 4px; left: -3px; font-size: 11px; }
+.celebracao-recusar-solicitacao { background: #fce7f3; color: #be185d; box-shadow: 0 8px 20px #ec489924; }
+.celebracao-recusar-solicitacao > span { font-size: 30px; }
+.mensagem-celebracao-solicitacao { margin-bottom: 20px !important; text-align: center; color: #4b5563 !important; font-size: 14px; }
+.resumo-conquista-solicitacao { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; align-items: center; margin: 0 0 16px; padding: 17px; border: 1px solid #d1fae5; border-radius: 18px; background: #f0fdf9; }
+.icone-resumo-conquista { display: inline-flex; align-items: center; justify-content: center; width: 38px; height: 38px; grid-row: span 2; border-radius: 12px; background: #d1fae5; font-size: 20px; }
+.resumo-conquista-solicitacao div { display: flex; flex-direction: column; gap: 2px; }
+.resumo-conquista-solicitacao span { color: #6b7280; font-size: 12px; }
+.resumo-conquista-solicitacao strong { color: #065f46; font-size: 17px; }
+.valor-conquista-solicitacao { grid-column: 2; margin-top: 8px; padding-top: 10px; border-top: 1px solid #d1fae5; }
+.valor-conquista-solicitacao strong { color: #047857; font-size: 24px; }
+.aviso-financeiro-solicitacao { display: flex; align-items: flex-start; gap: 9px; margin-bottom: 0 !important; padding: 13px 14px; border: 1px solid #fde68a; border-radius: 14px; background: #fffbeb; color: #92400e !important; font-size: 13px; }
+.icone-aviso-solicitacao { flex: 0 0 auto; font-size: 15px; }
+.aviso-financeiro-solicitacao > span:last-child { min-width: 0; }
+.resumo-recusar-solicitacao { margin-bottom: 16px; border-color: #fbcfe8; background: #fdf2f8; }
+.resumo-recusar-solicitacao .icone-resumo-conquista { background: #fce7f3; }
+.resumo-recusar-solicitacao .valor-conquista-solicitacao { border-color: #fbcfe8; }
+.aviso-recusar-solicitacao { padding: 12px 14px; border: 1px solid #fbcfe8; border-radius: 14px; background: #fdf2f8; color: #9d174d !important; font-size: 13px; }
+.acoes-modal-solicitacao { margin-top: 24px; }
+.botao-cancelar-solicitacao { border: 1px solid #e5e7eb; border-radius: 14px; background: #f9fafb; color: #6b7280; font-weight: 700; }
+.botao-cancelar-solicitacao:hover { background: #f3f4f6; color: #374151; }
+.modal-aprovar-conquista .botao-aprovar-solicitacao { padding-inline: 18px; border-radius: 14px; box-shadow: 0 6px 14px #10b98130; }
+
+@media (max-width: 575px) {
+    .modal-solicitacao { padding: 24px 20px; border-radius: 24px; }
+    .modal-solicitacao h2 { font-size: 21px; }
+    .conteudo-cartao-solicitacao { grid-template-columns: auto minmax(0, 1fr); }
+    .valor-cartao-solicitacao { grid-column: 2; }
+    .cabecalho-solicitacao, .rodape-solicitacao { flex-direction: column; align-items: stretch; }
+    .cabecalho-solicitacao > strong { font-size: 18px; }
+    .rodape-solicitacao > div, .acoes-modal-solicitacao { justify-content: stretch; }
+    .rodape-solicitacao button, .acoes-modal-solicitacao button { flex: 1; }
+}
+
 .cabecalho-painel a[aria-disabled="true"] {
     opacity: 0.65;
     cursor: wait;
